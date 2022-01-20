@@ -10,7 +10,13 @@ function Format-Fine
     {
         foreach ($io in $InputObject)
         {
-            if ($NotNullOrEmpty)
+            # default
+            if (-not $NotNullOrEmpty)
+            {
+                $io
+            }
+
+            elseif ($NotNullOrEmpty)
             {
                 $hash = [ordered]@{}
                 foreach ($p in $io.PSObject.Properties)
