@@ -15,7 +15,7 @@ RootModule = 'FineFormat.psm1'
 ModuleVersion = '0.1'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core', 'Desktop')
 
 # ID used to uniquely identify this module
 GUID = 'c8d7e642-5bd5-46e6-abd1-d4e3de9f168f'
@@ -69,16 +69,16 @@ PowerShellVersion = '3.0'
 NestedModules = @('FineFormat.functions.ps1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = @('Format-Fine')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = '*'
+CmdletsToExport = @()
 
 # Variables to export from this module
-VariablesToExport = '*'
+VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = '*'
+AliasesToExport = @('ff')
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
