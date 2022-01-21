@@ -21,15 +21,6 @@ Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [<CommonParameters>]
 
 Если командлет используется без указания каких-либо параметров, то он не оказывает никакого влияния на обрабатываемые объекты.
 
-## EXAMPLES
-
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
-```
-
-{{ Add example description here }}
-
 ## PARAMETERS
 
 ### -InputObject
@@ -66,6 +57,29 @@ Accept wildcard characters: False
 
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## EXAMPLES
+
+### Example 1: Свойства со значениями, отличными от пустых или $null
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+```
+
+```
+Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description           : Hyper-V Virtual Switch Extension Adapter
+SettingID             : {946D7DBF-BE1D-4236-80AC-45892A467346}
+DHCPEnabled           : False
+Index                 : 10
+InterfaceIndex        : 9
+IPEnabled             : False
+ServiceName           : VMSMP
+CimClass              : root/cimv2:Win32_NetworkAdapterConfiguration
+CimInstanceProperties : {Caption, Description, SettingID, ArpAlwaysSourceRoute…}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
+```
+
+Получение только тех свойств объектов, которые имеют значения, отличные от пустых или $null.
 
 ## INPUTS
 

@@ -21,14 +21,7 @@ Cmdlet formats commands output using various requirements.
 
 If used without any parameters, it does not change accepted objects in any way.
 
-## EXAMPLES
-
-### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
-```
-
-{{ Add example description here }}
+Can also be referred by its alias: ff.
 
 ## PARAMETERS
 
@@ -66,6 +59,29 @@ Accept wildcard characters: False
 
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## EXAMPLES
+
+### Example 1: Not null or empty
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+```
+
+```
+Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description           : Hyper-V Virtual Switch Extension Adapter
+SettingID             : {946D7DBF-BE1D-4236-80AC-45892A467346}
+DHCPEnabled           : False
+Index                 : 10
+InterfaceIndex        : 9
+IPEnabled             : False
+ServiceName           : VMSMP
+CimClass              : root/cimv2:Win32_NetworkAdapterConfiguration
+CimInstanceProperties : {Caption, Description, SettingID, ArpAlwaysSourceRoute…}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
+```
+
+Get only the properties, that have values other than $null or empty.
 
 ## INPUTS
 

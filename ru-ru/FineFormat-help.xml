@@ -96,10 +96,22 @@
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; {{ Add example code here }}</dev:code>
+        <maml:title>Example 1: Свойства со значениями, отличными от пустых или $null</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+
+Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description           : Hyper-V Virtual Switch Extension Adapter
+SettingID             : {946D7DBF-BE1D-4236-80AC-45892A467346}
+DHCPEnabled           : False
+Index                 : 10
+InterfaceIndex        : 9
+IPEnabled             : False
+ServiceName           : VMSMP
+CimClass              : root/cimv2:Win32_NetworkAdapterConfiguration
+CimInstanceProperties : {Caption, Description, SettingID, ArpAlwaysSourceRoute…}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties</dev:code>
         <dev:remarks>
-          <maml:para>{{ Add example description here }}</maml:para>
+          <maml:para>Получение только тех свойств объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
