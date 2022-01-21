@@ -17,7 +17,9 @@ Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Cmdlet formats commands output using various requirements
+Cmdlet formats commands output using various requirements.
+
+If used without any parameters, it does not change accepted objects in any way.
 
 ## EXAMPLES
 
@@ -31,7 +33,9 @@ PS C:\> {{ Add example code here }}
 ## PARAMETERS
 
 ### -InputObject
-{{ Fill InputObject Description }}
+Specifies the input object.
+
+This parameter supports accepting values from the pipeline.
 
 ```yaml
 Type: Object
@@ -46,7 +50,7 @@ Accept wildcard characters: False
 ```
 
 ### -NotNullOrEmpty
-{{ Fill NotNullOrEmpty Description }}
+Specifies, that only the properties, that have values other than $null or empty, should be displayed.
 
 ```yaml
 Type: SwitchParameter

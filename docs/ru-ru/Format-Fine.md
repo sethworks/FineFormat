@@ -17,7 +17,9 @@ Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Командлет форматирует вывод команд с использованием различных условий
+Командлет форматирует вывод команд с использованием различных условий.
+
+Если командлет используется без указания каких-либо параметров, то он не оказывает никакого влияния на обрабатываемые объекты.
 
 ## EXAMPLES
 
@@ -31,7 +33,9 @@ PS C:\> {{ Add example code here }}
 ## PARAMETERS
 
 ### -InputObject
-{{ Fill InputObject Description }}
+Задает объекты для обработки.
+
+Этот параметр поддерживает получение объектов по конвейеру.
 
 ```yaml
 Type: Object
@@ -46,7 +50,7 @@ Accept wildcard characters: False
 ```
 
 ### -NotNullOrEmpty
-{{ Fill NotNullOrEmpty Description }}
+Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.
 
 ```yaml
 Type: SwitchParameter

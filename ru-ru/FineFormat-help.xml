@@ -10,7 +10,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Командлет форматирует вывод команд с использованием различных условий</maml:para>
+      <maml:para>Командлет форматирует вывод команд с использованием различных условий.</maml:para>
+      <maml:para>Если командлет используется без указания каких-либо параметров, то он не оказывает никакого влияния на обрабатываемые объекты.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -18,7 +19,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>InputObject</maml:name>
           <maml:description>
-            <maml:para>{{ Fill InputObject Description }}</maml:para>
+            <maml:para>Задает объекты для обработки.</maml:para>
+            <maml:para>Этот параметр поддерживает получение объектов по конвейеру.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -30,7 +32,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NotNullOrEmpty</maml:name>
           <maml:description>
-            <maml:para>{{ Fill NotNullOrEmpty Description }}</maml:para>
+            <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -44,7 +46,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>InputObject</maml:name>
         <maml:description>
-          <maml:para>{{ Fill InputObject Description }}</maml:para>
+          <maml:para>Задает объекты для обработки.</maml:para>
+          <maml:para>Этот параметр поддерживает получение объектов по конвейеру.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -56,7 +59,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NotNullOrEmpty</maml:name>
         <maml:description>
-          <maml:para>{{ Fill NotNullOrEmpty Description }}</maml:para>
+          <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
