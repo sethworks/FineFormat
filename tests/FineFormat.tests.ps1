@@ -14,6 +14,10 @@ Describe "FineFormat" {
             True = $true
             False = $false
             Null = $null
+            ArrayInteger = @(1, 2, 3)
+            ArrayString = @('One', 'Two', 'Three')
+            ArrayEmptyString = @("")
+            EmptyArray = @()
         } | Add-Member -TypeName 'SomeObject' -PassThru
     }
 
@@ -24,15 +28,15 @@ Describe "FineFormat" {
         }
 
         It "Has 7 properties" {
-            $result.PSObject.Properties | Should -HaveCount 7
+            $result.PSObject.Properties | Should -HaveCount 11
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -Be @('IntegerZero', 'Integer', 'EmptyString', 'String', 'True', 'False', 'Null')
+            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'EmptyString', 'String', 'True', 'False', 'Null', 'ArrayInteger', 'ArrayString', 'ArrayEmptyString', 'EmptyArray')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -Be @(0, 15, "", "It's a string", $true, $false, $null)
+            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "", "It's a string", $true, $false, $null, 1, 2, 3, 'One', 'Two', 'Three', "")
         }
 
     }
@@ -44,15 +48,15 @@ Describe "FineFormat" {
         }
 
         It "Has 5 properties" {
-            $result.PSObject.Properties | Should -HaveCount 5
+            $result.PSObject.Properties | Should -HaveCount 7
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -Be @('IntegerZero', 'Integer', 'String', 'True', 'False')
+            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'String', 'True', 'False', 'ArrayInteger', 'ArrayString')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -Be @(0, 15, "It's a string", $true, $false)
+            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", $true, $false, 1, 2, 3, 'One', 'Two', 'Three')
         }
     }
 }
