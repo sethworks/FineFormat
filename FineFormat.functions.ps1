@@ -16,23 +16,15 @@ function Format-Fine
                 $io
             }
 
+            # NotNullOrEmpty
             elseif ($NotNullOrEmpty)
             {
                 $hash = [ordered]@{}
                 foreach ($p in $io.PSObject.Properties)
                 {
-                    if ($p.Value.Count -eq 1 -and $p.Value.Length -gt 0) # $Null.Count = 0, "".Count = 1, "".Length = 0
+                    if ( -not [string]::IsNullOrEmpty($p.Value) )
                     {
                         $hash.Add($p.Name, $p.Value)
-                    }
-                    elseif ($p.Value.count -gt 1)
-                    {
-                        $va = @()
-                        foreach ($v in $p.Value)
-                        {
-                            $va += $v.name
-                        }
-                        $hash.Add($p.Name, $va)
                     }
                 }
                 [PSCustomObject]$hash
