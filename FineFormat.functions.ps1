@@ -21,7 +21,7 @@ function Format-Fine
                 $hash = [ordered]@{}
                 foreach ($p in $io.PSObject.Properties)
                 {
-                    if ($p.Value.count -eq 1)
+                    if ($p.Value.Count -eq 1 -and $p.Value.Length -gt 0) # $Null.Count = 0, "".Count = 1, "".Length = 0
                     {
                         $hash.Add($p.Name, $p.Value)
                     }
