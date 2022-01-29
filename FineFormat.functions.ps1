@@ -14,10 +14,11 @@ function Format-Fine
             if (-not $NotNullOrEmpty)
             {
                 $io
+                continue
             }
 
             # NotNullOrEmpty
-            elseif ($NotNullOrEmpty)
+            if ($NotNullOrEmpty)
             {
                 $hash = [ordered]@{}
                 foreach ($p in $io.PSObject.Properties)
