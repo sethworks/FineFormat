@@ -59,4 +59,23 @@ Describe "FineFormat" {
             $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", $true, $false, 1, 2, 3, 'One', 'Two', 'Three')
         }
     }
+
+    Context "-NullOrEmpty" {
+
+        BeforeAll {
+            $result = $SomeObject | Format-Fine -NullOrEmpty
+        }
+
+        It "Has 5 properties" {
+            $result.PSObject.Properties | Should -HaveCount 4
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'Null', 'ArrayEmptyString', 'EmptyArray')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @("", $null, "")
+        }
+    }
 }
