@@ -43,7 +43,22 @@ Accept wildcard characters: False
 ```
 
 ### -NotNullOrEmpty
-Specifies, that only the properties, that have values other than $null or empty, should be displayed.
+Specifies that only the properties that have values other than $null or empty should be displayed.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NullOrEmpty
+Specifies that only the properties that have $null or empty values should be displayed.
 
 ```yaml
 Type: SwitchParameter
@@ -62,7 +77,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## EXAMPLES
 
-### Example 1: Not null or empty
+### Example 1: Properties that have values other than $null or empty
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
 ```
@@ -81,7 +96,30 @@ CimInstanceProperties : {Caption, Description, SettingID, ArpAlwaysSourceRouteâ€
 CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
 ```
 
-Get only the properties, that have values other than $null or empty.
+Get only the properties that have values other than $null or empty.
+
+### Example 2: Properties that have $null or empty values
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NullOrEmpty
+```
+
+```
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DatabasePath                 :
+DeadGWDetectEnabled          :
+DefaultIPGateway             :
+DefaultTOS                   :
+DefaultTTL                   :
+DHCPLeaseExpires             :
+DHCPLeaseObtained            :
+DHCPServer                   :
+DNSDomain                    :
+DNSDomainSuffixSearchOrder   :
+...
+```
+
+Get only the properties that have $null or empty values.
 
 ## INPUTS
 

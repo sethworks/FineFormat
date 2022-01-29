@@ -55,6 +55,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NullOrEmpty
+Параметр указывает, что отображаться должны только те свойства объектов, значения которых пусты или равны $null.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -80,6 +95,29 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
 ```
 
 Получение только тех свойств объектов, которые имеют значения, отличные от пустых или $null.
+
+### Example 2: Свойства, значения которых пусты или равны $null
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NullOrEmpty
+```
+
+```
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DatabasePath                 :
+DeadGWDetectEnabled          :
+DefaultIPGateway             :
+DefaultTOS                   :
+DefaultTTL                   :
+DHCPLeaseExpires             :
+DHCPLeaseObtained            :
+DHCPServer                   :
+DNSDomain                    :
+DNSDomainSuffixSearchOrder   :
+...
+```
+
+Получение только тех свойств объектов, значения которых пусты или равны $null.
 
 ## INPUTS
 
