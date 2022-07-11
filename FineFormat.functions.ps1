@@ -7,7 +7,8 @@ function Format-Fine
         [switch]$NullOrEmpty,
         [switch]$Numeric,
         [switch]$Textual,
-        [scriptblock]$ValueFilter
+        [scriptblock]$ValueFilter,
+        [scriptblock]$TypeNameFilter
     )
 
     process
@@ -15,14 +16,14 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual -and -not $ValueFilter)
+            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual -and -not $ValueFilter -and -not $TypeNameFilter)
             {
                 $io
                 continue
             }
 
             $hash = [ordered]@{}
-            # $t = $ValueFilter.Ast.EndBlock.Extent.Text
+            $t = $ValueFilter.Ast.EndBlock.Extent.Text
             foreach ($p in $io.PSObject.Properties)
             {
                 if ( ($NotNullOrEmpty -and ([string]::IsNullOrEmpty($p.Value))) -or
@@ -33,14 +34,16 @@ function Format-Fine
 
                      ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
 
-                    #  !($ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t))))
-                     !($ValueFilter -and ($p.Value | Where-Object -FilterScript $ValueFilter))
+                    #  !($ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t)))) #-or
+                     ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
+
+                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
                      )
                 {
                     continue
                 }
                 # if (!( $ValueFilter -and $p.Value | Where-Object -FilterScript $ValueFilter ))
-                # if ( $ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t))))
+                # if (!($ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t)))))
                 # {
                     # continue
                     # $hash.Add($p.Name, $p.Value)
