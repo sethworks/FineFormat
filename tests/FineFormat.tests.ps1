@@ -47,7 +47,7 @@ Describe "FineFormat" {
             $result = $SomeObject | Format-Fine -NotNullOrEmpty
         }
 
-        It "Has 5 properties" {
+        It "Has 7 properties" {
             $result.PSObject.Properties | Should -HaveCount 7
         }
 
@@ -66,7 +66,7 @@ Describe "FineFormat" {
             $result = $SomeObject | Format-Fine -NullOrEmpty
         }
 
-        It "Has 5 properties" {
+        It "Has 4 properties" {
             $result.PSObject.Properties | Should -HaveCount 4
         }
 
@@ -76,6 +76,44 @@ Describe "FineFormat" {
 
         It "Has correct values" {
             $result.PSObject.Properties.Value | Should -BeExactly @("", $null, "")
+        }
+    }
+
+    Context "-Numeric" {
+
+        BeforeAll {
+            $result = $SomeObject | Format-Fine -Numeric
+        }
+
+        It "Has 2 properties" {
+            $result.PSObject.Properties | Should -HaveCount 2
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
+        }
+    }
+
+    Context "-Textual" {
+
+        BeforeAll {
+            $result = $SomeObject | Format-Fine -Textual
+        }
+
+        It "Has 2 properties" {
+            $result.PSObject.Properties | Should -HaveCount 2
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'String')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @("", "It's a string")
         }
     }
 }
