@@ -33,7 +33,8 @@ function Format-Fine
 
                      ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
 
-                     ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
+                    #  ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
+                     ($ValueFilter -and ($p.Name -match '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
                    )
