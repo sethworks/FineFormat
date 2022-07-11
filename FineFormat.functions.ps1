@@ -23,7 +23,6 @@ function Format-Fine
             }
 
             $hash = [ordered]@{}
-            $t = $ValueFilter.Ast.EndBlock.Extent.Text
             foreach ($p in $io.PSObject.Properties)
             {
                 if ( ($NotNullOrEmpty -and ([string]::IsNullOrEmpty($p.Value))) -or
@@ -34,20 +33,13 @@ function Format-Fine
 
                      ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
 
-                    #  !($ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t)))) #-or
                      ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
-                     )
+                   )
                 {
                     continue
                 }
-                # if (!( $ValueFilter -and $p.Value | Where-Object -FilterScript $ValueFilter ))
-                # if (!($ValueFilter -and ($p.Value | Where-Object -FilterScript $([scriptblock]::Create($t)))))
-                # {
-                    # continue
-                    # $hash.Add($p.Name, $p.Value)
-                # }
                 $hash.Add($p.Name, $p.Value)
             }
             [PSCustomObject]$hash
