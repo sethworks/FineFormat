@@ -51,6 +51,28 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Numeric</maml:name>
+          <maml:description>
+            <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Textual</maml:name>
+          <maml:description>
+            <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -83,6 +105,30 @@
         <maml:name>NullOrEmpty</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых пусты или равны $null.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Numeric</maml:name>
+        <maml:description>
+          <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Textual</maml:name>
+        <maml:description>
+          <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -158,6 +204,56 @@ DNSDomainSuffixSearchOrder   :
 ...</dev:code>
         <dev:remarks>
           <maml:para>Получение только тех свойств объектов, значения которых пусты или равны $null.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 3: Свойства, значения которых являются числовым типом </maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
+
+ForwardBufferMemory          :
+Index                        : 10
+InterfaceIndex               : 9
+IPConnectionMetric           :
+IPXMediaType                 :
+KeepAliveInterval            :
+KeepAliveTime                :
+MTU                          :
+NumForwardPackets            :
+TcpipNetbiosOptions          :
+TcpMaxConnectRetransmissions :
+TcpMaxDataRetransmissions    :
+TcpNumConnections            :
+TcpWindowSize                :</dev:code>
+        <dev:remarks>
+          <maml:para>Получение только тех свойств объектов, значения которых являются числовым типом.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Свойства, значения которых являются текстовым типом</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
+
+Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description         : Hyper-V Virtual Switch Extension Adapter
+SettingID           : {946D7DBF-BE1D-4236-80AC-45892A467346}
+DatabasePath        :
+DHCPServer          :
+DNSDomain           :
+DNSHostName         :
+IPXAddress          :
+IPXVirtualNetNumber :
+MACAddress          :
+ServiceName         : VMSMP
+WINSHostLookupFile  :
+WINSPrimaryServer   :
+WINSScopeID         :
+WINSSecondaryServer :
+PSComputerName      :</dev:code>
+        <dev:remarks>
+          <maml:para>Получение только тех свойств объектов, значения которых являются текстовым типом.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
