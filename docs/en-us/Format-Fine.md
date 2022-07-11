@@ -13,7 +13,7 @@ Formats commands output
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -59,6 +59,36 @@ Accept wildcard characters: False
 
 ### -NullOrEmpty
 Specifies that only the properties that have $null or empty values should be displayed.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Numeric
+Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Textual
+Specifies that only the properties that have textual values (String, Char) should be displayed.
 
 ```yaml
 Type: SwitchParameter
@@ -120,6 +150,56 @@ DNSDomainSuffixSearchOrder   :
 ```
 
 Get only the properties that have $null or empty values.
+
+### Example 3: Properties that have numeric values
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
+```
+
+```
+ForwardBufferMemory          :
+Index                        : 10
+InterfaceIndex               : 9
+IPConnectionMetric           :
+IPXMediaType                 :
+KeepAliveInterval            :
+KeepAliveTime                :
+MTU                          :
+NumForwardPackets            :
+TcpipNetbiosOptions          :
+TcpMaxConnectRetransmissions :
+TcpMaxDataRetransmissions    :
+TcpNumConnections            :
+TcpWindowSize                :
+```
+
+Get only the properties that have numeric values.
+
+### Example 4: Properties that have textual values
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
+```
+
+```
+Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description         : Hyper-V Virtual Switch Extension Adapter
+SettingID           : {946D7DBF-BE1D-4236-80AC-45892A467346}
+DatabasePath        :
+DHCPServer          :
+DNSDomain           :
+DNSHostName         :
+IPXAddress          :
+IPXVirtualNetNumber :
+MACAddress          :
+ServiceName         : VMSMP
+WINSHostLookupFile  :
+WINSPrimaryServer   :
+WINSScopeID         :
+WINSSecondaryServer :
+PSComputerName      :
+```
+
+Get only the properties that have textual values.
 
 ## INPUTS
 
