@@ -5,7 +5,8 @@ function Format-Fine
         $InputObject,
         [switch]$NotNullOrEmpty,
         [switch]$NullOrEmpty,
-        [switch]$Numeric
+        [switch]$Numeric,
+        [switch]$Textual
     )
 
     process
@@ -13,7 +14,7 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric)
+            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual)
             {
                 $io
                 continue
@@ -26,7 +27,9 @@ function Format-Fine
 
                      ($NullOrEmpty -and -not [string]::IsNullOrEmpty($p.Value)) -or
 
-                     ($Numeric -and $p.TypeNameOfValue -notmatch '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$')
+                     ($Numeric -and $p.TypeNameOfValue -notmatch '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$') -or
+
+                     ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$')
                 )
                 {
                     continue
