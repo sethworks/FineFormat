@@ -13,7 +13,7 @@ Formats commands output
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -92,6 +92,40 @@ Specifies that only the properties that have textual values (String, Char) shoul
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValueFilter
+Specifies scriptblock to be used for filtering by properties values.
+
+For example: -ValueFilter {$PSItem -like "somevalue"}
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TypeNameFilter
+Specifies scriptblock to be used for filtering by properties value type names.
+
+For example: -TypeNameFilter {$PSItem -like "datatype"}
+
+```yaml
+Type: ScriptBlock
 Parameter Sets: (All)
 Aliases:
 
@@ -200,6 +234,32 @@ PSComputerName      :
 ```
 
 Get only the properties that have textual values.
+
+### Example 5: Properties that have specific values
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+```
+
+```
+Caption                                             Description
+-------                                             -----------
+[00000010] Hyper-V Virtual Switch Extension Adapter Hyper-V Virtual Switch Extension Adapter
+```
+
+Get only the properties that have specific values.
+
+### Example 6: Properties of specified data type
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+```
+
+```
+Index InterfaceIndex
+----- --------------
+   10              9
+```
+
+Get only the properties of specific data type.
 
 ## INPUTS
 

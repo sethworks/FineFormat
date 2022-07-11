@@ -6,7 +6,9 @@ function Format-Fine
         [switch]$NotNullOrEmpty,
         [switch]$NullOrEmpty,
         [switch]$Numeric,
-        [switch]$Textual
+        [switch]$Textual,
+        [scriptblock]$ValueFilter,
+        [scriptblock]$TypeNameFilter
     )
 
     process
@@ -14,7 +16,7 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual)
+            if (-not $NotNullOrEmpty -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual -and -not $ValueFilter -and -not $TypeNameFilter)
             {
                 $io
                 continue
@@ -29,12 +31,16 @@ function Format-Fine
 
                      ($Numeric -and $p.TypeNameOfValue -notmatch '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$') -or
 
-                     ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$')
-                )
+                     ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
+
+                    #  ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
+                     ($ValueFilter -and ($p.Name -match '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
+
+                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
+                   )
                 {
                     continue
                 }
-
                 $hash.Add($p.Name, $p.Value)
             }
             [PSCustomObject]$hash

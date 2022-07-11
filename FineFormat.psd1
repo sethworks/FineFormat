@@ -12,7 +12,7 @@
 RootModule = 'FineFormat.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2'
+ModuleVersion = '0.3'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) Sergey Vasin. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Fine Formatting'
+Description = 'Format and filter objects properties by types and values'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'

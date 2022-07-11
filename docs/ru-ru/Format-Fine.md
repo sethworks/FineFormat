@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -90,6 +90,40 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValueFilter
+Задает скриптблок, который будет использоваться для фильтрации свойств по их значениям.
+
+Например: -ValueFilter {$PSItem -like "somevalue"}
+
+```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TypeNameFilter
+Задает скриптблок, который будет использоваться для фильтрации свойств по типам данных.
+
+Например: -TypeNameFilter {$PSItem -like "datatype"}
+
+```yaml
+Type: ScriptBlock
 Parameter Sets: (All)
 Aliases:
 
@@ -198,6 +232,32 @@ PSComputerName      :
 ```
 
 Получение только тех свойств объектов, значения которых являются текстовым типом.
+
+### Example 5: Свойства с заданными значениями
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+```
+
+```
+Caption                                             Description
+-------                                             -----------
+[00000010] Hyper-V Virtual Switch Extension Adapter Hyper-V Virtual Switch Extension Adapter
+```
+
+Получение только тех свойств, чьи значения соответствуют условию.
+
+### Example 6: Свойства заданного типа
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+```
+
+```
+Index InterfaceIndex
+----- --------------
+   10              9
+```
+
+Получение только тех свойств, чей тип данных соответствует условию.
 
 ## INPUTS
 

@@ -157,4 +157,80 @@ Describe "FineFormat" {
             $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, "Physical Memory 0", $null, "BANK 0", "ChannelA-DIMM0", $null)
         }
     }
+
+    Context "-ValueFilter" {
+
+        BeforeAll {
+            $result = $SomeObject | ff -ValueFilter {$PSItem -like "*ing"}
+        }
+
+        It "Has 1 property" {
+            $result.PSObject.Properties | Should -HaveCount 1
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('String')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @("It's a string")
+        }
+    }
+
+    Context "-ValueFilter CIM" {
+
+        BeforeAll {
+            $result = $CimInstance | ff -ValueFilter {$PSItem -le 128}
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('FormFactor', 'DataWidth', 'InterleavePosition', 'MemoryType', 'TotalWidth', 'Attributes', 'InterleaveDataDepth', 'SMBIOSMemoryType', 'TypeDetail')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @(8, 64, 1, 24, 64, 2, 1, 24, 128)
+        }
+    }
+
+    Context "-TypeNameFilter" {
+
+        BeforeAll {
+            $result = $SomeObject | ff -TypeNameFilter {$PSItem -like "*Int32"}
+        }
+
+        It "Has 2 properties" {
+            $result.PSObject.Properties | Should -HaveCount 2
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
+        }
+    }
+
+    Context "-TypeNameFilter CIM" {
+
+        BeforeAll {
+            $result = $CimInstance | ff -TypeNameFilter {$PSItem -like "uint"}
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('InterleavePosition', 'PositionInRow', 'Speed', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @(1, $null, 1333, 2, $null, $null, $null, $null, 24)
+        }
+    }
 }
