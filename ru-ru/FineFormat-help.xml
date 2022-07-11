@@ -73,6 +73,32 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ValueFilter</maml:name>
+          <maml:description>
+            <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по их значениям.</maml:para>
+            <maml:para>Например: -ValueFilter {$PSItem -like "somevalue"}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
+          <dev:type>
+            <maml:name>ScriptBlock</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>TypeNameFilter</maml:name>
+          <maml:description>
+            <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по типам данных.</maml:para>
+            <maml:para>Например: -TypeNameFilter {$PSItem -like "datatype"}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
+          <dev:type>
+            <maml:name>ScriptBlock</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -136,6 +162,32 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ValueFilter</maml:name>
+        <maml:description>
+          <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по их значениям.</maml:para>
+          <maml:para>Например: -ValueFilter {$PSItem -like "somevalue"}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
+        <dev:type>
+          <maml:name>ScriptBlock</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>TypeNameFilter</maml:name>
+        <maml:description>
+          <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по типам данных.</maml:para>
+          <maml:para>Например: -TypeNameFilter {$PSItem -like "datatype"}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
+        <dev:type>
+          <maml:name>ScriptBlock</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -254,6 +306,32 @@ WINSSecondaryServer :
 PSComputerName      :</dev:code>
         <dev:remarks>
           <maml:para>Получение только тех свойств объектов, значения которых являются текстовым типом.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>---------- Example 5: Свойства с заданными значениями ----------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+
+Caption                                             Description
+-------                                             -----------
+[00000010] Hyper-V Virtual Switch Extension Adapter Hyper-V Virtual Switch Extension Adapter</dev:code>
+        <dev:remarks>
+          <maml:para>Получение только тех свойств, чьи значения соответствуют условию.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------- Example 6: Свойства заданного типа --------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+
+Index InterfaceIndex
+----- --------------
+   10              9</dev:code>
+        <dev:remarks>
+          <maml:para>Получение только тех свойств, чей тип данных соответствует условию.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
