@@ -30,7 +30,7 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>NotNullOrEmpty</maml:name>
+          <maml:name>HaveValue</maml:name>
           <maml:description>
             <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
           </maml:description>
@@ -116,7 +116,7 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>NotNullOrEmpty</maml:name>
+        <maml:name>HaveValue</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
         </maml:description>
@@ -218,7 +218,7 @@
     <command:examples>
       <command:example>
         <maml:title>Example 1: Свойства со значениями, отличными от пустых или $null</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
 
 Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description           : Hyper-V Virtual Switch Extension Adapter
@@ -325,7 +325,7 @@ Caption                                             Description
       </command:example>
       <command:example>
         <maml:title>-------------- Example 6: Свойства заданного типа --------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
 ----- --------------

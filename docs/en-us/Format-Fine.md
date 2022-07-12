@@ -13,7 +13,7 @@ Formats commands output
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HaveValue] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,7 +42,7 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -NotNullOrEmpty
+### -HaveValue
 Specifies that only the properties that have values other than $null or empty should be displayed.
 
 ```yaml
@@ -143,7 +143,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Properties that have values other than $null or empty
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
 ```
 
 ```
@@ -250,7 +250,7 @@ Get only the properties that have specific values.
 
 ### Example 6: Properties of specified data type
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```

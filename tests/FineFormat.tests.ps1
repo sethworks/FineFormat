@@ -44,10 +44,10 @@ Describe "FineFormat" {
 
     }
 
-    Context "-NotNullOrEmpty" {
+    Context "-HaveValue" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -NotNullOrEmpty
+            $result = $SomeObject | Format-Fine -HaveValue
         }
 
         It "Has 7 properties" {

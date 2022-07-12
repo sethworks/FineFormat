@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HaveValue] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -40,7 +40,7 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -NotNullOrEmpty
+### -HaveValue
 Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.
 
 ```yaml
@@ -141,7 +141,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Свойства со значениями, отличными от пустых или $null
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
 ```
 
 ```
@@ -248,7 +248,7 @@ Caption                                             Description
 
 ### Example 6: Свойства заданного типа
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```
