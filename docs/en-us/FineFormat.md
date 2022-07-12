@@ -8,9 +8,8 @@ Locale: en-us
 
 # FineFormat Module
 ## Description
-Module for formatting commands output
+Format and filter objects properties by types and values
 
 ## FineFormat Cmdlets
 ### [Format-Fine](Format-Fine.md)
-Formats commands output
-
+Formats and filters the output using various requirements
