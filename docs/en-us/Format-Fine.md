@@ -246,7 +246,55 @@ DNSDomainSuffixSearchOrder   :
 
 Get only the properties that have $null or empty values.
 
-### Example 3: Properties that have numeric values
+### Example 3: Display numbers with group separator
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
+```
+
+```
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumberGroupSeparator parameter to display numbers with group separators.
+
+### Example 4: Display numbers as MB
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
+```
+
+```
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumbersAs parameter with the value of MB to display numbers as MB.
+
+### Example 5: Compact numbers
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
+```
+
+```
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Display numbers in their most compact form using KB, MB, GB, TB, and PB units.
+
+### Example 6: Properties that have numeric values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
 ```
@@ -270,7 +318,7 @@ TcpWindowSize                :
 
 Get only the properties that have numeric values.
 
-### Example 4: Properties that have textual values
+### Example 7: Properties that have textual values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
 ```
@@ -296,7 +344,7 @@ PSComputerName      :
 
 Get only the properties that have textual values.
 
-### Example 5: Properties that have specific values
+### Example 8: Properties that have specific values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 ```
@@ -309,7 +357,7 @@ Caption                                             Description
 
 Get only the properties that have specific values.
 
-### Example 6: Properties of specified data type
+### Example 9: Properties of specified data type
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 ```
