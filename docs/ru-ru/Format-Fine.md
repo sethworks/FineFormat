@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-HaveValue] [-CompactNumbers] [-NumberGroupSeparator] [-NullOrEmpty] [-NumbersAs <String>] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HasValue] [-CompactNumbers] [-NumberGroupSeparator] [-NoValue] [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -40,15 +40,15 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -HaveValue
+### -HasValue
 Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.
 
-Alias: NotNullOrEmpty
+Aliases: HaveValue, NotNullOrEmpty
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases: NotNullOrEmpty
+Aliases: HaveValue, NotNullOrEmpty
 
 Required: False
 Position: Named
@@ -95,13 +95,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -NullOrEmpty
+### -NoValue
 Параметр указывает, что отображаться должны только те свойства объектов, значения которых пусты или равны $null.
+
+Alias: NullOrEmpty
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: NullOrEmpty
 
 Required: False
 Position: Named
@@ -131,7 +133,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Numeric
+### -NumericTypes
 Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).
 
 ```yaml
@@ -146,7 +148,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Textual
+### -SymbolicTypes
 Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).
 
 ```yaml
@@ -202,7 +204,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Свойства со значениями, отличными от пустых или $null
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
 ```
 
 ```
@@ -223,7 +225,7 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
 
 ### Example 2: Свойства, значения которых пусты или равны $null
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NullOrEmpty
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 ```
 
 ```
@@ -246,7 +248,7 @@ DNSDomainSuffixSearchOrder   :
 
 ### Example 3: Отображение чисел с разделителями групп
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
 ```
 
 ```
@@ -262,7 +264,7 @@ MediaType              : 12
 
 ### Example 4: Отображение чисел в виде MB
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
 ```
 
 ```
@@ -278,7 +280,7 @@ MediaType              : 12
 
 ### Example 5: Отображение чисел в наиболее компактной форме
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 ```
 
 ```
@@ -294,7 +296,7 @@ MediaType              : 12
 
 ### Example 6: Свойства, значения которых являются числовым типом
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 ```
 
 ```
@@ -318,7 +320,7 @@ TcpWindowSize                :
 
 ### Example 7: Свойства, значения которых являются текстовым типом
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 ```
 
 ```
@@ -357,7 +359,7 @@ Caption                                             Description
 
 ### Example 9: Свойства заданного типа
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```

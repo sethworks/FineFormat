@@ -58,10 +58,10 @@ Describe "FineFormat" {
 
     }
 
-    Context "-HaveValue" {
+    Context "-HasValue" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -HaveValue
+            $result = $SomeObject | Format-Fine -HasValue
         }
 
         It "Has 7 properties" {
@@ -77,10 +77,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-NullOrEmpty" {
+    Context "-NoValue" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -NullOrEmpty
+            $result = $SomeObject | Format-Fine -NoValue
         }
 
         It "Has 4 properties" {
@@ -96,10 +96,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-Numeric" {
+    Context "-NumericTypes" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -Numeric
+            $result = $SomeObject | Format-Fine -NumericTypes
         }
 
         It "Has 2 properties" {
@@ -115,10 +115,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-Numeric CIM" {
+    Context "-NumericTypes 2" {
 
         BeforeAll {
-            $result = $CimInstancePhysicalMemory | Format-Fine -Numeric
+            $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes
         }
 
         It "Has 16 properties" {
@@ -134,10 +134,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-Textual" {
+    Context "-SymbolicTypes" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -Textual
+            $result = $SomeObject | Format-Fine -SymbolicTypes
         }
 
         It "Has 2 properties" {
@@ -153,10 +153,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-Textual CIM" {
+    Context "-SymbolicTypes 2" {
 
         BeforeAll {
-            $result = $CimInstancePhysicalMemory | Format-Fine -Textual
+            $result = $CimInstancePhysicalMemory | Format-Fine -SymbolicTypes
         }
 
         It "Has 16 properties" {
@@ -251,7 +251,7 @@ Describe "FineFormat" {
     Context "-NumberGroupSeparator" {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumberGroupSeparator
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumberGroupSeparator
         }
 
         It "Has 6 properties" {
@@ -270,7 +270,7 @@ Describe "FineFormat" {
     Context "-NumbersAs KB" {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs KB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs KB
         }
 
         It "Has 6 properties" {
@@ -289,7 +289,7 @@ Describe "FineFormat" {
     Context "-NumbersAs MB" {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs MB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs MB
         }
 
         It "Has 6 properties" {
@@ -308,7 +308,7 @@ Describe "FineFormat" {
     Context "-NumbersAs GB" {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs GB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs GB
         }
 
         It "Has 6 properties" {
