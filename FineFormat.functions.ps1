@@ -24,7 +24,7 @@ function Format-Fine
     {
         if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
         {
-            Write-Verbose -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values." -Verbose
+            Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
         }
     }
     process
