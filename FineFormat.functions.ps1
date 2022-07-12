@@ -11,14 +11,14 @@ function Format-Fine
         [Alias('NotNullOrEmpty')]
         [switch]$HaveValue,
         [switch]$CompactNumbers,
+        [switch]$NumberGroupSeparator,
         [switch]$NullOrEmpty,
+        [ArgumentCompletions('KB', 'MB', 'GB', 'TB', 'PB')]
+        [string]$NumbersAs,
         [switch]$Numeric,
         [switch]$Textual,
         [scriptblock]$ValueFilter,
-        [scriptblock]$TypeNameFilter,
-        [switch]$NumberGroupSeparator,
-        [ArgumentCompletions('KB', 'MB', 'GB', 'TB', 'PB')]
-        [string]$NumbersAs
+        [scriptblock]$TypeNameFilter
     )
     begin
     {
