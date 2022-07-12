@@ -1,4 +1,8 @@
 $NumbersAsValues = @('KB', 'MB', 'GB', 'TB', 'PB')
+$NumbersExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
+$TextExpression = '^System\.string$|^string$|^System\.Char$|^char$'
+$ExcludePropertiesExpression = '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' # Gets in the way of values comparison when using -ValueFilter parameter
+
 function Format-Fine
 {
     Param(
@@ -43,12 +47,15 @@ function Format-Fine
 
                      ($NullOrEmpty -and -not [string]::IsNullOrEmpty($p.Value)) -or
 
-                     ($Numeric -and $p.TypeNameOfValue -notmatch '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$') -or
+                    #  ($Numeric -and $p.TypeNameOfValue -notmatch '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$') -or
+                     ($Numeric -and $p.TypeNameOfValue -notmatch $NumbersExpression) -or
 
-                     ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
+                    #  ($Textual -and $p.TypeNameOfValue -notmatch '^System\.string$|^string$|^System\.Char$|^char$') -or
+                     ($Textual -and $p.TypeNameOfValue -notmatch $TextExpression) -or
 
                     #  ($ValueFilter -and -not ($p.Value | Where-Object -FilterScript $ValueFilter)) -or
-                     ($ValueFilter -and ($p.Name -match '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
+                    #  ($ValueFilter -and ($p.Name -match '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
+                     ($ValueFilter -and ($p.Name -match $ExcludePropertiesExpression -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
                    )
@@ -85,7 +92,8 @@ function Format-Fine
                     }
                     $hash.Add($p.Name, $template -f $value)
                 }
-                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$')
+                # elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$')
+                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumbersExpression)
                 {
                     $value = $p.Value
 
@@ -118,7 +126,7 @@ function Format-Fine
 
                 }
                 # elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$' -and [Math]::Floor($p.Value/1000))
-                elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$')
+                elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumbersExpression)
                 {
                     $hash.Add($p.Name, $template -f $p.Value)
                 }
