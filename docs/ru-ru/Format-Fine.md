@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-HaveValue] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HaveValue] [-CompactNumbers] [-NumberGroupSeparator] [-NullOrEmpty] [-NumbersAs <String>] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,6 +43,46 @@ Accept wildcard characters: False
 ### -HaveValue
 Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.
 
+Alias: NotNullOrEmpty
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: NotNullOrEmpty
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CompactNumbers
+Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.
+
+Если число меньше 1KB, то оно отображается без изменений.
+
+Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
+
+Этот параметр имеет приоритет перед параметром -NumbersAs.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumberGroupSeparator
+Отображает числа с разделителями групп цифр.
+
+Символ разделителя зависит от региональных настроек.
+
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
@@ -60,6 +100,27 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumbersAs
+Отображает числа в виде KB, MB, GB, TB или PB.
+
+Если число меньше, чем указанная единица измерения, то оно отображается без изменений.
+
+Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
+
+Параметр -CompactNumbers имеет приоритет перед этим параметром.
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 

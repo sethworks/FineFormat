@@ -13,7 +13,7 @@ Formats commands output
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-HaveValue] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HaveValue] [-CompactNumbers] [-NumberGroupSeparator] [-NullOrEmpty] [-NumbersAs <String>] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,6 +45,46 @@ Accept wildcard characters: False
 ### -HaveValue
 Specifies that only the properties that have values other than $null or empty should be displayed.
 
+Alias: NotNullOrEmpty
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: NotNullOrEmpty
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CompactNumbers
+Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.
+
+If the number is smaller than 1KB, it is displayed without conversion.
+
+It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+
+This parameter has priority over the -NumbersAs parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumberGroupSeparator
+Displays numbers with group separators.
+
+Group separator symbol depends on regional settings.
+
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
@@ -62,6 +102,27 @@ Specifies that only the properties that have $null or empty values should be dis
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumbersAs
+Displays numbers as KB, MB, GB, TB, or PB.
+
+If the number is smaller than the specified value, it is displayed without conversion.
+
+It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+
+The -CompactNumbers parameter has priority over this parameter.
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 
