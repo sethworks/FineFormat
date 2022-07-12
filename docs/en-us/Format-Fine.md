@@ -13,7 +13,7 @@ Formats commands output
 ## SYNTAX
 
 ```
-Format-Fine [-InputObject] <Object> [-NotNullOrEmpty] [-NullOrEmpty] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HaveValue] [-CompactNumbers] [-NumberGroupSeparator] [-NullOrEmpty] [-NumbersAs <String>] [-Numeric] [-Textual] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,8 +42,48 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -NotNullOrEmpty
+### -HaveValue
 Specifies that only the properties that have values other than $null or empty should be displayed.
+
+Alias: NotNullOrEmpty
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: NotNullOrEmpty
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CompactNumbers
+Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.
+
+If the number is smaller than 1KB, it is displayed without conversion.
+
+It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+
+This parameter has priority over the -NumbersAs parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumberGroupSeparator
+Displays numbers with group separators.
+
+Group separator symbol depends on regional settings.
 
 ```yaml
 Type: SwitchParameter
@@ -62,6 +102,27 @@ Specifies that only the properties that have $null or empty values should be dis
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NumbersAs
+Displays numbers as KB, MB, GB, TB, or PB.
+
+If the number is smaller than the specified value, it is displayed without conversion.
+
+It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+
+The -CompactNumbers parameter has priority over this parameter.
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -143,7 +204,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Properties that have values other than $null or empty
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
 ```
 
 ```
@@ -185,7 +246,55 @@ DNSDomainSuffixSearchOrder   :
 
 Get only the properties that have $null or empty values.
 
-### Example 3: Properties that have numeric values
+### Example 3: Display numbers with group separator
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
+```
+
+```
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumberGroupSeparator parameter to display numbers with group separators.
+
+### Example 4: Display numbers as MB
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
+```
+
+```
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumbersAs parameter with the value of MB to display numbers as MB.
+
+### Example 5: Compact numbers
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
+```
+
+```
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Display numbers in their most compact form using KB, MB, GB, TB, and PB units.
+
+### Example 6: Properties that have numeric values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
 ```
@@ -209,7 +318,7 @@ TcpWindowSize                :
 
 Get only the properties that have numeric values.
 
-### Example 4: Properties that have textual values
+### Example 7: Properties that have textual values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
 ```
@@ -235,7 +344,7 @@ PSComputerName      :
 
 Get only the properties that have textual values.
 
-### Example 5: Properties that have specific values
+### Example 8: Properties that have specific values
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 ```
@@ -248,9 +357,9 @@ Caption                                             Description
 
 Get only the properties that have specific values.
 
-### Example 6: Properties of specified data type
+### Example 9: Properties of specified data type
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NotNullOrEmpty -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```
