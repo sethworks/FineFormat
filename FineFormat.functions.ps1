@@ -77,11 +77,11 @@ function Format-Fine
                 if ($CompactNumbers)
                 {
                     $value = $p.Value
-                    if ([Math]::Floor($value / 1KB))
+                    if ([Math]::Truncate($value / 1KB))
                     {
                         $value /= 1KB
                         $i = 0
-                        while ([Math]::Floor($value / 1KB))
+                        while ([Math]::Truncate($value / 1KB))
                         {
                             $value /= 1KB
                             $i++
