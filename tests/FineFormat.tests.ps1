@@ -20,8 +20,22 @@ Describe "FineFormat" {
             EmptyArray = @()
         } | Add-Member -TypeName 'SomeObject' -PassThru
 
-        $CimClass = Get-CimClass -ClassName Win32_PhysicalMemory
-        $CimInstance = New-CimInstance -CimClass $CimClass -ClientOnly -Property @{FormFactor=8; Capacity=8589934592; DataWidth=64; InterleavePosition=1; MemoryType=24; Speed=1333; TotalWidth=64; Attributes=2; InterleaveDataDepth=1; SMBiosMemoryType=24; TypeDetail=128; Caption='Physical Memory'; Description='Physical Memory'; Name='Physical Memory'; Manufacturer='Kingston'; Tag='Physical Memory 0'; Banklabel='BANK 0'; DeviceLocator='ChannelA-DIMM0'}
+        $ObjectForCompaction = [PSCustomObject]@{
+            pl = 512
+            kb = 1024
+            mb = 2000000
+            gb = 3000000000
+            tb = 4000000000000
+            pb = 5000000000000000
+        }
+
+        $CimClassPhysicalMemory = Get-CimClass -ClassName Win32_PhysicalMemory
+        $CimInstancePhysicalMemory = New-CimInstance -CimClass $CimClassPhysicalMemory -ClientOnly -Property @{FormFactor=8; Capacity=8589934592; DataWidth=64; InterleavePosition=1; MemoryType=24; Speed=1333; TotalWidth=64; Attributes=2; InterleaveDataDepth=1; SMBiosMemoryType=24; TypeDetail=128; Caption='Physical Memory'; Description='Physical Memory'; Name='Physical Memory'; Manufacturer='Kingston'; Tag='Physical Memory 0'; Banklabel='BANK 0'; DeviceLocator='ChannelA-DIMM0'}
+        $CimClassLogicalDisk = Get-CimClass -ClassName Win32_LogicalDisk
+        $CimInstanceLogicalDisk = New-CimInstance -CimClass $CimClassLogicalDisk -ClientOnly -Property @{DeviceID='C:'; Caption='C:'; Description='Local Fixed Disk'; Name='C:'; CreationClassName='Win32_LogicalDisk'; SystemCreationClassName='Win32_ComputerSystem'; Access=0; FreeSpace=57682386944; Size=214223253504; Compressed=$False; DriveType=3; FileSystem='NTFS'; MaximumComponentLength=255; MediaType=12; QuotasDisabled=$True; QuotasIncomplete=$False; QuotasRebuilding=$False; SupportsDiskQuotas=$True; SupportsFileBasedCompression=$True; VolumeDirty=$False; VolumeSerialNumber='1234ABCD'}
+
+        $gs = (Get-Culture).NumberFormat.NumberGroupSeparator
+        $ds = (Get-Culture).NumberFormat.NumberDecimalSeparator
     }
 
     Context "Without parameters" {
@@ -104,7 +118,7 @@ Describe "FineFormat" {
     Context "-Numeric CIM" {
 
         BeforeAll {
-            $result = $CimInstance | Format-Fine -Numeric
+            $result = $CimInstancePhysicalMemory | Format-Fine -Numeric
         }
 
         It "Has 16 properties" {
@@ -142,7 +156,7 @@ Describe "FineFormat" {
     Context "-Textual CIM" {
 
         BeforeAll {
-            $result = $CimInstance | Format-Fine -Textual
+            $result = $CimInstancePhysicalMemory | Format-Fine -Textual
         }
 
         It "Has 16 properties" {
@@ -177,10 +191,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-ValueFilter CIM" {
+    Context "-ValueFilter 2" {
 
         BeforeAll {
-            $result = $CimInstance | ff -ValueFilter {$PSItem -le 128}
+            $result = $CimInstancePhysicalMemory | ff -ValueFilter {$PSItem -le 128}
         }
 
         It "Has 9 properties" {
@@ -215,10 +229,10 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-TypeNameFilter CIM" {
+    Context "-TypeNameFilter 2" {
 
         BeforeAll {
-            $result = $CimInstance | ff -TypeNameFilter {$PSItem -like "uint"}
+            $result = $CimInstancePhysicalMemory | ff -TypeNameFilter {$PSItem -like "uint"}
         }
 
         It "Has 9 properties" {
@@ -233,4 +247,157 @@ Describe "FineFormat" {
             $result.PSObject.Properties.Value | Should -BeExactly @(1, $null, 1333, 2, $null, $null, $null, $null, 24)
         }
     }
+
+    Context "-NumberGroupSeparator" {
+
+        BeforeAll {
+            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumberGroupSeparator
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', "57${gs}682${gs}386${gs}944", "214${gs}223${gs}253${gs}504", '3', '255', '12')
+        }
+    }
+
+    Context "-NumbersAs KB" {
+
+        BeforeAll {
+            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs KB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', '56330456 KB', '209202396 KB', '3', '255', '12')
+        }
+    }
+
+    Context "-NumbersAs MB" {
+
+        BeforeAll {
+            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs MB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', "55010${ds}21 MB", "204299${ds}21 MB", '3', '255', '12')
+        }
+    }
+
+    Context "-NumbersAs GB" {
+
+        BeforeAll {
+            $result = $CimInstanceLogicalDisk | ff -Numeric -HaveValue -NumbersAs GB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', "53${ds}72 GB", "199${ds}51 GB", '3', '255', '12')
+        }
+    }
+
+    Context "-NumbersAs TB" {
+
+        BeforeAll {
+            $result = $ObjectForCompaction | ff -NumbersAs TB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB")
+        }
+    }
+
+    Context "-NumbersAs PB" {
+
+        BeforeAll {
+            $result = $ObjectForCompaction | ff -NumbersAs PB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB")
+        }
+    }
+
+    Context "-NumbersAs wrong value" {
+
+        BeforeAll {
+            $result = $ObjectForCompaction | ff -NumbersAs wrongvalue 3> $null
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', '5000000000000000')
+        }
+    }
+
+    Context "-CompactNumbers" {
+
+        BeforeAll {
+            $result = $ObjectForCompaction  | ff -CompactNumbers
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 6
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB")
+        }
+    }
+
 }
