@@ -6,12 +6,13 @@
       <command:verb>Format</command:verb>
       <command:noun>Fine</command:noun>
       <maml:description>
-        <maml:para>Командлет форматирует вывод команд</maml:para>
+        <maml:para>Форматирует и фильтрует вывод.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Командлет форматирует вывод команд с использованием различных условий.</maml:para>
-      <maml:para>Если командлет используется без указания каких-либо параметров, то он не оказывает никакого влияния на обрабатываемые объекты.</maml:para>
+      <maml:para>Командлет используется для форматирования и фильтрации вывода с использованием различных условий.</maml:para>
+      <maml:para>Если командлет используется без указания параметров, то он не оказывает никакого влияния на обрабатываемые объекты.</maml:para>
+      <maml:para>Командлет также можно вызвать с использованием его алиаса: ff.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -29,11 +30,11 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
-          <maml:name>HaveValue</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="HaveValue, NotNullOrEmpty">
+          <maml:name>HasValue</maml:name>
           <maml:description>
             <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
-            <maml:para>Alias: NotNullOrEmpty</maml:para>
+            <maml:para>Aliases: HaveValue, NotNullOrEmpty</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -67,10 +68,11 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>NullOrEmpty</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NullOrEmpty">
+          <maml:name>NoValue</maml:name>
           <maml:description>
             <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых пусты или равны $null.</maml:para>
+            <maml:para>Alias: NullOrEmpty</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -94,7 +96,7 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Numeric</maml:name>
+          <maml:name>NumericTypes</maml:name>
           <maml:description>
             <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).</maml:para>
           </maml:description>
@@ -105,9 +107,9 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Textual</maml:name>
+          <maml:name>SymbolicTypes</maml:name>
           <maml:description>
-            <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).</maml:para>
+            <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются символьным типом (String, Char).</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -157,11 +159,11 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
-        <maml:name>HaveValue</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="HaveValue, NotNullOrEmpty">
+        <maml:name>HasValue</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
-          <maml:para>Alias: NotNullOrEmpty</maml:para>
+          <maml:para>Aliases: HaveValue, NotNullOrEmpty</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -198,10 +200,11 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>NullOrEmpty</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NullOrEmpty">
+        <maml:name>NoValue</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых пусты или равны $null.</maml:para>
+          <maml:para>Alias: NullOrEmpty</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -226,7 +229,7 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Numeric</maml:name>
+        <maml:name>NumericTypes</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).</maml:para>
         </maml:description>
@@ -238,9 +241,9 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Textual</maml:name>
+        <maml:name>SymbolicTypes</maml:name>
         <maml:description>
-          <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).</maml:para>
+          <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются символьным типом (String, Char).</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -304,7 +307,7 @@
     <command:examples>
       <command:example>
         <maml:title>Example 1: Свойства со значениями, отличными от пустых или $null</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
 
 Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description           : Hyper-V Virtual Switch Extension Adapter
@@ -325,7 +328,7 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties<
       </command:example>
       <command:example>
         <maml:title>- Example 2: Свойства, значения которых пусты или равны $null -</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NullOrEmpty
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 
 ArpAlwaysSourceRoute         :
 ArpUseEtherSNAP              :
@@ -347,56 +350,8 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------ Example 3: Отображение чисел с разделителями групп ------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
-
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>------------ Example 4: Отображение чисел в виде MB ------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
-
-Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Использование параметра -NumbersAs для отображения чисел в виде MB.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>--- Example 5: Отображение чисел в наиболее компактной форме ---</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
-
-Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title> Example 6: Свойства, значения которых являются числовым типом </maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
+        <maml:title> Example 3: Свойства, значения которых являются числовым типом </maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 
 ForwardBufferMemory          :
 Index                        : 10
@@ -413,14 +368,14 @@ TcpMaxDataRetransmissions    :
 TcpNumConnections            :
 TcpWindowSize                :</dev:code>
         <dev:remarks>
-          <maml:para>Получение только тех свойств объектов, значения которых являются числовым типом.</maml:para>
+          <maml:para>Получение только тех свойств объектов, значения которых являются числовым типом (Int, Double и т. д.).</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 7: Свойства, значения которых являются текстовым типом</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
+        <maml:title>Example 4: Свойства, значения которых являются символьным типом</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description         : Hyper-V Virtual Switch Extension Adapter
@@ -439,7 +394,55 @@ WINSScopeID         :
 WINSSecondaryServer :
 PSComputerName      :</dev:code>
         <dev:remarks>
-          <maml:para>Получение только тех свойств объектов, значения которых являются текстовым типом.</maml:para>
+          <maml:para>Получение только тех свойств объектов, значения которых являются символьным типом (String, Char).</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------ Example 5: Отображение чисел с разделителями групп ------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------ Example 6: Отображение чисел в виде MB ------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Использование параметра -NumbersAs для отображения чисел в виде MB.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 7: Отображение чисел в наиболее компактной форме ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
@@ -459,7 +462,7 @@ Caption                                             Description
       </command:example>
       <command:example>
         <maml:title>-------------- Example 9: Свойства заданного типа --------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
 ----- --------------

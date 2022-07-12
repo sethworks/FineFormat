@@ -1,6 +1,6 @@
 $NumbersAsValues = @('KB', 'MB', 'GB', 'TB', 'PB')
-$NumbersExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
-$TextExpression = '^System\.string$|^string$|^System\.Char$|^char$'
+$NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
+$SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
 $ExcludePropertiesExpression = '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' # Gets in the way of values comparison when using -ValueFilter parameter
 
 function Format-Fine
@@ -8,15 +8,16 @@ function Format-Fine
     Param(
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         $InputObject,
-        [Alias('NotNullOrEmpty')]
-        [switch]$HaveValue,
+        [Alias('HaveValue','NotNullOrEmpty')]
+        [switch]$HasValue,
         [switch]$CompactNumbers,
         [switch]$NumberGroupSeparator,
-        [switch]$NullOrEmpty,
+        [Alias('NullOrEmpty')]
+        [switch]$NoValue,
         [ArgumentCompletions('KB', 'MB', 'GB', 'TB', 'PB')]
         [string]$NumbersAs,
-        [switch]$Numeric,
-        [switch]$Textual,
+        [switch]$NumericTypes,
+        [switch]$SymbolicTypes,
         [scriptblock]$ValueFilter,
         [scriptblock]$TypeNameFilter
     )
@@ -32,7 +33,15 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not $HaveValue -and -not $CompactNumbers -and -not $NullOrEmpty -and -not $Numeric -and -not $Textual -and -not $ValueFilter -and -not $TypeNameFilter -and -not $NumberGroupSeparator -and -not $NumbersAs)
+            if (-not ($HasValue -or
+                      $CompactNumbers -or
+                      $NumberGroupSeparator -or
+                      $NoValue -or
+                      $NumbersAs -or
+                      $NumericTypes -or
+                      $SymbolicTypes -or
+                      $ValueFilter -or
+                      $TypeNameFilter) )
             {
                 $io
                 continue
@@ -41,18 +50,17 @@ function Format-Fine
             $hash = [ordered]@{}
             foreach ($p in $io.PSObject.Properties)
             {
-                if ( ($HaveValue -and ([string]::IsNullOrEmpty($p.Value))) -or
+                if ( ($HasValue -and ([string]::IsNullOrEmpty($p.Value))) -or
 
-                     ($NullOrEmpty -and -not [string]::IsNullOrEmpty($p.Value)) -or
+                     ($NoValue -and -not [string]::IsNullOrEmpty($p.Value)) -or
 
-                     ($Numeric -and $p.TypeNameOfValue -notmatch $NumbersExpression) -or
+                     ($NumericTypes -and $p.TypeNameOfValue -notmatch $NumericTypesExpression) -or
 
-                     ($Textual -and $p.TypeNameOfValue -notmatch $TextExpression) -or
+                     ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
                      ($ValueFilter -and ($p.Name -match $ExcludePropertiesExpression -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
 
-                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
-                   )
+                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter)) )
                 {
                     continue
                 }
@@ -86,7 +94,7 @@ function Format-Fine
                     }
                     $hash.Add($p.Name, $template -f $value)
                 }
-                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumbersExpression)
+                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
                     $value = $p.Value
 
@@ -118,7 +126,7 @@ function Format-Fine
                     $hash.Add($p.Name, $template -f $value)
 
                 }
-                elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumbersExpression)
+                elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
                     $hash.Add($p.Name, $template -f $p.Value)
                 }
