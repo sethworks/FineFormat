@@ -8,7 +8,7 @@ schema: 2.0.0
 # Format-Fine
 
 ## SYNOPSIS
-Formats commands output
+Formats and filters the output.
 
 ## SYNTAX
 
@@ -17,9 +17,9 @@ Format-Fine [-InputObject] <Object> [-HasValue] [-CompactNumbers] [-NumberGroupS
 ```
 
 ## DESCRIPTION
-Cmdlet formats commands output using various requirements.
+Cmdlet formats and filters the output using various requirements.
 
-If used without any parameters, it does not change accepted objects in any way.
+If used without parameters, it does not change accepted objects in any way.
 
 Can also be referred to by its alias: ff.
 
@@ -248,55 +248,7 @@ DNSDomainSuffixSearchOrder   :
 
 Get only the properties that have $null or empty values.
 
-### Example 3: Display numbers with group separator
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
-```
-
-```
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Use the -NumberGroupSeparator parameter to display numbers with group separators.
-
-### Example 4: Display numbers as MB
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
-```
-
-```
-Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Use the -NumbersAs parameter with the value of MB to display numbers as MB.
-
-### Example 5: Compact numbers
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
-```
-
-```
-Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Display numbers in their most compact form using KB, MB, GB, TB, and PB units.
-
-### Example 6: Properties that have numeric values
+### Example 3: Properties that have values of numeric types
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 ```
@@ -318,9 +270,9 @@ TcpNumConnections            :
 TcpWindowSize                :
 ```
 
-Get only the properties that have numeric values.
+Get only the properties that have values of numeric types (Int, Double, etc.).
 
-### Example 7: Properties that have textual values
+### Example 4: Properties that have values of symbolic types
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 ```
@@ -344,7 +296,55 @@ WINSSecondaryServer :
 PSComputerName      :
 ```
 
-Get only the properties that have textual values.
+Get only the properties that have values of symbolic types (String, Char).
+
+### Example 5: Display numbers with group separator
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+```
+
+```
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumberGroupSeparator parameter to display numbers with group separators.
+
+### Example 6: Display numbers as MB
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+```
+
+```
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Use the -NumbersAs parameter with the value of MB to display numbers as MB.
+
+### Example 7: Compact numbers
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+```
+
+```
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Display numbers in their most compact form using KB, MB, GB, TB, and PB units.
 
 ### Example 8: Properties that have specific values
 ```powershell

@@ -6,13 +6,13 @@
       <command:verb>Format</command:verb>
       <command:noun>Fine</command:noun>
       <maml:description>
-        <maml:para>Formats commands output</maml:para>
+        <maml:para>Formats and filters the output.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Cmdlet formats commands output using various requirements.</maml:para>
-      <maml:para>If used without any parameters, it does not change accepted objects in any way.</maml:para>
-      <maml:para>Can also be referred by its alias: ff.</maml:para>
+      <maml:para>Cmdlet formats and filters the output using various requirements.</maml:para>
+      <maml:para>If used without parameters, it does not change accepted objects in any way.</maml:para>
+      <maml:para>Can also be referred to by its alias: ff.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -30,11 +30,11 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
-          <maml:name>HaveValue</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="HaveValue, NotNullOrEmpty">
+          <maml:name>HasValue</maml:name>
           <maml:description>
             <maml:para>Specifies that only the properties that have values other than $null or empty should be displayed.</maml:para>
-            <maml:para>Alias: NotNullOrEmpty</maml:para>
+            <maml:para>Aliases: HaveValue, NotNullOrEmpty</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -68,10 +68,11 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>NullOrEmpty</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NullOrEmpty">
+          <maml:name>NoValue</maml:name>
           <maml:description>
             <maml:para>Specifies that only the properties that have $null or empty values should be displayed.</maml:para>
+            <maml:para>Alias: NullOrEmpty</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -95,7 +96,7 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Numeric</maml:name>
+          <maml:name>NumericTypes</maml:name>
           <maml:description>
             <maml:para>Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.</maml:para>
           </maml:description>
@@ -106,7 +107,7 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Textual</maml:name>
+          <maml:name>SymbolicTypes</maml:name>
           <maml:description>
             <maml:para>Specifies that only the properties that have textual values (String, Char) should be displayed.</maml:para>
           </maml:description>
@@ -158,11 +159,11 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
-        <maml:name>HaveValue</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="HaveValue, NotNullOrEmpty">
+        <maml:name>HasValue</maml:name>
         <maml:description>
           <maml:para>Specifies that only the properties that have values other than $null or empty should be displayed.</maml:para>
-          <maml:para>Alias: NotNullOrEmpty</maml:para>
+          <maml:para>Aliases: HaveValue, NotNullOrEmpty</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -199,10 +200,11 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>NullOrEmpty</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NullOrEmpty">
+        <maml:name>NoValue</maml:name>
         <maml:description>
           <maml:para>Specifies that only the properties that have $null or empty values should be displayed.</maml:para>
+          <maml:para>Alias: NullOrEmpty</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -227,7 +229,7 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Numeric</maml:name>
+        <maml:name>NumericTypes</maml:name>
         <maml:description>
           <maml:para>Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.</maml:para>
         </maml:description>
@@ -239,7 +241,7 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Textual</maml:name>
+        <maml:name>SymbolicTypes</maml:name>
         <maml:description>
           <maml:para>Specifies that only the properties that have textual values (String, Char) should be displayed.</maml:para>
         </maml:description>
@@ -305,7 +307,7 @@
     <command:examples>
       <command:example>
         <maml:title>Example 1: Properties that have values other than $null or empty</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
 
 Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description           : Hyper-V Virtual Switch Extension Adapter
@@ -326,7 +328,7 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties<
       </command:example>
       <command:example>
         <maml:title>---- Example 2: Properties that have $null or empty values ----</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NullOrEmpty
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 
 ArpAlwaysSourceRoute         :
 ArpUseEtherSNAP              :
@@ -348,56 +350,8 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 3: Display numbers with group separator -------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
-
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Use the -NumberGroupSeparator parameter to display numbers with group separators.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>--------------- Example 4: Display numbers as MB ---------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
-
-Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Use the -NumbersAs parameter with the value of MB to display numbers as MB.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>------------------ Example 5: Compact numbers ------------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
-
-Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
-        <dev:remarks>
-          <maml:para>Display numbers in their most compact form using KB, MB, GB, TB, and PB units.</maml:para>
-          <maml:para/>
-          <maml:para/>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------- Example 6: Properties that have numeric values --------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
+        <maml:title>--- Example 3: Properties that have values of numeric types ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 
 ForwardBufferMemory          :
 Index                        : 10
@@ -414,14 +368,14 @@ TcpMaxDataRetransmissions    :
 TcpNumConnections            :
 TcpWindowSize                :</dev:code>
         <dev:remarks>
-          <maml:para>Get only the properties that have numeric values.</maml:para>
+          <maml:para>Get only the properties that have values of numeric types (Int, Double, etc.).</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------- Example 7: Properties that have textual values --------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
+        <maml:title>--- Example 4: Properties that have values of symbolic types ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description         : Hyper-V Virtual Switch Extension Adapter
@@ -440,7 +394,55 @@ WINSScopeID         :
 WINSSecondaryServer :
 PSComputerName      :</dev:code>
         <dev:remarks>
-          <maml:para>Get only the properties that have textual values.</maml:para>
+          <maml:para>Get only the properties that have values of symbolic types (String, Char).</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------- Example 5: Display numbers with group separator -------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumberGroupSeparator parameter to display numbers with group separators.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------------- Example 6: Display numbers as MB ---------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumbersAs parameter with the value of MB to display numbers as MB.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------------ Example 7: Compact numbers ------------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Display numbers in their most compact form using KB, MB, GB, TB, and PB units.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
@@ -460,7 +462,7 @@ Caption                                             Description
       </command:example>
       <command:example>
         <maml:title>--------- Example 9: Properties of specified data type ---------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
 ----- --------------

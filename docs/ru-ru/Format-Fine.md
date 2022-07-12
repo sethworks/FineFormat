@@ -8,7 +8,7 @@ schema: 2.0.0
 # Format-Fine
 
 ## SYNOPSIS
-Командлет форматирует вывод команд
+Форматирует и фильтрует вывод.
 
 ## SYNTAX
 
@@ -17,9 +17,11 @@ Format-Fine [-InputObject] <Object> [-HasValue] [-CompactNumbers] [-NumberGroupS
 ```
 
 ## DESCRIPTION
-Командлет форматирует вывод команд с использованием различных условий.
+Командлет используется для форматирования и фильтрации вывода с использованием различных условий.
 
-Если командлет используется без указания каких-либо параметров, то он не оказывает никакого влияния на обрабатываемые объекты.
+Если командлет используется без указания параметров, то он не оказывает никакого влияния на обрабатываемые объекты.
+
+Командлет также можно вызвать с использованием его алиаса: ff.
 
 ## PARAMETERS
 
@@ -149,7 +151,7 @@ Accept wildcard characters: False
 ```
 
 ### -SymbolicTypes
-Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются текстовым типом (String, Char).
+Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются символьным типом (String, Char).
 
 ```yaml
 Type: SwitchParameter
@@ -246,55 +248,7 @@ DNSDomainSuffixSearchOrder   :
 
 Получение только тех свойств объектов, значения которых пусты или равны $null.
 
-### Example 3: Отображение чисел с разделителями групп
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
-```
-
-```
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.
-
-### Example 4: Отображение чисел в виде MB
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
-```
-
-```
-Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Использование параметра -NumbersAs для отображения чисел в виде MB.
-
-### Example 5: Отображение чисел в наиболее компактной форме
-```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
-```
-
-```
-Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
-```
-
-Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.
-
-### Example 6: Свойства, значения которых являются числовым типом
+### Example 3: Свойства, значения которых являются числовым типом
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 ```
@@ -316,9 +270,9 @@ TcpNumConnections            :
 TcpWindowSize                :
 ```
 
-Получение только тех свойств объектов, значения которых являются числовым типом.
+Получение только тех свойств объектов, значения которых являются числовым типом (Int, Double и т. д.).
 
-### Example 7: Свойства, значения которых являются текстовым типом
+### Example 4: Свойства, значения которых являются символьным типом
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 ```
@@ -342,7 +296,55 @@ WINSSecondaryServer :
 PSComputerName      :
 ```
 
-Получение только тех свойств объектов, значения которых являются текстовым типом.
+Получение только тех свойств объектов, значения которых являются символьным типом (String, Char).
+
+### Example 5: Отображение чисел с разделителями групп
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+```
+
+```
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.
+
+### Example 6: Отображение чисел в виде MB
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+```
+
+```
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Использование параметра -NumbersAs для отображения чисел в виде MB.
+
+### Example 7: Отображение чисел в наиболее компактной форме
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+```
+
+```
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.
 
 ### Example 8: Свойства с заданными значениями
 ```powershell
