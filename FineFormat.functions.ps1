@@ -33,7 +33,15 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not $HasValue -and -not $CompactNumbers -and -not $NoValue -and -not $NumericTypes -and -not $SymbolicTypes -and -not $ValueFilter -and -not $TypeNameFilter -and -not $NumberGroupSeparator -and -not $NumbersAs)
+            if (-not ($HasValue -or
+                      $CompactNumbers -or
+                      $NumberGroupSeparator -or
+                      $NoValue -or
+                      $NumbersAs -or
+                      $NumericTypes -or
+                      $SymbolicTypes -or
+                      $ValueFilter -or
+                      $TypeNameFilter) )
             {
                 $io
                 continue
@@ -52,8 +60,7 @@ function Format-Fine
 
                      ($ValueFilter -and ($p.Name -match $ExcludePropertiesExpression -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
 
-                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter))
-                   )
+                     ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter)) )
                 {
                     continue
                 }
