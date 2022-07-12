@@ -30,10 +30,37 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
           <maml:name>HaveValue</maml:name>
           <maml:description>
             <maml:para>Specifies that only the properties that have values other than $null or empty should be displayed.</maml:para>
+            <maml:para>Alias: NotNullOrEmpty</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>CompactNumbers</maml:name>
+          <maml:description>
+            <maml:para>Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.</maml:para>
+            <maml:para>If the number is smaller than 1KB, it is displayed without conversion.</maml:para>
+            <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+            <maml:para>This parameter has priority over the -NumbersAs parameter.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NumberGroupSeparator</maml:name>
+          <maml:description>
+            <maml:para>Displays numbers with group separators.</maml:para>
+            <maml:para>Group separator symbol depends on regional settings.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -51,6 +78,21 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NumbersAs</maml:name>
+          <maml:description>
+            <maml:para>Displays numbers as KB, MB, GB, TB, or PB.</maml:para>
+            <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
+            <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+            <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Numeric</maml:name>
@@ -116,10 +158,39 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
         <maml:name>HaveValue</maml:name>
         <maml:description>
           <maml:para>Specifies that only the properties that have values other than $null or empty should be displayed.</maml:para>
+          <maml:para>Alias: NotNullOrEmpty</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>CompactNumbers</maml:name>
+        <maml:description>
+          <maml:para>Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.</maml:para>
+          <maml:para>If the number is smaller than 1KB, it is displayed without conversion.</maml:para>
+          <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+          <maml:para>This parameter has priority over the -NumbersAs parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NumberGroupSeparator</maml:name>
+        <maml:description>
+          <maml:para>Displays numbers with group separators.</maml:para>
+          <maml:para>Group separator symbol depends on regional settings.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -139,6 +210,21 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NumbersAs</maml:name>
+        <maml:description>
+          <maml:para>Displays numbers as KB, MB, GB, TB, or PB.</maml:para>
+          <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
+          <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+          <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Numeric</maml:name>
@@ -262,7 +348,55 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------- Example 3: Properties that have numeric values --------</maml:title>
+        <maml:title>------- Example 3: Display numbers with group separator -------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
+
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumberGroupSeparator parameter to display numbers with group separators.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--------------- Example 4: Display numbers as MB ---------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
+
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumbersAs parameter with the value of MB to display numbers as MB.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------------ Example 5: Compact numbers ------------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
+
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Display numbers in their most compact form using KB, MB, GB, TB, and PB units.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------- Example 6: Properties that have numeric values --------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
 
 ForwardBufferMemory          :
@@ -286,7 +420,7 @@ TcpWindowSize                :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------- Example 4: Properties that have textual values --------</maml:title>
+        <maml:title>-------- Example 7: Properties that have textual values --------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
@@ -312,7 +446,7 @@ PSComputerName      :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 5: Properties that have specific values -------</maml:title>
+        <maml:title>------- Example 8: Properties that have specific values -------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
@@ -325,7 +459,7 @@ Caption                                             Description
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--------- Example 6: Properties of specified data type ---------</maml:title>
+        <maml:title>--------- Example 9: Properties of specified data type ---------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex

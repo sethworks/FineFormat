@@ -29,10 +29,37 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
           <maml:name>HaveValue</maml:name>
           <maml:description>
             <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
+            <maml:para>Alias: NotNullOrEmpty</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>CompactNumbers</maml:name>
+          <maml:description>
+            <maml:para>Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.</maml:para>
+            <maml:para>Если число меньше 1KB, то оно отображается без изменений.</maml:para>
+            <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+            <maml:para>Этот параметр имеет приоритет перед параметром -NumbersAs.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NumberGroupSeparator</maml:name>
+          <maml:description>
+            <maml:para>Отображает числа с разделителями групп цифр.</maml:para>
+            <maml:para>Символ разделителя зависит от региональных настроек.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -50,6 +77,21 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NumbersAs</maml:name>
+          <maml:description>
+            <maml:para>Отображает числа в виде KB, MB, GB, TB или PB.</maml:para>
+            <maml:para>Если число меньше, чем указанная единица измерения, то оно отображается без изменений.</maml:para>
+            <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+            <maml:para>Параметр -CompactNumbers имеет приоритет перед этим параметром.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Numeric</maml:name>
@@ -115,10 +157,39 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="NotNullOrEmpty">
         <maml:name>HaveValue</maml:name>
         <maml:description>
           <maml:para>Параметр указывает, что отображаться должны только те свойства объектов, которые имеют значения, отличные от пустых или $null.</maml:para>
+          <maml:para>Alias: NotNullOrEmpty</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>CompactNumbers</maml:name>
+        <maml:description>
+          <maml:para>Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.</maml:para>
+          <maml:para>Если число меньше 1KB, то оно отображается без изменений.</maml:para>
+          <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+          <maml:para>Этот параметр имеет приоритет перед параметром -NumbersAs.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NumberGroupSeparator</maml:name>
+        <maml:description>
+          <maml:para>Отображает числа с разделителями групп цифр.</maml:para>
+          <maml:para>Символ разделителя зависит от региональных настроек.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -138,6 +209,21 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NumbersAs</maml:name>
+        <maml:description>
+          <maml:para>Отображает числа в виде KB, MB, GB, TB или PB.</maml:para>
+          <maml:para>Если число меньше, чем указанная единица измерения, то оно отображается без изменений.</maml:para>
+          <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+          <maml:para>Параметр -CompactNumbers имеет приоритет перед этим параметром.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Numeric</maml:name>
@@ -261,7 +347,55 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title> Example 3: Свойства, значения которых являются числовым типом </maml:title>
+        <maml:title>------ Example 3: Отображение чисел с разделителями групп ------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator
+
+Access                 : 0
+FreeSpace              : 57,692,909,568
+Size                   : 214,223,253,504
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------------ Example 4: Отображение чисел в виде MB ------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -NumberGroupSeparator -NumbersAs MB
+
+Access                 : 0
+FreeSpace              : 55,018.6 MB
+Size                   : 204,299.21 MB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Использование параметра -NumbersAs для отображения чисел в виде MB.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 5: Отображение чисел в наиболее компактной форме ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HaveValue -Numeric -CompactNumbers
+
+Access                 : 0
+FreeSpace              : 53.73 GB
+Size                   : 199.51 GB
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title> Example 6: Свойства, значения которых являются числовым типом </maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Numeric
 
 ForwardBufferMemory          :
@@ -285,7 +419,7 @@ TcpWindowSize                :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 4: Свойства, значения которых являются текстовым типом</maml:title>
+        <maml:title>Example 7: Свойства, значения которых являются текстовым типом</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Textual
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
@@ -311,7 +445,7 @@ PSComputerName      :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>---------- Example 5: Свойства с заданными значениями ----------</maml:title>
+        <maml:title>---------- Example 8: Свойства с заданными значениями ----------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
@@ -324,7 +458,7 @@ Caption                                             Description
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------- Example 6: Свойства заданного типа --------------</maml:title>
+        <maml:title>-------------- Example 9: Свойства заданного типа --------------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HaveValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
