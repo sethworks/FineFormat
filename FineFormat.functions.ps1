@@ -1,7 +1,6 @@
 $NumbersAsValues = @('KB', 'MB', 'GB', 'TB', 'PB')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
-# $ExcludePropertiesExpression = '^CimClass$|^CimInstanceProperties$|^CimSystemProperties$' # Gets in the way of values comparison when using -ValueFilter parameter
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
 function Format-Fine
 {
@@ -39,7 +38,6 @@ function Format-Fine
                     if ($op -in $ComparisonOperatorTokens)
                     {
                         $ComparisonOperator = $true
-                        # $HasValue = $true
                         break
                     }
                 }
@@ -76,7 +74,6 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
-                    #  ($ValueFilter -and ($p.Name -match $ExcludePropertiesExpression -or -not ($p.Value | Where-Object -FilterScript $ValueFilter))) -or
                      ($ValueFilter -and
                          ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
                            -not ($p.Value | Where-Object -FilterScript $ValueFilter) ) ) -or
