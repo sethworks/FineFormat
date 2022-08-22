@@ -98,7 +98,7 @@ Describe "FineFormat" {
 
     Context "-Value" {
 
-        Context "-Value <string>" {
+        Context "-Value string>" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value "str"
@@ -109,7 +109,7 @@ Describe "FineFormat" {
             }
         }
 
-        Context "-Value *<string>" {
+        Context "-Value *string*" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value "*str*"
@@ -119,7 +119,7 @@ Describe "FineFormat" {
                 $result.PSObject.Properties | Should -HaveCount 1
             }
     
-            It "Has correct propertiy" {
+            It "Has correct property" {
                 $result.PSObject.Properties.Name | Should -BeExactly 'String'
             }
     
@@ -128,7 +128,7 @@ Describe "FineFormat" {
             }
         }
 
-        Context "-Value <number>" {
+        Context "-Value number" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value 15
@@ -138,7 +138,7 @@ Describe "FineFormat" {
                 $result.PSObject.Properties | Should -HaveCount 1
             }
     
-            It "Has correct propertiy" {
+            It "Has correct property" {
                 $result.PSObject.Properties.Name | Should -BeExactly 'Integer'
             }
     
@@ -147,26 +147,26 @@ Describe "FineFormat" {
             }
         }
 
-        Context "-Value <number>*" {
+        Context "-Value number*" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value 1*
             }
 
-            It "Has 1 property" {
-                $result.PSObject.Properties | Should -HaveCount 1
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
             }
     
-            It "Has correct propertiy" {
-                $result.PSObject.Properties.Name | Should -BeExactly 'Integer'
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Integer', 'ArrayInteger')
             }
     
-            It "Has correct value" {
-                $result.PSObject.Properties.Value | Should -BeExactly 15
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(15, 1, 2, 3)
             }
         }
 
-        Context "-Value $true" {
+        Context "-Value True" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value $true
@@ -176,7 +176,7 @@ Describe "FineFormat" {
                 $result.PSObject.Properties | Should -HaveCount 1
             }
     
-            It "Has correct propertiy" {
+            It "Has correct property" {
                 $result.PSObject.Properties.Name | Should -BeExactly 'True'
             }
     
@@ -185,7 +185,7 @@ Describe "FineFormat" {
             }
         }
 
-        Context "-Value $false" {
+        Context "-Value False" {
 
             BeforeAll {
                 $result = $SomeObject | Format-Fine -Value $false
@@ -195,12 +195,31 @@ Describe "FineFormat" {
                 $result.PSObject.Properties | Should -HaveCount 1
             }
     
-            It "Has correct propertiy" {
+            It "Has correct property" {
                 $result.PSObject.Properties.Name | Should -BeExactly 'False'
             }
     
             It "Has correct value" {
                 $result.PSObject.Properties.Value | Should -BeExactly $false
+            }
+        }
+
+        Context "-Value array" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "*str*", 1*
+            }
+
+            It "Has 3 properties" {
+                $result.PSObject.Properties | Should -HaveCount 3
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Integer', 'String', 'ArrayInteger')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(15, "It's a string", 1, 2, 3)
             }
         }
     }
