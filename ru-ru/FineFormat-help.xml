@@ -43,6 +43,20 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Value</maml:name>
+          <maml:description>
+            <maml:para>Параметр задает значения свойств объектов для использования в качестве фильтра.</maml:para>
+            <maml:para>Поддерживает символы подстановки.</maml:para>
+            <maml:para>Устанавливает параметр -HasValue в $True.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CompactNumbers</maml:name>
           <maml:description>
             <maml:para>Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.</maml:para>
@@ -171,6 +185,20 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Value</maml:name>
+        <maml:description>
+          <maml:para>Параметр задает значения свойств объектов для использования в качестве фильтра.</maml:para>
+          <maml:para>Поддерживает символы подстановки.</maml:para>
+          <maml:para>Устанавливает параметр -HasValue в $True.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>CompactNumbers</maml:name>
@@ -327,7 +355,22 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties<
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>- Example 2: Свойства, значения которых пусты или равны $null -</maml:title>
+        <maml:title>---- Example 2: Свойства, обладающие указанными значениями ----</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Value *adapter, 3, $false
+
+Caption        : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description    : Hyper-V Virtual Switch Extension Adapter
+DHCPEnabled    : False
+InterfaceIndex : 3
+IPEnabled      : False</dev:code>
+        <dev:remarks>
+          <maml:para>Получение только тех свойств, значения которых соответствуют указанным.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>- Example 3: Свойства, значения которых пусты или равны $null -</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 
 ArpAlwaysSourceRoute         :
@@ -350,7 +393,7 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title> Example 3: Свойства, значения которых являются числовым типом </maml:title>
+        <maml:title> Example 4: Свойства, значения которых являются числовым типом </maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 
 ForwardBufferMemory          :
@@ -374,7 +417,7 @@ TcpWindowSize                :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>Example 4: Свойства, значения которых являются символьным типом</maml:title>
+        <maml:title>Example 5: Свойства, значения которых являются символьным типом</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
@@ -400,7 +443,7 @@ PSComputerName      :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------ Example 5: Отображение чисел с разделителями групп ------</maml:title>
+        <maml:title>------ Example 6: Отображение чисел с разделителями групп ------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
 
 Access                 : 0
@@ -416,7 +459,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------------ Example 6: Отображение чисел в виде MB ------------</maml:title>
+        <maml:title>------------ Example 7: Отображение чисел в виде MB ------------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
 
 Access                 : 0
@@ -432,7 +475,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--- Example 7: Отображение чисел в наиболее компактной форме ---</maml:title>
+        <maml:title>--- Example 8: Отображение чисел в наиболее компактной форме ---</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 
 Access                 : 0
@@ -448,7 +491,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>---------- Example 8: Свойства с заданными значениями ----------</maml:title>
+        <maml:title>---------- Example 9: Свойства с заданными значениями ----------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
@@ -461,7 +504,7 @@ Caption                                             Description
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------- Example 9: Свойства заданного типа --------------</maml:title>
+        <maml:title>------------- Example 10: Свойства заданного типа -------------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex

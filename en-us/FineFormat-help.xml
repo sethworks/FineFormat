@@ -43,6 +43,20 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Value</maml:name>
+          <maml:description>
+            <maml:para>Specifies the values of properties to filter on.</maml:para>
+            <maml:para>Supports wildcards.</maml:para>
+            <maml:para>Implies -HasValue.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CompactNumbers</maml:name>
           <maml:description>
             <maml:para>Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.</maml:para>
@@ -171,6 +185,20 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Value</maml:name>
+        <maml:description>
+          <maml:para>Specifies the values of properties to filter on.</maml:para>
+          <maml:para>Supports wildcards.</maml:para>
+          <maml:para>Implies -HasValue.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>CompactNumbers</maml:name>
@@ -327,7 +355,22 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties<
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>---- Example 2: Properties that have $null or empty values ----</maml:title>
+        <maml:title>------- Example 2: Properties that have specified values -------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Value *adapter, 3, $false
+
+Caption        : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description    : Hyper-V Virtual Switch Extension Adapter
+DHCPEnabled    : False
+InterfaceIndex : 3
+IPEnabled      : False</dev:code>
+        <dev:remarks>
+          <maml:para>Get only the properties that have specified values.</maml:para>
+          <maml:para/>
+          <maml:para/>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>---- Example 3: Properties that have $null or empty values ----</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 
 ArpAlwaysSourceRoute         :
@@ -350,7 +393,7 @@ DNSDomainSuffixSearchOrder   :
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--- Example 3: Properties that have values of numeric types ---</maml:title>
+        <maml:title>--- Example 4: Properties that have values of numeric types ---</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 
 ForwardBufferMemory          :
@@ -374,7 +417,7 @@ TcpWindowSize                :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--- Example 4: Properties that have values of symbolic types ---</maml:title>
+        <maml:title>--- Example 5: Properties that have values of symbolic types ---</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
@@ -400,7 +443,7 @@ PSComputerName      :</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 5: Display numbers with group separator -------</maml:title>
+        <maml:title>------- Example 6: Display numbers with group separator -------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
 
 Access                 : 0
@@ -416,7 +459,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--------------- Example 6: Display numbers as MB ---------------</maml:title>
+        <maml:title>--------------- Example 7: Display numbers as MB ---------------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
 
 Access                 : 0
@@ -432,7 +475,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------------------ Example 7: Compact numbers ------------------</maml:title>
+        <maml:title>------------------ Example 8: Compact numbers ------------------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 
 Access                 : 0
@@ -448,7 +491,7 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 8: Properties that have specific values -------</maml:title>
+        <maml:title>------- Example 9: Properties that have specific values -------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
@@ -461,7 +504,7 @@ Caption                                             Description
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--------- Example 9: Properties of specified data type ---------</maml:title>
+        <maml:title>-------- Example 10: Properties of specified data type --------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
