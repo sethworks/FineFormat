@@ -9,6 +9,8 @@ function Format-Fine
         $InputObject,
         [Alias('HaveValue','NotNullOrEmpty')]
         [switch]$HasValue,
+        [psobject]$Value,
+        [string]$TypeName,
         [switch]$CompactNumbers,
         [switch]$NumberGroupSeparator,
         [Alias('NullOrEmpty')]
@@ -50,6 +52,8 @@ function Format-Fine
         {
             # default
             if (-not ($HasValue -or
+                      $Value -or
+                      $TypeName -or
                       $CompactNumbers -or
                       $NumberGroupSeparator -or
                       $NoValue -or
@@ -74,6 +78,8 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
+                     ($Value -and $p.Value -notlike $Value) -or 
+
                      ($ValueFilter -and
                          ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
                            -not ($p.Value | Where-Object -FilterScript $ValueFilter) ) ) -or
@@ -94,14 +100,14 @@ function Format-Fine
 
                 if ($CompactNumbers)
                 {
-                    $value = $p.Value
-                    if ([Math]::Truncate($value / 1KB))
+                    $pvalue = $p.Value
+                    if ([Math]::Truncate($pvalue / 1KB))
                     {
-                        $value /= 1KB
+                        $pvalue /= 1KB
                         $i = 0
-                        while ([Math]::Truncate($value / 1KB))
+                        while ([Math]::Truncate($pvalue / 1KB))
                         {
-                            $value /= 1KB
+                            $pvalue /= 1KB
                             $i++
                             if ($i -eq 4)
                             {
@@ -110,38 +116,38 @@ function Format-Fine
                         }
                         $template += " $($NumbersAsValues[$i])"
                     }
-                    $hash.Add($p.Name, $template -f $value)
+                    $hash.Add($p.Name, $template -f $pvalue)
                 }
                 elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
-                    $value = $p.Value
+                    $pvalue = $p.Value
 
                     if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
                     {
                         $template += " KB"
-                        $value /= 1KB
+                        $pvalue /= 1KB
                     }
                     elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
                     {
                         $template += " MB"
-                        $value /= 1MB
+                        $pvalue /= 1MB
                     }
                     elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
                     {
                         $template += " GB"
-                        $value /= 1GB
+                        $pvalue /= 1GB
                     }
                     elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
                     {
                         $template += " TB"
-                        $value /= 1TB
+                        $pvalue /= 1TB
                     }
                     elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
                     {
                         $template += " PB"
-                        $value /= 1PB
+                        $pvalue /= 1PB
                     }
-                    $hash.Add($p.Name, $template -f $value)
+                    $hash.Add($p.Name, $template -f $pvalue)
 
                 }
                 elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
