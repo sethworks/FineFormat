@@ -38,7 +38,7 @@ function Format-Fine
                 {
                     if ($op -in $ComparisonOperatorTokens)
                     {
-                        $ComparisonOperator = $true
+                        $ComparisonOperator = $true  # used as a flag to exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
                         break
                     }
                 }
@@ -83,7 +83,7 @@ function Format-Fine
                         # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
 
                      ($ValueFilter -and
-                         ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
+                         ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or  # exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
                            -not ($p.Value | Where-Object -FilterScript $ValueFilter) ) ) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter)) )
