@@ -52,7 +52,7 @@ function Format-Fine
         {
             # default
             if (-not ($HasValue -or
-                      $Value -or
+                      $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
                       $TypeName -or
                       $CompactNumbers -or
                       $NumberGroupSeparator -or
@@ -78,7 +78,9 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
-                     ($Value -and $p.Value -notlike $Value) -or 
+                     ($PSBoundParameters.Keys -contains 'Value' -and ( [string]::IsNullOrEmpty($p.Value) -or $p.Value -notlike $Value ) ) -or 
+                        # NotNullOrEmpty is for excluding empty arrays, for example @()
+                        # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
 
                      ($ValueFilter -and
                          ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
