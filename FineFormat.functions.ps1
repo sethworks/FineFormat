@@ -10,7 +10,6 @@ function Format-Fine
         [Alias('HaveValue','NotNullOrEmpty')]
         [switch]$HasValue,
         [psobject[]]$Value,
-        # [string]$TypeName,
         [switch]$CompactNumbers,
         [switch]$NumberGroupSeparator,
         [Alias('NullOrEmpty')]
@@ -78,7 +77,6 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
-                    #  ($PSBoundParameters.Keys -contains 'Value' -and ( [string]::IsNullOrEmpty($p.Value) -or $p.Value -notlike $Value ) ) -or 
                      ($PSBoundParameters.Keys -contains 'Value' -and ( [string]::IsNullOrEmpty($p.Value) -or
                          ( inTestValue -pvl $p.Value -vl $Value ) ) ) -or 
                         # NotNullOrEmpty is for excluding empty arrays, for example @()
