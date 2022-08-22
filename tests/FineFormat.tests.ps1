@@ -96,6 +96,115 @@ Describe "FineFormat" {
         }
     }
 
+    Context "-Value" {
+
+        Context "-Value <string>" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "str"
+            }
+
+            It "Should be null" {
+                $result | Should -BeNullOrEmpty
+            }
+        }
+
+        Context "-Value *<string>" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "*str*"
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct propertiy" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'String'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly "It's a string"
+            }
+        }
+
+        Context "-Value <number>" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value 15
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct propertiy" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'Integer'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly 15
+            }
+        }
+
+        Context "-Value <number>*" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value 1*
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct propertiy" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'Integer'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly 15
+            }
+        }
+
+        Context "-Value $true" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value $true
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct propertiy" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'True'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly $true
+            }
+        }
+
+        Context "-Value $false" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value $false
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct propertiy" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'False'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly $false
+            }
+        }
+    }
+
     Context "-NumericTypes" {
 
         BeforeAll {
