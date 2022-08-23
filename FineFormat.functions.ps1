@@ -75,19 +75,6 @@ function Format-Fine
     {
         foreach ($io in $InputObject)
         {
-            # default
-            # if (-not ($HasValue -or
-            #           $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
-            #           $TypeName -or
-            #           $CompactNumbers -or
-            #           $NumberGroupSeparator -or
-            #           $NoValue -or
-            #           $NumbersAs -or
-            #           $NumericTypes -or
-            #           $SymbolicTypes -or
-            #           $ValueFilter -or
-            #           $TypeNameFilter) )
-
             if ($NoParameters)
             {
                 $io
