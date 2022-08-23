@@ -23,31 +23,49 @@ function Format-Fine
     )
     begin
     {
-        if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
+        if (-not ($HasValue -or
+                  $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
+                  $TypeName -or
+                  $CompactNumbers -or
+                  $NumberGroupSeparator -or
+                  $NoValue -or
+                  $NumbersAs -or
+                  $NumericTypes -or
+                  $SymbolicTypes -or
+                  $ValueFilter -or
+                  $TypeNameFilter) )
         {
-            Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
+            $NoParameters = $true
         }
 
-        # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be equal to $false
-        if ($PSBoundParameters.Keys -contains 'Value' -or $ValueFilter)
+        else
         {
-            # is used for excluding properties with empty values, including empty arrays, for example @()
-            $HasValue = $true
-        }
-
-        if ($ValueFilter)
-        {
-            $ComparisonOperator = $false
-            $BinaryExpressionAstOperators = $ValueFilter.Ast.FindAll({$args[0] -is [System.Management.Automation.Language.BinaryExpressionAst]}, $true).Operator
-            if ($BinaryExpressionAstOperators)
+            if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
             {
-                foreach ($op in $BinaryExpressionAstOperators)
+                Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
+            }
+
+            # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be equal to $false
+            if ($PSBoundParameters.Keys -contains 'Value' -or $ValueFilter)
+            {
+                # is used for excluding properties with empty values, including empty arrays, for example @()
+                $HasValue = $true
+            }
+
+            if ($ValueFilter)
+            {
+                $ComparisonOperator = $false
+                $BinaryExpressionAstOperators = $ValueFilter.Ast.FindAll({$args[0] -is [System.Management.Automation.Language.BinaryExpressionAst]}, $true).Operator
+                if ($BinaryExpressionAstOperators)
                 {
-                    if ($op -in $ComparisonOperatorTokens)
+                    foreach ($op in $BinaryExpressionAstOperators)
                     {
-                        # used as a flag to exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
-                        $ComparisonOperator = $true
-                        break
+                        if ($op -in $ComparisonOperatorTokens)
+                        {
+                            # used as a flag to exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
+                            $ComparisonOperator = $true
+                            break
+                        }
                     }
                 }
             }
@@ -58,17 +76,19 @@ function Format-Fine
         foreach ($io in $InputObject)
         {
             # default
-            if (-not ($HasValue -or
-                      $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
-                      $TypeName -or
-                      $CompactNumbers -or
-                      $NumberGroupSeparator -or
-                      $NoValue -or
-                      $NumbersAs -or
-                      $NumericTypes -or
-                      $SymbolicTypes -or
-                      $ValueFilter -or
-                      $TypeNameFilter) )
+            # if (-not ($HasValue -or
+            #           $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
+            #           $TypeName -or
+            #           $CompactNumbers -or
+            #           $NumberGroupSeparator -or
+            #           $NoValue -or
+            #           $NumbersAs -or
+            #           $NumericTypes -or
+            #           $SymbolicTypes -or
+            #           $ValueFilter -or
+            #           $TypeNameFilter) )
+
+            if ($NoParameters)
             {
                 $io
                 continue
