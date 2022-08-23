@@ -222,6 +222,25 @@ Describe "FineFormat" {
                 $result.PSObject.Properties.Value | Should -BeExactly @(15, "It's a string", 1, 2, 3)
             }
         }
+
+        Context "-Value star" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value *
+            }
+
+            It "Has 7 properties" {
+                $result.PSObject.Properties | Should -HaveCount 7
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'String', 'True', 'False', 'ArrayInteger', 'ArrayString')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", 'True', 'False', 1, 2, 3, 'One', 'Two', 'Three')
+            }
+        }
     }
 
     Context "-NumericTypes" {
