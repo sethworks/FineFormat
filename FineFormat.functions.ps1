@@ -28,10 +28,11 @@ function Format-Fine
             Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
         }
 
-        if ($PSBoundParameters.Keys -contains 'Value')  # -Value can be equal to $false
+        # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be equal to $false
+        if ($PSBoundParameters.Keys -contains 'Value' -or $ValueFilter)
         {
-            $HasValue = $true
             # is used for excluding properties with empty values, including empty arrays, for example @()
+            $HasValue = $true
         }
 
         if ($ValueFilter)
@@ -44,8 +45,8 @@ function Format-Fine
                 {
                     if ($op -in $ComparisonOperatorTokens)
                     {
-                        $ComparisonOperator = $true
                         # used as a flag to exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
+                        $ComparisonOperator = $true
                         break
                     }
                 }
@@ -84,12 +85,12 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
-                     ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vl $Value ) ) -or 
                      # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
+                     ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vl $Value ) ) -or 
 
                      ($ValueFilter -and
-                         ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
                            # exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
+                         ( ($ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
                            -not ($p.Value | Where-Object -FilterScript $ValueFilter) ) ) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter)) )
