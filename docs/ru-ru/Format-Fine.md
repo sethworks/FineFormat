@@ -189,6 +189,8 @@ Accept wildcard characters: False
 
 Например: -ValueFilter {$PSItem -like "somevalue"}
 
+Устанавливает параметр -HasValue в $True.
+
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)

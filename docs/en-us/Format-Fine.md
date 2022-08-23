@@ -189,6 +189,8 @@ Specifies scriptblock to be used for filtering by properties values.
 
 For example: -ValueFilter {$PSItem -like "somevalue"}
 
+Implies -HasValue.
+
 ```yaml
 Type: ScriptBlock
 Parameter Sets: (All)

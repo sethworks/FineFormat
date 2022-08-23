@@ -136,6 +136,7 @@
           <maml:description>
             <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по их значениям.</maml:para>
             <maml:para>Например: -ValueFilter {$PSItem -like "somevalue"}</maml:para>
+            <maml:para>Устанавливает параметр -HasValue в $True.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
           <dev:type>
@@ -285,6 +286,7 @@
         <maml:description>
           <maml:para>Задает скриптблок, который будет использоваться для фильтрации свойств по их значениям.</maml:para>
           <maml:para>Например: -ValueFilter {$PSItem -like "somevalue"}</maml:para>
+          <maml:para>Устанавливает параметр -HasValue в $True.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">ScriptBlock</command:parameterValue>
         <dev:type>
