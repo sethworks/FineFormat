@@ -4,21 +4,39 @@ $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
 function Format-Fine
 {
+    [CmdletBinding(DefaultParameterSetName='Default')]
     Param(
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         $InputObject,
+
+        [Parameter(ParameterSetName='Default')]
         [Alias('HaveValue','NotNullOrEmpty')]
         [switch]$HasValue,
+
+        [Parameter(ParameterSetName='Default')]
         [psobject[]]$Value,
+
+        [Parameter(ParameterSetName='Default')]
         [switch]$CompactNumbers,
+
+        [Parameter(ParameterSetName='Default')]
         [switch]$NumberGroupSeparator,
+
+        [Parameter(ParameterSetName='NoValue')]
         [Alias('NullOrEmpty')]
         [switch]$NoValue,
+
+        [Parameter(ParameterSetName='Default')]
         [ArgumentCompletions('KB', 'MB', 'GB', 'TB', 'PB')]
         [string]$NumbersAs,
+
         [switch]$NumericTypes,
+
         [switch]$SymbolicTypes,
+
+        [Parameter(ParameterSetName='Default')]
         [scriptblock]$ValueFilter,
+
         [scriptblock]$TypeNameFilter
     )
     begin

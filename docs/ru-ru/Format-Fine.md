@@ -12,8 +12,17 @@ schema: 2.0.0
 
 ## SYNTAX
 
+### Default (Default)
 ```
-Format-Fine [-InputObject] <Object> [-HasValue] [-Value <PSObject>] [-CompactNumbers] [-NumberGroupSeparator] [-NoValue] [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-HasValue] [-Value <PSObject[]>] [-CompactNumbers] [-NumberGroupSeparator]
+ [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>]
+ [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+```
+
+### NoValue
+```
+Format-Fine [-InputObject] <Object> [-NoValue] [-NumericTypes] [-SymbolicTypes] [-TypeNameFilter <ScriptBlock>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -49,7 +58,7 @@ Aliases: HaveValue, NotNullOrEmpty
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases: HaveValue, NotNullOrEmpty
 
 Required: False
@@ -68,7 +77,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: PSObject
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -89,7 +98,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -106,7 +115,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -123,7 +132,7 @@ Alias: NullOrEmpty
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: NoValue
 Aliases: NullOrEmpty
 
 Required: False
@@ -144,7 +153,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -193,7 +202,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: ScriptBlock
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
