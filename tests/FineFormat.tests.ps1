@@ -96,6 +96,153 @@ Describe "FineFormat" {
         }
     }
 
+    Context "-Value" {
+
+        Context "-Value string>" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "str"
+            }
+
+            It "Should be null" {
+                $result | Should -BeNullOrEmpty
+            }
+        }
+
+        Context "-Value *string*" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "*str*"
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'String'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly "It's a string"
+            }
+        }
+
+        Context "-Value number" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value 15
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'Integer'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly 15
+            }
+        }
+
+        Context "-Value number*" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value 1*
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+    
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Integer', 'ArrayInteger')
+            }
+    
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(15, 1, 2, 3)
+            }
+        }
+
+        Context "-Value True" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value $true
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'True'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly $true
+            }
+        }
+
+        Context "-Value False" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value $false
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly 'False'
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly $false
+            }
+        }
+
+        Context "-Value array" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value "*str*", 1*
+            }
+
+            It "Has 3 properties" {
+                $result.PSObject.Properties | Should -HaveCount 3
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Integer', 'String', 'ArrayInteger')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(15, "It's a string", 1, 2, 3)
+            }
+        }
+
+        Context "-Value star" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -Value *
+            }
+
+            It "Has 7 properties" {
+                $result.PSObject.Properties | Should -HaveCount 7
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'String', 'True', 'False', 'ArrayInteger', 'ArrayString')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", 'True', 'False', 1, 2, 3, 'One', 'Two', 'Three')
+            }
+        }
+    }
+
     Context "-NumericTypes" {
 
         BeforeAll {

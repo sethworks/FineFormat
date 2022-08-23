@@ -9,6 +9,7 @@ function Format-Fine
         $InputObject,
         [Alias('HaveValue','NotNullOrEmpty')]
         [switch]$HasValue,
+        [psobject[]]$Value,
         [switch]$CompactNumbers,
         [switch]$NumberGroupSeparator,
         [Alias('NullOrEmpty')]
@@ -22,23 +23,49 @@ function Format-Fine
     )
     begin
     {
-        if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
+        if (-not ($HasValue -or
+                  $PSBoundParameters.Keys -contains 'Value' -or  # -Value can be equal to $false
+                  $TypeName -or
+                  $CompactNumbers -or
+                  $NumberGroupSeparator -or
+                  $NoValue -or
+                  $NumbersAs -or
+                  $NumericTypes -or
+                  $SymbolicTypes -or
+                  $ValueFilter -or
+                  $TypeNameFilter) )
         {
-            Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
+            $NoParameters = $true
         }
 
-        if ($ValueFilter)
+        else
         {
-            $ComparisonOperator = $false
-            $BinaryExpressionAstOperators = $ValueFilter.Ast.FindAll({$args[0] -is [System.Management.Automation.Language.BinaryExpressionAst]}, $true).Operator
-            if ($BinaryExpressionAstOperators)
+            if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
             {
-                foreach ($op in $BinaryExpressionAstOperators)
+                Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
+            }
+
+            # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be equal to $false
+            if ($PSBoundParameters.Keys -contains 'Value' -or $ValueFilter)
+            {
+                # is used for excluding properties with empty values, including empty arrays, for example @()
+                $HasValue = $true
+            }
+
+            if ($ValueFilter)
+            {
+                $ComparisonOperator = $false
+                $BinaryExpressionAstOperators = $ValueFilter.Ast.FindAll({$args[0] -is [System.Management.Automation.Language.BinaryExpressionAst]}, $true).Operator
+                if ($BinaryExpressionAstOperators)
                 {
-                    if ($op -in $ComparisonOperatorTokens)
+                    foreach ($op in $BinaryExpressionAstOperators)
                     {
-                        $ComparisonOperator = $true
-                        break
+                        if ($op -in $ComparisonOperatorTokens)
+                        {
+                            # used as a flag to exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
+                            $ComparisonOperator = $true
+                            break
+                        }
                     }
                 }
             }
@@ -48,16 +75,7 @@ function Format-Fine
     {
         foreach ($io in $InputObject)
         {
-            # default
-            if (-not ($HasValue -or
-                      $CompactNumbers -or
-                      $NumberGroupSeparator -or
-                      $NoValue -or
-                      $NumbersAs -or
-                      $NumericTypes -or
-                      $SymbolicTypes -or
-                      $ValueFilter -or
-                      $TypeNameFilter) )
+            if ($NoParameters)
             {
                 $io
                 continue
@@ -74,8 +92,12 @@ function Format-Fine
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
+                     # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
+                     ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vl $Value ) ) -or 
+
                      ($ValueFilter -and
-                         ( ($p.Value -and $ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
+                           # exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
+                         ( ($ComparisonOperator -and $p.Value.GetType().ImplementedInterfaces.Name -notcontains 'IComparable') -or
                            -not ($p.Value | Where-Object -FilterScript $ValueFilter) ) ) -or
 
                      ($TypeNameFilter -and -not ($p.TypeNameOfValue | Where-Object -FilterScript $TypeNameFilter)) )
@@ -94,14 +116,14 @@ function Format-Fine
 
                 if ($CompactNumbers)
                 {
-                    $value = $p.Value
-                    if ([Math]::Truncate($value / 1KB))
+                    $pvalue = $p.Value
+                    if ([Math]::Truncate($pvalue / 1KB))
                     {
-                        $value /= 1KB
+                        $pvalue /= 1KB
                         $i = 0
-                        while ([Math]::Truncate($value / 1KB))
+                        while ([Math]::Truncate($pvalue / 1KB))
                         {
-                            $value /= 1KB
+                            $pvalue /= 1KB
                             $i++
                             if ($i -eq 4)
                             {
@@ -110,38 +132,38 @@ function Format-Fine
                         }
                         $template += " $($NumbersAsValues[$i])"
                     }
-                    $hash.Add($p.Name, $template -f $value)
+                    $hash.Add($p.Name, $template -f $pvalue)
                 }
                 elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
-                    $value = $p.Value
+                    $pvalue = $p.Value
 
                     if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
                     {
                         $template += " KB"
-                        $value /= 1KB
+                        $pvalue /= 1KB
                     }
                     elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
                     {
                         $template += " MB"
-                        $value /= 1MB
+                        $pvalue /= 1MB
                     }
                     elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
                     {
                         $template += " GB"
-                        $value /= 1GB
+                        $pvalue /= 1GB
                     }
                     elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
                     {
                         $template += " TB"
-                        $value /= 1TB
+                        $pvalue /= 1TB
                     }
                     elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
                     {
                         $template += " PB"
-                        $value /= 1PB
+                        $pvalue /= 1PB
                     }
-                    $hash.Add($p.Name, $template -f $value)
+                    $hash.Add($p.Name, $template -f $pvalue)
 
                 }
                 elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
@@ -156,4 +178,22 @@ function Format-Fine
             [PSCustomObject]$hash
         }
     }
+}
+
+function inTestValue
+{
+    Param (
+        [psobject]$pvl,
+        [psobject]$vls
+    )   
+
+    foreach ($vl in $vls)
+    {
+        if ($pvl -like $vl)
+        {
+            return $false
+            break
+        }
+    }
+    return $true
 }
