@@ -16,6 +16,8 @@ function Format-Fine
         [Parameter(ParameterSetName='Default')]
         [psobject[]]$Value,
 
+        [string[]]$TypeName,
+
         [Parameter(ParameterSetName='Default')]
         [switch]$CompactNumbers,
 
@@ -111,7 +113,9 @@ function Format-Fine
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
 
                      # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
-                     ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vl $Value ) ) -or 
+                     ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vls $Value ) ) -or 
+
+                     ($TypeName -and ( inTestTypeName -ptn $p.TypeNameOfValue -tns $TypeName ) ) -or
 
                      ($ValueFilter -and
                            # exclude properties, whose value types don't support comparison, i.e. haven't implemented IComparable interface.
@@ -208,6 +212,24 @@ function inTestValue
     foreach ($vl in $vls)
     {
         if ($pvl -like $vl)
+        {
+            return $false
+            break
+        }
+    }
+    return $true
+}
+
+function inTestTypeName
+{
+    Param (
+        [string]$ptn,
+        [string[]]$tns
+    )
+
+    foreach ($tn in $tns)
+    {
+        if ($ptn -like $tn)
         {
             return $false
             break
