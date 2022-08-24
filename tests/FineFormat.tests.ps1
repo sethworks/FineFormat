@@ -238,7 +238,67 @@ Describe "FineFormat" {
             }
     
             It "Has correct value" {
-                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", 'True', 'False', 1, 2, 3, 'One', 'Two', 'Three')
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "It's a string", $true, $false, 1, 2, 3, 'One', 'Two', 'Three')
+            }
+        }
+    }
+
+    Context "-TypeName" {
+
+        Context "-TypeName uint" {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | Format-Fine -TypeName uint
+            }
+
+            It "Has 5 properties" {
+                $result.PSObject.Properties | Should -HaveCount 5
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('ConfigManagerErrorCode', 'LastErrorCode', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @($null, $null, 3, 255, 12)
+            }
+        }
+
+        Context "-TypeName array" {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | Format-Fine -TypeName *int, 'ushort`[`]'
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('ConfigManagerErrorCode', 'LastErrorCode', 'PowerManagementCapabilities', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @($null, $null, $null, 3, 255, 12)
+            }
+        }
+
+        Context "-TypeName star" {
+
+            BeforeAll {
+                $result = $SomeObject | Format-Fine -TypeName *
+            }
+
+            It "Has 1 properties" {
+                $result.PSObject.Properties | Should -HaveCount 11
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'EmptyString', 'String', 'True', 'False', 'Null', 'ArrayInteger', 'ArrayString', 'ArrayEmptyString', 'EmptyArray')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, '', "It's a string", $true, $false, $null, 1, 2, 3, 'One', 'Two', 'Three', '')
             }
         }
     }

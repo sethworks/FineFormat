@@ -14,15 +14,15 @@ schema: 2.0.0
 
 ### Default (Default)
 ```
-Format-Fine [-InputObject] <Object> [-HasValue] [-Value <PSObject[]>] [-CompactNumbers] [-NumberGroupSeparator]
- [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>]
+Format-Fine [-InputObject] <Object> [-HasValue] [-Value <PSObject[]>] [-TypeName <String[]>] [-CompactNumbers]
+ [-NumberGroupSeparator] [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>]
  [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ### NoValue
 ```
-Format-Fine [-InputObject] <Object> [-NoValue] [-NumericTypes] [-SymbolicTypes] [-TypeNameFilter <ScriptBlock>]
- [<CommonParameters>]
+Format-Fine [-InputObject] <Object> [-TypeName <String[]>] [-NoValue] [-NumericTypes] [-SymbolicTypes]
+ [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -76,8 +76,25 @@ Accept wildcard characters: False
 Устанавливает параметр -HasValue в $True.
 
 ```yaml
-Type: PSObject
+Type: PSObject[]
 Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TypeName
+Параметр задает типы данных свойств объектов для использования в качестве фильтра.
+
+Поддерживает символы подстановки.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -270,7 +287,29 @@ IPEnabled      : False
 
 Получение только тех свойств, значения которых соответствуют указанным.
 
-### Example 3: Свойства, значения которых пусты или равны $null
+### Example 3: Свойства заданного типа
+```powershell
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -TypeName string, *int, 'ushort`[`]'
+```
+
+```
+Caption                      : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description                  : Hyper-V Virtual Switch Extension Adapter
+SettingID                    : {9DB15731-C0BE-421E-B21E-F3BDA6B18D6B}
+DatabasePath                 :
+DHCPServer                   :
+DNSDomain                    :
+DNSHostName                  :
+ForwardBufferMemory          :
+GatewayCostMetric            :
+Index                        : 10
+InterfaceIndex               : 3
+...
+```
+
+Получение только тех свойств, чей тип данных соответствует условию.
+
+### Example 4: Свойства, значения которых пусты или равны $null
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
 ```
@@ -293,7 +332,7 @@ DNSDomainSuffixSearchOrder   :
 
 Получение только тех свойств объектов, значения которых пусты или равны $null.
 
-### Example 4: Свойства, значения которых являются числовым типом
+### Example 5: Свойства, значения которых являются числовым типом
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
 ```
@@ -317,7 +356,7 @@ TcpWindowSize                :
 
 Получение только тех свойств объектов, значения которых являются числовым типом (Int, Double и т. д.).
 
-### Example 5: Свойства, значения которых являются символьным типом
+### Example 6: Свойства, значения которых являются символьным типом
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
 ```
@@ -343,7 +382,7 @@ PSComputerName      :
 
 Получение только тех свойств объектов, значения которых являются символьным типом (String, Char).
 
-### Example 6: Отображение чисел с разделителями групп
+### Example 7: Отображение чисел с разделителями групп
 ```powershell
 Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
 ```
@@ -359,7 +398,7 @@ MediaType              : 12
 
 Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.
 
-### Example 7: Отображение чисел в виде MB
+### Example 8: Отображение чисел в виде MB
 ```powershell
 Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
 ```
@@ -375,7 +414,7 @@ MediaType              : 12
 
 Использование параметра -NumbersAs для отображения чисел в виде MB.
 
-### Example 8: Отображение чисел в наиболее компактной форме
+### Example 9: Отображение чисел в наиболее компактной форме
 ```powershell
 Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 ```
@@ -391,7 +430,7 @@ MediaType              : 12
 
 Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.
 
-### Example 9: Свойства с заданными значениями
+### Example 10: Свойства с заданными значениями
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 ```
@@ -404,7 +443,7 @@ Caption                                             Description
 
 Получение только тех свойств, чьи значения соответствуют условию.
 
-### Example 10: Свойства заданного типа
+### Example 11: Свойства заданного типа
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 ```
