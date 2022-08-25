@@ -4,5 +4,5 @@
 
 ## Функции
 
-### [Format-File](docs/ru-ru/Format-Fine.md)
+### [Format-Fine](docs/ru-ru/Format-Fine.md)
 Форматирует и фильтрует вывод с использованием различных условий
