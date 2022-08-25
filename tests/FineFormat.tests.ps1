@@ -35,10 +35,13 @@ Describe "FineFormat" {
             eb = 6000000000000000000
         }
 
-        $CimClassPhysicalMemory = Get-CimClass -ClassName Win32_PhysicalMemory
-        $CimInstancePhysicalMemory = New-CimInstance -CimClass $CimClassPhysicalMemory -ClientOnly -Property @{FormFactor=8; Capacity=8589934592; DataWidth=64; InterleavePosition=1; MemoryType=24; Speed=1333; TotalWidth=64; Attributes=2; InterleaveDataDepth=1; SMBiosMemoryType=24; TypeDetail=128; Caption='Physical Memory'; Description='Physical Memory'; Name='Physical Memory'; Manufacturer='Kingston'; Tag='Physical Memory 0'; Banklabel='BANK 0'; DeviceLocator='ChannelA-DIMM0'}
-        $CimClassLogicalDisk = Get-CimClass -ClassName Win32_LogicalDisk
-        $CimInstanceLogicalDisk = New-CimInstance -CimClass $CimClassLogicalDisk -ClientOnly -Property @{DeviceID='C:'; Caption='C:'; Description='Local Fixed Disk'; Name='C:'; CreationClassName='Win32_LogicalDisk'; SystemCreationClassName='Win32_ComputerSystem'; Access=0; FreeSpace=57682386944; Size=214223253504; Compressed=$False; DriveType=3; FileSystem='NTFS'; MaximumComponentLength=255; MediaType=12; QuotasDisabled=$True; QuotasIncomplete=$False; QuotasRebuilding=$False; SupportsDiskQuotas=$True; SupportsFileBasedCompression=$True; VolumeDirty=$False; VolumeSerialNumber='1234ABCD'}
+        if (-not ($IsLinux -or $IsMacOS))
+        {
+            $CimClassPhysicalMemory = Get-CimClass -ClassName Win32_PhysicalMemory
+            $CimInstancePhysicalMemory = New-CimInstance -CimClass $CimClassPhysicalMemory -ClientOnly -Property @{FormFactor=8; Capacity=8589934592; DataWidth=64; InterleavePosition=1; MemoryType=24; Speed=1333; TotalWidth=64; Attributes=2; InterleaveDataDepth=1; SMBiosMemoryType=24; TypeDetail=128; Caption='Physical Memory'; Description='Physical Memory'; Name='Physical Memory'; Manufacturer='Kingston'; Tag='Physical Memory 0'; Banklabel='BANK 0'; DeviceLocator='ChannelA-DIMM0'}
+            $CimClassLogicalDisk = Get-CimClass -ClassName Win32_LogicalDisk
+            $CimInstanceLogicalDisk = New-CimInstance -CimClass $CimClassLogicalDisk -ClientOnly -Property @{DeviceID='C:'; Caption='C:'; Description='Local Fixed Disk'; Name='C:'; CreationClassName='Win32_LogicalDisk'; SystemCreationClassName='Win32_ComputerSystem'; Access=0; FreeSpace=57682386944; Size=214223253504; Compressed=$False; DriveType=3; FileSystem='NTFS'; MaximumComponentLength=255; MediaType=12; QuotasDisabled=$True; QuotasIncomplete=$False; QuotasRebuilding=$False; SupportsDiskQuotas=$True; SupportsFileBasedCompression=$True; VolumeDirty=$False; VolumeSerialNumber='1234ABCD'}
+        }
 
     }
 
@@ -102,7 +105,7 @@ Describe "FineFormat" {
 
     Context "-Value" {
 
-        Context "-Value string>" {
+        Context "-Value string" {
 
             BeforeAll {
                 $result = $Object1 | Format-Fine -Value "str"
@@ -249,7 +252,26 @@ Describe "FineFormat" {
 
     Context "-TypeName" {
 
-        Context "-TypeName uint" {
+        Context "-TypeName System.String" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -TypeName System.String
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'String')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('', "It's a string")
+            }
+        }
+
+        Context "-TypeName uint" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
                 $result = $CimInstanceLogicalDisk | Format-Fine -TypeName uint
@@ -269,6 +291,25 @@ Describe "FineFormat" {
         }
 
         Context "-TypeName array" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -TypeName *int*, 'System.Object`[`]'
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+    
+            It "Has correct property" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'ArrayInteger', 'ArrayString', 'ArrayEmptyString', 'EmptyArray')
+            }
+    
+            It "Has correct value" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, 1, 2, 3, 'One', 'Two', 'Three', '')
+            }
+        }
+
+        Context "-TypeName array cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
                 $result = $CimInstanceLogicalDisk | Format-Fine -TypeName *int, 'ushort`[`]'
@@ -326,7 +367,7 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-NumericTypes 2" {
+    Context "-NumericTypes cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
             $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes
@@ -364,7 +405,7 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-SymbolicTypes 2" {
+    Context "-SymbolicTypes cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
             $result = $CimInstancePhysicalMemory | Format-Fine -SymbolicTypes
@@ -402,7 +443,7 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-ValueFilter 2" {
+    Context "-ValueFilter cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
             $result = $CimInstancePhysicalMemory | ff -ValueFilter {$PSItem -le 128}
@@ -440,7 +481,7 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-TypeNameFilter 2" {
+    Context "-TypeNameFilter cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
             $result = $CimInstancePhysicalMemory | ff -TypeNameFilter {$PSItem -like "uint"}
@@ -481,6 +522,25 @@ Describe "FineFormat" {
     Context "-NumberGroupSeparator" {
 
         BeforeAll {
+            $result = $Object2 | ff -NumberGroupSeparator
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", "1${gs}024", "2${gs}000${gs}000", "3${gs}000${gs}000${gs}000", "4${gs}000${gs}000${gs}000${gs}000", "5${gs}000${gs}000${gs}000${gs}000${gs}000", "6${gs}000${gs}000${gs}000${gs}000${gs}000${gs}000")
+        }
+    }
+
+    Context "-NumberGroupSeparator cim" -Skip:($IsLinux -or $IsMacOS) {
+
+        BeforeAll {
             $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumberGroupSeparator
         }
 
@@ -519,6 +579,25 @@ Describe "FineFormat" {
     Context "-NumbersAs KB" {
 
         BeforeAll {
+            $result = $Object2 | ff -NumbersAs KB
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1953${ds}13 KB", "2929687${ds}5 KB", "3906250000 KB", "4882812500000 KB", "5859375000000000 KB")
+        }
+    }
+
+    Context "-NumbersAs KB cim" -Skip:($IsLinux -or $IsMacOS) {
+
+        BeforeAll {
             $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs KB
         }
 
@@ -538,6 +617,25 @@ Describe "FineFormat" {
     Context "-NumbersAs MB" {
 
         BeforeAll {
+            $result = $Object2 | ff -NumbersAs MB
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "1${ds}91 MB", "2861${ds}02 MB", "3814697${ds}27 MB", "4768371582${ds}03 MB", "5722045898437${ds}5 MB")
+        }
+    }
+
+    Context "-NumbersAs MB cim" -Skip:($IsLinux -or $IsMacOS) {
+
+        BeforeAll {
             $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs MB
         }
 
@@ -555,6 +653,25 @@ Describe "FineFormat" {
     }
 
     Context "-NumbersAs GB" {
+
+        BeforeAll {
+            $result = $Object2 | ff -NumbersAs GB
+        }
+
+        It "Has 6 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "2000000", "2${ds}79 GB", "3725${ds}29 GB", "4656612${ds}87 GB", "5587935447${ds}69 GB")
+        }
+    }
+
+    Context "-NumbersAs GB cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
             $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs GB
