@@ -1,4 +1,4 @@
-$NumbersAsValues = @('KB', 'MB', 'GB', 'TB', 'PB')
+$Units = @('KB', 'MB', 'GB', 'TB', 'PB')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
@@ -60,7 +60,7 @@ function Format-Fine
 
         else
         {
-            if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
+            if ($NumbersAs -and $NumbersAs -notin $Units)
             {
                 Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
             }
@@ -88,6 +88,15 @@ function Format-Fine
                         }
                     }
                 }
+            }
+
+            if ($NumberGroupSeparator)
+            {
+                $template = "{0:#,0.##}"
+            }
+            elseif ($NumbersAs -or $CompactNumbers)
+            {
+                $template = "{0:0.##}"
             }
         }
     }
@@ -127,15 +136,6 @@ function Format-Fine
                     continue
                 }
 
-                if ($NumberGroupSeparator)
-                {
-                    $template = "{0:#,0.##}"
-                }
-                elseif ($NumbersAs -or $CompactNumbers)
-                {
-                    $template = "{0:0.##}"
-                }
-
                 if ($CompactNumbers)
                 {
                     $pvalue = $p.Value
@@ -155,45 +155,58 @@ function Format-Fine
                                     break
                                 }
                             }
-                            $template += " $($NumbersAsValues[$i])"
+                            # $template += " $($Units[$i])"
+                            $hash.Add($p.Name, "$($template -f $pvalue) $($Units[$i])")
                         }
-                        $hash.Add($p.Name, $template -f $pvalue)
+                        else
+                        {
+                            $hash.Add($p.Name, $template -f $pvalue)
+                        }
                     }
                     else
                     {
                         $hash.Add($p.Name, $p.Value)
                     }
                 }
-                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
+                elseif ($NumbersAs -in $Units -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
                     $pvalue = $p.Value
 
                     if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
                     {
-                        $template += " KB"
+                        # $template += " KB"
+                        $suffix = " KB"
                         $pvalue /= 1KB
                     }
                     elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
                     {
-                        $template += " MB"
+                        # $template += " MB"
+                        $suffix = " MB"
                         $pvalue /= 1MB
                     }
                     elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
                     {
-                        $template += " GB"
+                        # $template += " GB"
+                        $suffix = " GB"
                         $pvalue /= 1GB
                     }
                     elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
                     {
-                        $template += " TB"
+                        # $template += " TB"
+                        $suffix = " TB"
                         $pvalue /= 1TB
                     }
                     elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
                     {
-                        $template += " PB"
+                        # $template += " PB"
+                        $suffix = " PB"
                         $pvalue /= 1PB
                     }
-                    $hash.Add($p.Name, $template -f $pvalue)
+                    else
+                    {
+                        $suffix = ""
+                    }
+                    $hash.Add($p.Name, "$($template -f $pvalue)$suffix")
 
                 }
                 elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
