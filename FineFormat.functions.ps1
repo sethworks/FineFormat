@@ -139,22 +139,30 @@ function Format-Fine
                 if ($CompactNumbers)
                 {
                     $pvalue = $p.Value
-                    if ([Math]::Truncate($pvalue / 1KB))
+                    # if ([Math]::Truncate($pvalue / 1KB))
+                    if ([double]::TryParse($pvalue, [ref]$null))
                     {
-                        $pvalue /= 1KB
-                        $i = 0
-                        while ([Math]::Truncate($pvalue / 1KB))
+                        if ([Math]::Truncate($pvalue / 1KB))
                         {
                             $pvalue /= 1KB
-                            $i++
-                            if ($i -eq 4)
+                            $i = 0
+                            while ([Math]::Truncate($pvalue / 1KB))
                             {
-                                break
+                                $pvalue /= 1KB
+                                $i++
+                                if ($i -eq 4)
+                                {
+                                    break
+                                }
                             }
+                            $template += " $($NumbersAsValues[$i])"
                         }
-                        $template += " $($NumbersAsValues[$i])"
+                        $hash.Add($p.Name, $template -f $pvalue)
                     }
-                    $hash.Add($p.Name, $template -f $pvalue)
+                    else
+                    {
+                        $hash.Add($p.Name, $p.Value)
+                    }
                 }
                 elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
