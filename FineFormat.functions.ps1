@@ -199,7 +199,10 @@ function Format-Fine
                     $hash.Add($p.Name, $p.Value)
                 }
             }
-            [PSCustomObject]$hash
+            if ($hash.Count)
+            {
+                [PSCustomObject]$hash
+            }
         }
     }
 }
