@@ -20,13 +20,18 @@ Describe "FineFormat" {
             EmptyArray = @()
         } | Add-Member -TypeName 'SomeObject' -PassThru
 
-        $ObjectForCompaction = [PSCustomObject]@{
+        $gs = (Get-Culture).NumberFormat.NumberGroupSeparator
+        $ds = (Get-Culture).NumberFormat.NumberDecimalSeparator
+
+        $Numbers = [PSCustomObject]@{
             pl = 512
+            fl = [double]::Parse("512.256", [cultureinfo]::InvariantCulture)
             kb = 1024
             mb = 2000000
             gb = 3000000000
             tb = 4000000000000
             pb = 5000000000000000
+            eb = 6000000000000000000
         }
 
         $CimClassPhysicalMemory = Get-CimClass -ClassName Win32_PhysicalMemory
@@ -34,8 +39,6 @@ Describe "FineFormat" {
         $CimClassLogicalDisk = Get-CimClass -ClassName Win32_LogicalDisk
         $CimInstanceLogicalDisk = New-CimInstance -CimClass $CimClassLogicalDisk -ClientOnly -Property @{DeviceID='C:'; Caption='C:'; Description='Local Fixed Disk'; Name='C:'; CreationClassName='Win32_LogicalDisk'; SystemCreationClassName='Win32_ComputerSystem'; Access=0; FreeSpace=57682386944; Size=214223253504; Compressed=$False; DriveType=3; FileSystem='NTFS'; MaximumComponentLength=255; MediaType=12; QuotasDisabled=$True; QuotasIncomplete=$False; QuotasRebuilding=$False; SupportsDiskQuotas=$True; SupportsFileBasedCompression=$True; VolumeDirty=$False; VolumeSerialNumber='1234ABCD'}
 
-        $gs = (Get-Culture).NumberFormat.NumberGroupSeparator
-        $ds = (Get-Culture).NumberFormat.NumberDecimalSeparator
     }
 
     Context "Without parameters" {
@@ -455,6 +458,25 @@ Describe "FineFormat" {
         }
     }
 
+    Context "-CompactNumbers" {
+
+        BeforeAll {
+            $result = $Numbers | ff -CompactNumbers
+        }
+
+        It "Has 8 properties" {
+            $result.PSObject.Properties | Should -HaveCount 8
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5329${ds}07 PB")
+        }
+    }
+
     Context "-NumberGroupSeparator" {
 
         BeforeAll {
@@ -471,6 +493,25 @@ Describe "FineFormat" {
 
         It "Has correct values" {
             $result.PSObject.Properties.Value | Should -BeExactly @('0', "57${gs}682${gs}386${gs}944", "214${gs}223${gs}253${gs}504", '3', '255', '12')
+        }
+    }
+
+    Context "-CompactNumbers -NumberGroupSeparator" {
+
+        BeforeAll {
+            $result = $Numbers | ff -CompactNumbers -NumberGroupSeparator
+        }
+
+        It "Has 8 properties" {
+            $result.PSObject.Properties | Should -HaveCount 8
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5${gs}329${ds}07 PB")
         }
     }
 
@@ -534,77 +575,57 @@ Describe "FineFormat" {
     Context "-NumbersAs TB" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs TB
+            $result = $Numbers | ff -NumbersAs TB
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 8 properties" {
+            $result.PSObject.Properties | Should -HaveCount 8
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB", "5456968${ds}21 TB")
         }
     }
 
     Context "-NumbersAs PB" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs PB
+            $result = $Numbers | ff -NumbersAs PB
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 8 properties" {
+            $result.PSObject.Properties | Should -HaveCount 8
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB", "5329${ds}07 PB")
         }
     }
 
     Context "-NumbersAs wrong value" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs wrongvalue 3> $null
+            $result = $Numbers | ff -NumbersAs wrongvalue 3> $null
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', '5000000000000000')
-        }
-    }
-
-    Context "-CompactNumbers" {
-
-        BeforeAll {
-            $result = $ObjectForCompaction  | ff -CompactNumbers
-        }
-
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 8 properties" {
+            $result.PSObject.Properties | Should -HaveCount 8
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('512', "512${ds}256", '1024', '2000000', '3000000000', '4000000000000', '5000000000000000', '6000000000000000000')
         }
     }
-
 }
