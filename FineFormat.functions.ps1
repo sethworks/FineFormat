@@ -139,30 +139,20 @@ function Format-Fine
 
                 if ($CompactNumbers)
                 {
-                    $pvalue = $p.Value
-                    # if ([Math]::Truncate($pvalue / 1KB))
-                    if ([double]::TryParse($pvalue, [ref]$null))
+                    if ([double]::TryParse($p.Value, [ref]$null))
                     {
                         $i = 0
-                        # if ([Math]::Truncate($pvalue / 1KB))
-                        # {
-                            # $pvalue /= 1KB
-                            while ([Math]::Truncate($pvalue / 1KB))
+                        $pvalue = $p.Value
+                        while ([Math]::Truncate($pvalue / 1KB))
+                        {
+                            $pvalue /= 1KB
+                            $i++
+                            if ($i -eq 5)
                             {
-                                $pvalue /= 1KB
-                                $i++
-                                if ($i -eq 5)
-                                {
-                                    break
-                                }
+                                break
                             }
-                            # $template += " $($Units[$i])"
-                            $hash.Add($p.Name, "$($template -f $pvalue)$($UnitsString[$i])")
-                        # }
-                        # else
-                        # {
-                        #     $hash.Add($p.Name, $template -f $pvalue)
-                        # }
+                        }
+                        $hash.Add($p.Name, "$($template -f $pvalue)$($UnitsString[$i])")
                     }
                     else
                     {
@@ -175,46 +165,30 @@ function Format-Fine
                     $i = 0
                     if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
                     {
-                        # $template += " KB"
-                        # $suffix = " KB"
                         $pvalue /= 1KB
                         $i = 1
                     }
                     elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
                     {
-                        # $template += " MB"
-                        # $suffix = " MB"
                         $pvalue /= 1MB
                         $i = 2
                     }
                     elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
                     {
-                        # $template += " GB"
-                        # $suffix = " GB"
                         $pvalue /= 1GB
                         $i = 3
                     }
                     elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
                     {
-                        # $template += " TB"
-                        # $suffix = " TB"
                         $pvalue /= 1TB
                         $i = 4
                     }
                     elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
                     {
-                        # $template += " PB"
-                        # $suffix = " PB"
                         $pvalue /= 1PB
                         $i = 5
                     }
-                    # else
-                    # {
-                    #     $suffix = ""
-                    # }
-                    # $hash.Add($p.Name, "$($template -f $pvalue)$suffix")
                     $hash.Add($p.Name, "$($template -f $pvalue)$($UnitsString[$i])")
-
                 }
                 elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
