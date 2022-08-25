@@ -1,0 +1,19 @@
+name: Deploy
+on:
+  release:
+    types: [released]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Publish
+        env:
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+        shell: pwsh
+        run: |
+          ./helpers/deploy_linux_user.ps1
+          Publish-Module -Path ~/.local/share/powershell/Modules/FineFormat -NuGetApiKey $env:NUGET_KEY -Verbose
