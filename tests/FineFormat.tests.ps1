@@ -6,7 +6,7 @@ BeforeAll {
 Describe "FineFormat" {
 
     BeforeAll {
-        $SomeObject = [PSCustomObject]@{
+        $Object1 = [PSCustomObject]@{
             IntegerZero = [int]0
             Integer = [int]15
             EmptyString = [string]""
@@ -18,15 +18,21 @@ Describe "FineFormat" {
             ArrayString = @('One', 'Two', 'Three')
             ArrayEmptyString = @("")
             EmptyArray = @()
-        } | Add-Member -TypeName 'SomeObject' -PassThru
+        } | Add-Member -TypeName 'Object1' -PassThru
 
-        $ObjectForCompaction = [PSCustomObject]@{
+        $gs = (Get-Culture).NumberFormat.NumberGroupSeparator
+        $ds = (Get-Culture).NumberFormat.NumberDecimalSeparator
+
+        $Object2 = [PSCustomObject]@{
+            st = 'String'
             pl = 512
+            fl = [double]::Parse("512.256", [cultureinfo]::InvariantCulture)
             kb = 1024
             mb = 2000000
             gb = 3000000000
             tb = 4000000000000
             pb = 5000000000000000
+            eb = 6000000000000000000
         }
 
         $CimClassPhysicalMemory = Get-CimClass -ClassName Win32_PhysicalMemory
@@ -34,14 +40,12 @@ Describe "FineFormat" {
         $CimClassLogicalDisk = Get-CimClass -ClassName Win32_LogicalDisk
         $CimInstanceLogicalDisk = New-CimInstance -CimClass $CimClassLogicalDisk -ClientOnly -Property @{DeviceID='C:'; Caption='C:'; Description='Local Fixed Disk'; Name='C:'; CreationClassName='Win32_LogicalDisk'; SystemCreationClassName='Win32_ComputerSystem'; Access=0; FreeSpace=57682386944; Size=214223253504; Compressed=$False; DriveType=3; FileSystem='NTFS'; MaximumComponentLength=255; MediaType=12; QuotasDisabled=$True; QuotasIncomplete=$False; QuotasRebuilding=$False; SupportsDiskQuotas=$True; SupportsFileBasedCompression=$True; VolumeDirty=$False; VolumeSerialNumber='1234ABCD'}
 
-        $gs = (Get-Culture).NumberFormat.NumberGroupSeparator
-        $ds = (Get-Culture).NumberFormat.NumberDecimalSeparator
     }
 
     Context "Without parameters" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine
+            $result = $Object1 | Format-Fine
         }
 
         It "Has 7 properties" {
@@ -61,7 +65,7 @@ Describe "FineFormat" {
     Context "-HasValue" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -HasValue
+            $result = $Object1 | Format-Fine -HasValue
         }
 
         It "Has 7 properties" {
@@ -80,7 +84,7 @@ Describe "FineFormat" {
     Context "-NoValue" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -NoValue
+            $result = $Object1 | Format-Fine -NoValue
         }
 
         It "Has 4 properties" {
@@ -101,7 +105,7 @@ Describe "FineFormat" {
         Context "-Value string>" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value "str"
+                $result = $Object1 | Format-Fine -Value "str"
             }
 
             It "Should be null" {
@@ -112,7 +116,7 @@ Describe "FineFormat" {
         Context "-Value *string*" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value "*str*"
+                $result = $Object1 | Format-Fine -Value "*str*"
             }
 
             It "Has 1 property" {
@@ -131,7 +135,7 @@ Describe "FineFormat" {
         Context "-Value number" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value 15
+                $result = $Object1 | Format-Fine -Value 15
             }
 
             It "Has 1 property" {
@@ -150,7 +154,7 @@ Describe "FineFormat" {
         Context "-Value number*" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value 1*
+                $result = $Object1 | Format-Fine -Value 1*
             }
 
             It "Has 2 properties" {
@@ -169,7 +173,7 @@ Describe "FineFormat" {
         Context "-Value True" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value $true
+                $result = $Object1 | Format-Fine -Value $true
             }
 
             It "Has 1 property" {
@@ -188,7 +192,7 @@ Describe "FineFormat" {
         Context "-Value False" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value $false
+                $result = $Object1 | Format-Fine -Value $false
             }
 
             It "Has 1 property" {
@@ -207,7 +211,7 @@ Describe "FineFormat" {
         Context "-Value array" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value "*str*", 1*
+                $result = $Object1 | Format-Fine -Value "*str*", 1*
             }
 
             It "Has 3 properties" {
@@ -226,7 +230,7 @@ Describe "FineFormat" {
         Context "-Value star" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -Value *
+                $result = $Object1 | Format-Fine -Value *
             }
 
             It "Has 7 properties" {
@@ -286,7 +290,7 @@ Describe "FineFormat" {
         Context "-TypeName star" {
 
             BeforeAll {
-                $result = $SomeObject | Format-Fine -TypeName *
+                $result = $Object1 | Format-Fine -TypeName *
             }
 
             It "Has 1 properties" {
@@ -306,7 +310,7 @@ Describe "FineFormat" {
     Context "-NumericTypes" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -NumericTypes
+            $result = $Object1 | Format-Fine -NumericTypes
         }
 
         It "Has 2 properties" {
@@ -344,7 +348,7 @@ Describe "FineFormat" {
     Context "-SymbolicTypes" {
 
         BeforeAll {
-            $result = $SomeObject | Format-Fine -SymbolicTypes
+            $result = $Object1 | Format-Fine -SymbolicTypes
         }
 
         It "Has 2 properties" {
@@ -382,7 +386,7 @@ Describe "FineFormat" {
     Context "-ValueFilter" {
 
         BeforeAll {
-            $result = $SomeObject | ff -ValueFilter {$PSItem -like "*ing"}
+            $result = $Object1 | ff -ValueFilter {$PSItem -like "*ing"}
         }
 
         It "Has 1 property" {
@@ -420,7 +424,7 @@ Describe "FineFormat" {
     Context "-TypeNameFilter" {
 
         BeforeAll {
-            $result = $SomeObject | ff -TypeNameFilter {$PSItem -like "*Int32"}
+            $result = $Object1 | ff -TypeNameFilter {$PSItem -like "*Int32"}
         }
 
         It "Has 2 properties" {
@@ -455,6 +459,25 @@ Describe "FineFormat" {
         }
     }
 
+    Context "-CompactNumbers" {
+
+        BeforeAll {
+            $result = $Object2 | ff -CompactNumbers
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5329${ds}07 PB")
+        }
+    }
+
     Context "-NumberGroupSeparator" {
 
         BeforeAll {
@@ -471,6 +494,25 @@ Describe "FineFormat" {
 
         It "Has correct values" {
             $result.PSObject.Properties.Value | Should -BeExactly @('0', "57${gs}682${gs}386${gs}944", "214${gs}223${gs}253${gs}504", '3', '255', '12')
+        }
+    }
+
+    Context "-CompactNumbers -NumberGroupSeparator" {
+
+        BeforeAll {
+            $result = $Object2 | ff -CompactNumbers -NumberGroupSeparator
+        }
+
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
+        }
+
+        It "Has correct properties" {
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        }
+
+        It "Has correct values" {
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5${gs}329${ds}07 PB")
         }
     }
 
@@ -534,77 +576,57 @@ Describe "FineFormat" {
     Context "-NumbersAs TB" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs TB
+            $result = $Object2 | ff -NumbersAs TB
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB", "5456968${ds}21 TB")
         }
     }
 
     Context "-NumbersAs PB" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs PB
+            $result = $Object2 | ff -NumbersAs PB
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB", "5329${ds}07 PB")
         }
     }
 
     Context "-NumbersAs wrong value" {
 
         BeforeAll {
-            $result = $ObjectForCompaction | ff -NumbersAs wrongvalue 3> $null
+            $result = $Object2 | ff -NumbersAs wrongvalue 3> $null
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1024', '2000000', '3000000000', '4000000000000', '5000000000000000')
-        }
-    }
-
-    Context "-CompactNumbers" {
-
-        BeforeAll {
-            $result = $ObjectForCompaction  | ff -CompactNumbers
-        }
-
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        It "Has 9 properties" {
+            $result.PSObject.Properties | Should -HaveCount 9
         }
 
         It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('pl', 'kb', 'mb', 'gb', 'tb', 'pb')
+            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('512', '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}256", '1024', '2000000', '3000000000', '4000000000000', '5000000000000000', '6000000000000000000')
         }
     }
-
 }

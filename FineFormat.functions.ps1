@@ -1,4 +1,5 @@
-$NumbersAsValues = @('KB', 'MB', 'GB', 'TB', 'PB')
+$Units = @('KB', 'MB', 'GB', 'TB', 'PB')
+$UnitsString = @('', ' KB', ' MB', ' GB', ' TB', ' PB')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
@@ -60,7 +61,7 @@ function Format-Fine
 
         else
         {
-            if ($NumbersAs -and $NumbersAs -notin $NumbersAsValues)
+            if ($NumbersAs -and $NumbersAs -notin $Units)
             {
                 Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
             }
@@ -88,6 +89,15 @@ function Format-Fine
                         }
                     }
                 }
+            }
+
+            if ($NumberGroupSeparator)
+            {
+                $template = "{0:#,0.##}"
+            }
+            elseif ($NumbersAs -or $CompactNumbers)
+            {
+                $template = "{0:0.##}"
             }
         }
     }
@@ -127,66 +137,58 @@ function Format-Fine
                     continue
                 }
 
-                if ($NumberGroupSeparator)
-                {
-                    $template = "{0:#,0.##}"
-                }
-                elseif ($NumbersAs -or $CompactNumbers)
-                {
-                    $template = "{0:0.##}"
-                }
-
                 if ($CompactNumbers)
                 {
-                    $pvalue = $p.Value
-                    if ([Math]::Truncate($pvalue / 1KB))
+                    if ([double]::TryParse($p.Value, [ref]$null))
                     {
-                        $pvalue /= 1KB
                         $i = 0
+                        $pvalue = $p.Value
                         while ([Math]::Truncate($pvalue / 1KB))
                         {
                             $pvalue /= 1KB
                             $i++
-                            if ($i -eq 4)
+                            if ($i -eq 5)
                             {
                                 break
                             }
                         }
-                        $template += " $($NumbersAsValues[$i])"
+                        $hash.Add($p.Name, "$($template -f $pvalue)$($UnitsString[$i])")
                     }
-                    $hash.Add($p.Name, $template -f $pvalue)
+                    else
+                    {
+                        $hash.Add($p.Name, $p.Value)
+                    }
                 }
-                elseif ($NumbersAs -in $NumbersAsValues -and $p.TypeNameOfValue -match $NumericTypesExpression)
+                elseif ($NumbersAs -in $Units -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
                     $pvalue = $p.Value
-
+                    $i = 0
                     if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
                     {
-                        $template += " KB"
                         $pvalue /= 1KB
+                        $i = 1
                     }
                     elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
                     {
-                        $template += " MB"
                         $pvalue /= 1MB
+                        $i = 2
                     }
                     elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
                     {
-                        $template += " GB"
                         $pvalue /= 1GB
+                        $i = 3
                     }
                     elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
                     {
-                        $template += " TB"
                         $pvalue /= 1TB
+                        $i = 4
                     }
                     elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
                     {
-                        $template += " PB"
                         $pvalue /= 1PB
+                        $i = 5
                     }
-                    $hash.Add($p.Name, $template -f $pvalue)
-
+                    $hash.Add($p.Name, "$($template -f $pvalue)$($UnitsString[$i])")
                 }
                 elseif ($NumberGroupSeparator -and $p.TypeNameOfValue -match $NumericTypesExpression)
                 {
