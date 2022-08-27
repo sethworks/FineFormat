@@ -72,9 +72,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CompactNumbers</maml:name>
           <maml:description>
-            <maml:para>Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.</maml:para>
-            <maml:para>Если число меньше 1KB, то оно отображается без изменений.</maml:para>
-            <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+            <maml:para>Отображает числа в виде Kilo, Mega, Giga, Tera или Peta в зависимости от их величины.</maml:para>
+            <maml:para>Если число меньше 1K, то оно отображается без изменений.</maml:para>
+            <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
             <maml:para>Этот параметр имеет приоритет перед параметром -NumbersAs.</maml:para>
           </maml:description>
           <dev:type>
@@ -98,9 +98,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NumbersAs</maml:name>
           <maml:description>
-            <maml:para>Отображает числа в виде KB, MB, GB, TB или PB.</maml:para>
+            <maml:para>Отображает числа в виде Kilo, Mega, Giga, Tera или Peta.</maml:para>
             <maml:para>Если число меньше, чем указанная единица измерения, то оно отображается без изменений.</maml:para>
-            <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+            <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
             <maml:para>Параметр -CompactNumbers имеет приоритет перед этим параметром.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -294,9 +294,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>CompactNumbers</maml:name>
         <maml:description>
-          <maml:para>Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.</maml:para>
-          <maml:para>Если число меньше 1KB, то оно отображается без изменений.</maml:para>
-          <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+          <maml:para>Отображает числа в виде Kilo, Mega, Giga, Tera или Peta в зависимости от их величины.</maml:para>
+          <maml:para>Если число меньше 1K, то оно отображается без изменений.</maml:para>
+          <maml:para>Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
           <maml:para>Этот параметр имеет приоритет перед параметром -NumbersAs.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
@@ -335,9 +335,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NumbersAs</maml:name>
         <maml:description>
-          <maml:para>Отображает числа в виде KB, MB, GB, TB или PB.</maml:para>
+          <maml:para>Отображает числа в виде Kilo, Mega, Giga, Tera или Peta.</maml:para>
           <maml:para>Если число меньше, чем указанная единица измерения, то оно отображается без изменений.</maml:para>
-          <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
+          <maml:para>Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.</maml:para>
           <maml:para>Параметр -CompactNumbers имеет приоритет перед этим параметром.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -573,17 +573,17 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------------ Example 8: Отображение чисел в виде MB ------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+        <maml:title>----------- Example 8: Отображение чисел в виде Mega -----------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
 
 Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
+FreeSpace              : 55,018.6 M
+Size                   : 204,299.21 M
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12</dev:code>
         <dev:remarks>
-          <maml:para>Использование параметра -NumbersAs для отображения чисел в виде MB.</maml:para>
+          <maml:para>Использование параметра -NumbersAs для отображения чисел в виде Mega.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
@@ -593,13 +593,13 @@ MediaType              : 12</dev:code>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 
 Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
+FreeSpace              : 53.73 G
+Size                   : 199.51 G
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12</dev:code>
         <dev:remarks>
-          <maml:para>Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.</maml:para>
+          <maml:para>Отображение чисел в их наиболее компактной форме с использованием таких величин, как Kilo, Mega, Giga, Tera и Peta.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>

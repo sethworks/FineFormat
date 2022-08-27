@@ -105,11 +105,11 @@ Accept wildcard characters: False
 ```
 
 ### -CompactNumbers
-Отображает числа в виде KB, MB, GB, TB или PB в зависимости от их величины.
+Отображает числа в виде Kilo, Mega, Giga, Tera или Peta в зависимости от их величины.
 
-Если число меньше 1KB, то оно отображается без изменений.
+Если число меньше 1K, то оно отображается без изменений.
 
-Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
+Параметр отличается от параметра -NumbersAs в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
 
 Этот параметр имеет приоритет перед параметром -NumbersAs.
 
@@ -160,11 +160,11 @@ Accept wildcard characters: False
 ```
 
 ### -NumbersAs
-Отображает числа в виде KB, MB, GB, TB или PB.
+Отображает числа в виде Kilo, Mega, Giga, Tera или Peta.
 
 Если число меньше, чем указанная единица измерения, то оно отображается без изменений.
 
-Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (KB, MB и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
+Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
 
 Параметр -CompactNumbers имеет приоритет перед этим параметром.
 
@@ -398,21 +398,21 @@ MediaType              : 12
 
 Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.
 
-### Example 8: Отображение чисел в виде MB
+### Example 8: Отображение чисел в виде Mega
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
 ```
 
 ```
 Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
+FreeSpace              : 55,018.6 M
+Size                   : 204,299.21 M
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12
 ```
 
-Использование параметра -NumbersAs для отображения чисел в виде MB.
+Использование параметра -NumbersAs для отображения чисел в виде Mega.
 
 ### Example 9: Отображение чисел в наиболее компактной форме
 ```powershell
@@ -421,14 +421,14 @@ Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasVa
 
 ```
 Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
+FreeSpace              : 53.73 G
+Size                   : 199.51 G
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12
 ```
 
-Отображение чисел в их наиболее компактной форме с использованием таких единиц измерения, как KB, MB, GB, TB и PB.
+Отображение чисел в их наиболее компактной форме с использованием таких величин, как Kilo, Mega, Giga, Tera и Peta.
 
 ### Example 10: Свойства с заданными значениями
 ```powershell
