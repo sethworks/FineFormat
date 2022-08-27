@@ -515,7 +515,7 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5329${ds}07 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5329${ds}07 P")
         }
     }
 
@@ -572,14 +572,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1${ds}91 MB", "2${ds}79 GB", "3${ds}64 TB", "4${ds}44 PB", "5${gs}329${ds}07 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5${gs}329${ds}07 P")
         }
     }
 
-    Context "-NumbersAs KB" {
+    Context "-NumbersAs Kilo" {
 
         BeforeAll {
-            $result = $Object2 | ff -NumbersAs KB
+            $result = $Object2 | ff -NumbersAs Kilo
         }
 
         It "Has 9 properties" {
@@ -591,14 +591,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 KB', "1953${ds}13 KB", "2929687${ds}5 KB", "3906250000 KB", "4882812500000 KB", "5859375000000000 KB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1953${ds}13 K", "2929687${ds}5 K", "3906250000 K", "4882812500000 K", "5859375000000000 K")
         }
     }
 
-    Context "-NumbersAs KB cim" -Skip:($IsLinux -or $IsMacOS) {
+    Context "-NumbersAs Kilo cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs KB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Kilo
         }
 
         It "Has 6 properties" {
@@ -610,14 +610,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', '56330456 KB', '209202396 KB', '3', '255', '12')
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', '56330456 K', '209202396 K', '3', '255', '12')
         }
     }
 
-    Context "-NumbersAs MB" {
+    Context "-NumbersAs Mega" {
 
         BeforeAll {
-            $result = $Object2 | ff -NumbersAs MB
+            $result = $Object2 | ff -NumbersAs Mega
         }
 
         It "Has 9 properties" {
@@ -629,14 +629,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "1${ds}91 MB", "2861${ds}02 MB", "3814697${ds}27 MB", "4768371582${ds}03 MB", "5722045898437${ds}5 MB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "1${ds}91 M", "2861${ds}02 M", "3814697${ds}27 M", "4768371582${ds}03 M", "5722045898437${ds}5 M")
         }
     }
 
-    Context "-NumbersAs MB cim" -Skip:($IsLinux -or $IsMacOS) {
+    Context "-NumbersAs Mega cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs MB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Mega
         }
 
         It "Has 6 properties" {
@@ -648,14 +648,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', "55010${ds}21 MB", "204299${ds}21 MB", '3', '255', '12')
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', "55010${ds}21 M", "204299${ds}21 M", '3', '255', '12')
         }
     }
 
-    Context "-NumbersAs GB" {
+    Context "-NumbersAs Giga" {
 
         BeforeAll {
-            $result = $Object2 | ff -NumbersAs GB
+            $result = $Object2 | ff -NumbersAs Giga
         }
 
         It "Has 6 properties" {
@@ -667,14 +667,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "2000000", "2${ds}79 GB", "3725${ds}29 GB", "4656612${ds}87 GB", "5587935447${ds}69 GB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "2000000", "2${ds}79 G", "3725${ds}29 G", "4656612${ds}87 G", "5587935447${ds}69 G")
         }
     }
 
-    Context "-NumbersAs GB cim" -Skip:($IsLinux -or $IsMacOS) {
+    Context "-NumbersAs Giga cim" -Skip:($IsLinux -or $IsMacOS) {
 
         BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs GB
+            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Giga
         }
 
         It "Has 6 properties" {
@@ -686,14 +686,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', "53${ds}72 GB", "199${ds}51 GB", '3', '255', '12')
+            $result.PSObject.Properties.Value | Should -BeExactly @('0', "53${ds}72 G", "199${ds}51 G", '3', '255', '12')
         }
     }
 
-    Context "-NumbersAs TB" {
+    Context "-NumbersAs Tera" {
 
         BeforeAll {
-            $result = $Object2 | ff -NumbersAs TB
+            $result = $Object2 | ff -NumbersAs Tera
         }
 
         It "Has 9 properties" {
@@ -705,14 +705,14 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 TB", "4547${ds}47 TB", "5456968${ds}21 TB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 T", "4547${ds}47 T", "5456968${ds}21 T")
         }
     }
 
-    Context "-NumbersAs PB" {
+    Context "-NumbersAs Peta" {
 
         BeforeAll {
-            $result = $Object2 | ff -NumbersAs PB
+            $result = $Object2 | ff -NumbersAs Peta
         }
 
         It "Has 9 properties" {
@@ -724,7 +724,7 @@ Describe "FineFormat" {
         }
 
         It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 PB", "5329${ds}07 PB")
+            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 P", "5329${ds}07 P")
         }
     }
 

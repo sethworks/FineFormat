@@ -105,11 +105,11 @@ Accept wildcard characters: False
 ```
 
 ### -CompactNumbers
-Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.
+Displays numbers as Kilo, Mega, Giga, Tera, or Peta depending on the magnitude of the number.
 
-If the number is smaller than 1KB, it is displayed without conversion.
+If the number is smaller than 1K, it is displayed without conversion.
 
-It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
 
 This parameter has priority over the -NumbersAs parameter.
 
@@ -160,11 +160,11 @@ Accept wildcard characters: False
 ```
 
 ### -NumbersAs
-Displays numbers as KB, MB, GB, TB, or PB.
+Displays numbers as Kilo, Mega, Giga, Tera, or Peta.
 
 If the number is smaller than the specified value, it is displayed without conversion.
 
-It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
+It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.
 
 The -CompactNumbers parameter has priority over this parameter.
 
@@ -398,21 +398,21 @@ MediaType              : 12
 
 Use the -NumberGroupSeparator parameter to display numbers with group separators.
 
-### Example 8: Display numbers as MB
+### Example 8: Display numbers as Mega
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
 ```
 
 ```
 Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
+FreeSpace              : 55,018.6 M
+Size                   : 204,299.21 M
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12
 ```
 
-Use the -NumbersAs parameter with the value of MB to display numbers as MB.
+Use the -NumbersAs parameter to display numbers as Mega.
 
 ### Example 9: Compact numbers
 ```powershell
@@ -421,14 +421,14 @@ Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasVa
 
 ```
 Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
+FreeSpace              : 53.73 G
+Size                   : 199.51 G
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12
 ```
 
-Display numbers in their most compact form using KB, MB, GB, TB, and PB units.
+Display numbers in their most compact form using Kilo, Mega, Giga, Tera, and Peta units.
 
 ### Example 10: Properties that have specific values
 ```powershell

@@ -72,9 +72,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CompactNumbers</maml:name>
           <maml:description>
-            <maml:para>Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.</maml:para>
-            <maml:para>If the number is smaller than 1KB, it is displayed without conversion.</maml:para>
-            <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+            <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta depending on the magnitude of the number.</maml:para>
+            <maml:para>If the number is smaller than 1K, it is displayed without conversion.</maml:para>
+            <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
             <maml:para>This parameter has priority over the -NumbersAs parameter.</maml:para>
           </maml:description>
           <dev:type>
@@ -98,9 +98,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NumbersAs</maml:name>
           <maml:description>
-            <maml:para>Displays numbers as KB, MB, GB, TB, or PB.</maml:para>
+            <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta.</maml:para>
             <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
-            <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+            <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
             <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -294,9 +294,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>CompactNumbers</maml:name>
         <maml:description>
-          <maml:para>Displays numbers as KB, MB, GB, TB, or PB depending on the magnitude of the number.</maml:para>
-          <maml:para>If the number is smaller than 1KB, it is displayed without conversion.</maml:para>
-          <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+          <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta depending on the magnitude of the number.</maml:para>
+          <maml:para>If the number is smaller than 1K, it is displayed without conversion.</maml:para>
+          <maml:para>It differs from the -NumbersAs parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
           <maml:para>This parameter has priority over the -NumbersAs parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
@@ -335,9 +335,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NumbersAs</maml:name>
         <maml:description>
-          <maml:para>Displays numbers as KB, MB, GB, TB, or PB.</maml:para>
+          <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta.</maml:para>
           <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
-          <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (KB, MB, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+          <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
           <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -573,17 +573,17 @@ MediaType              : 12</dev:code>
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>--------------- Example 8: Display numbers as MB ---------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs MB
+        <maml:title>-------------- Example 8: Display numbers as Mega --------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
 
 Access                 : 0
-FreeSpace              : 55,018.6 MB
-Size                   : 204,299.21 MB
+FreeSpace              : 55,018.6 M
+Size                   : 204,299.21 M
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12</dev:code>
         <dev:remarks>
-          <maml:para>Use the -NumbersAs parameter with the value of MB to display numbers as MB.</maml:para>
+          <maml:para>Use the -NumbersAs parameter to display numbers as Mega.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
@@ -593,13 +593,13 @@ MediaType              : 12</dev:code>
         <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
 
 Access                 : 0
-FreeSpace              : 53.73 GB
-Size                   : 199.51 GB
+FreeSpace              : 53.73 G
+Size                   : 199.51 G
 DriveType              : 3
 MaximumComponentLength : 255
 MediaType              : 12</dev:code>
         <dev:remarks>
-          <maml:para>Display numbers in their most compact form using KB, MB, GB, TB, and PB units.</maml:para>
+          <maml:para>Display numbers in their most compact form using Kilo, Mega, Giga, Tera, and Peta units.</maml:para>
           <maml:para/>
           <maml:para/>
         </dev:remarks>
