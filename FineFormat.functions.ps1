@@ -1,5 +1,5 @@
-$Units = @('KB', 'MB', 'GB', 'TB', 'PB')
-$UnitsString = @('', ' KB', ' MB', ' GB', ' TB', ' PB')
+$Units = @('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')
+$UnitsString = @('', ' K', ' M', ' G', ' T', ' P')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
@@ -30,7 +30,7 @@ function Format-Fine
         [switch]$NoValue,
 
         [Parameter(ParameterSetName='Default')]
-        [ArgumentCompletions('KB', 'MB', 'GB', 'TB', 'PB')]
+        [ArgumentCompletions('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')]
         [string]$NumbersAs,
 
         [switch]$NumericTypes,
@@ -63,7 +63,7 @@ function Format-Fine
         {
             if ($NumbersAs -and $NumbersAs -notin $Units)
             {
-                Write-Warning -Message "-NumbersAs parameter accepts only 'KB', 'MB', 'GB', 'TB', or 'PB' values."
+                Write-Warning -Message "-NumbersAs parameter accepts only 'Kilo', 'Mega', 'Giga', 'Tera', or 'Peta' values."
             }
 
             # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be equal to $false
@@ -163,27 +163,27 @@ function Format-Fine
                 {
                     $pvalue = $p.Value
                     $i = 0
-                    if ($NumbersAs -eq 'KB' -and $p.Value -ge 1KB)
+                    if ($NumbersAs -eq 'Kilo' -and $p.Value -ge 1KB)
                     {
                         $pvalue /= 1KB
                         $i = 1
                     }
-                    elseif ($NumbersAs -eq 'MB' -and $p.Value -ge 1MB)
+                    elseif ($NumbersAs -eq 'Mega' -and $p.Value -ge 1MB)
                     {
                         $pvalue /= 1MB
                         $i = 2
                     }
-                    elseif ($NumbersAs -eq 'GB' -and $p.Value -ge 1GB)
+                    elseif ($NumbersAs -eq 'Giga' -and $p.Value -ge 1GB)
                     {
                         $pvalue /= 1GB
                         $i = 3
                     }
-                    elseif ($NumbersAs -eq 'TB' -and $p.Value -ge 1TB)
+                    elseif ($NumbersAs -eq 'Tera' -and $p.Value -ge 1TB)
                     {
                         $pvalue /= 1TB
                         $i = 4
                     }
-                    elseif ($NumbersAs -eq 'PB' -and $p.Value -ge 1PB)
+                    elseif ($NumbersAs -eq 'Peta' -and $p.Value -ge 1PB)
                     {
                         $pvalue /= 1PB
                         $i = 5
