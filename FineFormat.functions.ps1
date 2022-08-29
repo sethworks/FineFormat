@@ -2,6 +2,7 @@ $Units = @('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')
 $UnitsString = @('', ' K', ' M', ' G', ' T', ' P')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
+$BooleanExpression = '^System.Boolean&|^bool$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
 function Format-Fine
 {
@@ -25,17 +26,19 @@ function Format-Fine
         [Parameter(ParameterSetName='Default')]
         [switch]$NumberGroupSeparator,
 
-        [Parameter(ParameterSetName='NoValue')]
-        [Alias('NullOrEmpty')]
-        [switch]$NoValue,
-
         [Parameter(ParameterSetName='Default')]
         [ArgumentCompletions('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')]
         [string]$NumbersAs,
 
+        [Parameter(ParameterSetName='NoValue')]
+        [Alias('NullOrEmpty')]
+        [switch]$NoValue,
+
         [switch]$NumericTypes,
 
         [switch]$SymbolicTypes,
+
+        [switch]$Boolean,
 
         [Parameter(ParameterSetName='Default')]
         [scriptblock]$ValueFilter,
@@ -53,6 +56,7 @@ function Format-Fine
                   $NumbersAs -or
                   $NumericTypes -or
                   $SymbolicTypes -or
+                  $Boolean -or
                   $ValueFilter -or
                   $TypeNameFilter) )
         {
@@ -121,6 +125,8 @@ function Format-Fine
                      ($NumericTypes -and $p.TypeNameOfValue -notmatch $NumericTypesExpression) -or
 
                      ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
+
+                     ($Boolean -and $p.TypeNameOfValue -notmatch $BooleanExpression) -or
 
                      # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
                      ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vls $Value ) ) -or 
