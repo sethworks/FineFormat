@@ -12,7 +12,7 @@
 RootModule = 'FineFormat.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.0'
+ModuleVersion = '1.1.1'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -108,11 +108,16 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = '
+v1.1.1:
+    Change Format-Fine -NumbersAs parameter values
+    Change Format-Fine -CompactNumbers and -NumbersAs parameters output
+
 v1.1.0:
     Add Format-Fine -Value parameter
     Add Format-Fine -TypeName parameter
     Update Format-Fine -CompactNumbers implementation
-    Prevent empty objects output'
+    Prevent empty objects output
+'
 
         # Prerelease string of this module
         # Prerelease = ''
