@@ -84,18 +84,6 @@
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>NumberGroupSeparator</maml:name>
-          <maml:description>
-            <maml:para>Displays numbers with group separators.</maml:para>
-            <maml:para>Group separator symbol depends on regional settings.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NumbersAs</maml:name>
           <maml:description>
             <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta.</maml:para>
@@ -111,9 +99,24 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>NumberGroupSeparator</maml:name>
+          <maml:description>
+            <maml:para>Displays numbers with group separators.</maml:para>
+            <maml:para>Group separator symbol depends on regional settings.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NumericTypes</maml:name>
           <maml:description>
-            <maml:para>Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.</maml:para>
+            <maml:para>Specifies that the result should include properties with numberic data types (Int, Double, etc.).</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have numeric values (Int, Double, etc.) will be displayed.</maml:para>
+            <maml:para>If used together with -SymbolicTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -124,7 +127,24 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SymbolicTypes</maml:name>
           <maml:description>
-            <maml:para>Specifies that only the properties that have textual values (String, Char) should be displayed.</maml:para>
+            <maml:para>Specifies that the result should include properties with symbolic data types (String, Char).</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have symbolic values (String, Char) will be displayed.</maml:para>
+            <maml:para>If used together with -NumericTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Boolean</maml:name>
+          <maml:description>
+            <maml:para>Specifies that the result should include properties with Boolean data types.</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have Boolean values will be displayed.</maml:para>
+            <maml:para>If used together with -NumericTypes and -SymbolicTypes parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -203,7 +223,10 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NumericTypes</maml:name>
           <maml:description>
-            <maml:para>Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.</maml:para>
+            <maml:para>Specifies that the result should include properties with numberic data types (Int, Double, etc.).</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have numeric values (Int, Double, etc.) will be displayed.</maml:para>
+            <maml:para>If used together with -SymbolicTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -214,7 +237,24 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SymbolicTypes</maml:name>
           <maml:description>
-            <maml:para>Specifies that only the properties that have textual values (String, Char) should be displayed.</maml:para>
+            <maml:para>Specifies that the result should include properties with symbolic data types (String, Char).</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have symbolic values (String, Char) will be displayed.</maml:para>
+            <maml:para>If used together with -NumericTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Boolean</maml:name>
+          <maml:description>
+            <maml:para>Specifies that the result should include properties with Boolean data types.</maml:para>
+            <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+            <maml:para>If used alone - only the properties that have Boolean values will be displayed.</maml:para>
+            <maml:para>If used together with -NumericTypes and -SymbolicTypes parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -307,6 +347,21 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>NumbersAs</maml:name>
+        <maml:description>
+          <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta.</maml:para>
+          <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
+          <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
+          <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NumberGroupSeparator</maml:name>
         <maml:description>
           <maml:para>Displays numbers with group separators.</maml:para>
@@ -333,24 +388,12 @@
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>NumbersAs</maml:name>
-        <maml:description>
-          <maml:para>Displays numbers as Kilo, Mega, Giga, Tera, or Peta.</maml:para>
-          <maml:para>If the number is smaller than the specified value, it is displayed without conversion.</maml:para>
-          <maml:para>It differs from the -CompactNumbers parameter in the way, that -NumbersAs parameter uses the specified units (Kilo, Mega, etc.), and -CompactNumbers determines the proper unit based on the number's magnitude.</maml:para>
-          <maml:para>The -CompactNumbers parameter has priority over this parameter.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NumericTypes</maml:name>
         <maml:description>
-          <maml:para>Specifies that only the properties that have numeric values (Int, Double, etc.) should be displayed.</maml:para>
+          <maml:para>Specifies that the result should include properties with numberic data types (Int, Double, etc.).</maml:para>
+          <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+          <maml:para>If used alone - only the properties that have numeric values (Int, Double, etc.) will be displayed.</maml:para>
+          <maml:para>If used together with -SymbolicTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -362,7 +405,25 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SymbolicTypes</maml:name>
         <maml:description>
-          <maml:para>Specifies that only the properties that have textual values (String, Char) should be displayed.</maml:para>
+          <maml:para>Specifies that the result should include properties with symbolic data types (String, Char).</maml:para>
+          <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+          <maml:para>If used alone - only the properties that have symbolic values (String, Char) will be displayed.</maml:para>
+          <maml:para>If used together with -NumericTypes and -Boolean parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Boolean</maml:name>
+        <maml:description>
+          <maml:para>Specifies that the result should include properties with Boolean data types.</maml:para>
+          <maml:para>The effect of using -NumericTypes, -SymbolicTypes, and -Boolean parameters is cumulative.</maml:para>
+          <maml:para>If used alone - only the properties that have Boolean values will be displayed.</maml:para>
+          <maml:para>If used together with -NumericTypes and -SymbolicTypes parameters - the result will include properties with Numeric, Symbolic, and Boolean data types.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -405,7 +466,8 @@
           <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>
+          </maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
@@ -415,13 +477,15 @@
           <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>
+          </maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
     <maml:alertSet>
       <maml:alert>
-        <maml:para></maml:para>
+        <maml:para>
+        </maml:para>
       </maml:alert>
     </maml:alertSet>
     <command:examples>
@@ -442,8 +506,8 @@ CimInstanceProperties : {Caption, Description, SettingID, ArpAlwaysSourceRouteâ€
 CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have values other than $null or empty.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -457,8 +521,8 @@ InterfaceIndex : 3
 IPEnabled      : False</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have specified values.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -479,8 +543,8 @@ InterfaceIndex               : 3
 ...</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties of specific data types.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -502,8 +566,8 @@ DNSDomainSuffixSearchOrder   :
 ...</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have $null or empty values.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -526,8 +590,8 @@ TcpNumConnections            :
 TcpWindowSize                :</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have values of numeric types (Int, Double, etc.).</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -552,40 +616,66 @@ WINSSecondaryServer :
 PSComputerName      :</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have values of symbolic types (String, Char).</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 7: Display numbers with group separator -------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+        <maml:title>--- Example 7: Properties that have values of Boolean types ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Boolean
 
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DeadGWDetectEnabled          :
+DHCPEnabled                  : False
+DNSEnabledForWINSResolution  :
+DomainDNSRegistrationEnabled :
+FullDNSRegistrationEnabled   :
+IPEnabled                    : False
+IPFilterSecurityEnabled      :
+IPPortSecurityEnabled        :
+IPUseZeroBroadcast           :
+IPXEnabled                   :
+PMTUBHDetectEnabled          :
+PMTUDiscoveryEnabled         :
+TcpUseRFC1122UrgentPointer   :
+WINSEnableLMHostsLookup      :</dev:code>
         <dev:remarks>
-          <maml:para>Use the -NumberGroupSeparator parameter to display numbers with group separators.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para>Get only the properties that have values of Boolean type.</maml:para>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------------- Example 8: Display numbers as Mega --------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
+        <maml:title>Example 8: Properties that have values of numeric, symbolic, or Boolean types</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes -SymbolicTypes -Boolean
 
-Access                 : 0
-FreeSpace              : 55,018.6 M
-Size                   : 204,299.21 M
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12</dev:code>
+Caption                      : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description                  : Hyper-V Virtual Switch Extension Adapter
+SettingID                    : {9DB15731-C0BE-421E-B21E-F3BDA6B18D6B}
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DatabasePath                 :
+DeadGWDetectEnabled          :
+DHCPEnabled                  : False
+DHCPServer                   :
+DNSDomain                    :
+DNSEnabledForWINSResolution  :
+DNSHostName                  :
+DomainDNSRegistrationEnabled :
+ForwardBufferMemory          :
+FullDNSRegistrationEnabled   :
+Index                        : 10
+InterfaceIndex               : 3
+IPConnectionMetric           :
+IPEnabled                    : False
+IPFilterSecurityEnabled      :
+IPPortSecurityEnabled        :
+...</dev:code>
         <dev:remarks>
-          <maml:para>Use the -NumbersAs parameter to display numbers as Mega.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para>Get only the properties that have values of numeric, symbolic, or Boolean type.</maml:para>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
@@ -600,12 +690,44 @@ MaximumComponentLength : 255
 MediaType              : 12</dev:code>
         <dev:remarks>
           <maml:para>Display numbers in their most compact form using Kilo, Mega, Giga, Tera, and Peta units.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>------- Example 10: Properties that have specific values -------</maml:title>
+        <maml:title>------------- Example 10: Display numbers as Mega -------------</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega
+
+Access                 : 0
+FreeSpace              : 32128.93 M
+Size                   : 204299.21 M
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumbersAs parameter to display numbers as Mega.</maml:para>
+          <maml:para />
+          <maml:para />
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>--- Example 11: Display numbers as Mega with group separator ---</maml:title>
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
+
+Access                 : 0
+FreeSpace              : 32,128.83 M
+Size                   : 204,299.21 M
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12</dev:code>
+        <dev:remarks>
+          <maml:para>Use the -NumbersAs and -NumberGroupSeparator parameters to display numbers as Mega with group separators.</maml:para>
+          <maml:para />
+          <maml:para />
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>------- Example 12: Properties that have specific values -------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
@@ -613,12 +735,12 @@ Caption                                             Description
 [00000010] Hyper-V Virtual Switch Extension Adapter Hyper-V Virtual Switch Extension Adapter</dev:code>
         <dev:remarks>
           <maml:para>Get only the properties that have specific values.</maml:para>
-          <maml:para/>
-          <maml:para/>
+          <maml:para />
+          <maml:para />
         </dev:remarks>
       </command:example>
       <command:example>
-        <maml:title>-------- Example 11: Properties of specified data type --------</maml:title>
+        <maml:title>-------- Example 13: Properties of specified data type --------</maml:title>
         <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
