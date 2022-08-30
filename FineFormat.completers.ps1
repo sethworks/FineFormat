@@ -3,6 +3,27 @@ using namespace System.Management.Automation.Language
 using namespace System.Collections
 using namespace System.Collections.Generic
 
+
+class Values
+{
+    [string]$Original
+    [string]$Escaped
+
+    Values($in)
+    {
+        $this.Original = $in
+        if ($in -match '[`\[\]]')
+        {
+            $this.Escaped = $in -replace '[`\[\]]', '`$0'
+            $this.Escaped = $this.Escaped.Insert($this.Escaped.Length, "'").Insert(0, "'")
+        }
+        else
+        {
+            $this.Escaped = $this.Original
+        }
+    }
+}
+
 class TypeNameCompleter : IArgumentCompleter
 {
     [IEnumerable[CompletionResult]] CompleteArgument(
@@ -15,9 +36,11 @@ class TypeNameCompleter : IArgumentCompleter
     {
         $result = New-Object -TypeName 'List[CompletionResult]'
         $valuesToExclude = New-Object -TypeName 'List[String]'
+        # $valuesToExclude = New-Object -TypeName 'List[Values]'
         # [List[String]]$valuesToExclude = $null
         $TypeNameOfValue = @()
         $valuesAst = @()
+        [Values[]]$Values = $null
 
         if ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
         {
@@ -25,6 +48,7 @@ class TypeNameCompleter : IArgumentCompleter
             $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset)
             # $objects = [scriptblock]::Create($command).Invoke()
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+            $Values = $TypeNameOfValue | ForEach-Object { [Values]::new($_) }
         }
         
         $commandParameterAst = $commandAst.Find({$args[0].GetType().Name -eq 'CommandParameterAst' -and $args[0].ParameterName -eq $parameterName}, $false)
@@ -39,22 +63,41 @@ class TypeNameCompleter : IArgumentCompleter
             {
                 $valuesAst = $commandParameterValueAst.NestedAst
             }
+            elseif ($commandParameterValueAst.GetType().Name -eq 'StringConstantExpressionAst')
+            {
+                $valuesAst = $commandParameterValueAst
+            }
     
             if ($valuesAst)
             {
-                $valuesToExclude = $valuesAst | ForEach-Object {$_.SafeGetValue()}
-    
-                if ($wordToComplete)
+                foreach ($va in $valuesAst)
                 {
-                    $valuesToExclude.Remove($wordToComplete)
+                    if ($va.StringConstantType -eq 'BareWord')
+                    {
+                        $valuesToExclude.Add($va.SafeGetValue())
+                    }
+                    elseif ($va.StringConstantType -eq 'SingleQuoted')
+                    {
+                        $valuesToExclude.Add("'$($va.SafeGetValue())'")
+                    }
                 }
+                # $valuesToExclude = $valuesAst | ForEach-Object {$_.SafeGetValue()}
+
+                # $valuesToExclude = $valuesAst | ForEach-Object { [Values]::new($_.SafeGetValue()) }
+    
+                # if ($wordToComplete)
+                # {
+                #     $valuesToExclude.Remove($wordToComplete)
+                # }
             }
         }
 
-        foreach ($t in $TypeNameOfValue)
+        # foreach ($t in $TypeNameOfValue)
+        foreach ($t in $Values)
         {
-            if ($t -like "$wordToComplete*" -and $t -notin $valuesToExclude)
+            if ( ($t.Escaped -like "$wordToComplete*" -or $t.Escaped -like "'$wordToComplete*") -and $t.Escaped -notin $valuesToExclude )
             {
+                <#
                 if ($t -match '[`\[\]]')
                 {
                     $escape = $t -replace '[`\[\]]', '`$0'
@@ -65,6 +108,8 @@ class TypeNameCompleter : IArgumentCompleter
                 {
                     $result.Add([CompletionResult]::new($t, $t, [CompletionResultType]::ParameterValue, $t))
                 }
+                #>
+                $result.Add([CompletionResult]::new($t.Escaped, $t.Original, [CompletionResultType]::ParameterValue, $t.Original))
             }
         }
 
