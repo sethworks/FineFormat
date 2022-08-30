@@ -48,36 +48,23 @@ class TypeNameCompleter : IArgumentCompleter
             if ($inputObjectParameterValueAst.GetType().Name -ne 'CommandParameterAst')
             {
                 $command = $inputObjectParameterValueAst.Extent.Text
-                # $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
             }
         }
-        # if ($fakeBoundParameters.InputObject)
-        # {
-        #     $TypeNameOfValue = $fakeBoundParameters.InputObject | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
-        # }
 
         # Get-SomeObjects | Format-Fine -TypeName ...
         elseif ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
         {
             $endOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.EndOffset
-
-            # $ast = $commandAst.Parent
-            # while ($ast.Extent.StartOffset)
-            # {
-            #     $ast = $ast.Parent
-            # }
             $startOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.StartOffset
-            $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset-$startOffset)
 
-            # $command = $ast.Extent.Text.Substring(0, $endOffset-$startOffset)
-            # $command = $ast.Extent.Text.Substring(0, $endOffset)
-            # $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+            $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset-$startOffset)
         }
 
         if ($command)
         {
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
         }
+
         $possibleValues = $TypeNameOfValue | ForEach-Object { [PossibleValues]::new($_) }
         
         $commandParameterAst = $commandAst.Find({$args[0].GetType().Name -eq 'CommandParameterAst' -and $args[0].ParameterName -eq $parameterName}, $false)
@@ -96,8 +83,6 @@ class TypeNameCompleter : IArgumentCompleter
             }
             # -TypeName one<Tab> case doesn't need to be processed, because there is nothing to exclude
 
-            # if ($valuesAst)
-            # {
             foreach ($va in $valuesAst)
             {
                 # -TypeName one, 
@@ -111,12 +96,6 @@ class TypeNameCompleter : IArgumentCompleter
                     $valuesToExclude.Add("'$($va.SafeGetValue())'")
                 }
             }
-    
-                # if ($wordToComplete)
-                # {
-                #     $valuesToExclude.Remove($wordToComplete) | Out-Null
-                # }
-            # }
         }
 
         foreach ($pv in $possibleValues)
