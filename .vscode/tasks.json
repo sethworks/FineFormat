@@ -6,7 +6,7 @@
         {
             "label": "DeployModule",
             "type": "shell",
-            "command": "Set-Location ${workspaceFolder}; .\\helpers\\deploy_windows_system.ps1",
+            "command": "Set-Location ${workspaceFolder}; .\\.helpers\\deploy_windows_system.ps1",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -44,7 +44,7 @@
         {
             "label": "UpdateHelp",
             "type": "shell",
-            "command": "Set-Location ${workspaceFolder}; .\\helpers\\update_help.ps1",
+            "command": "Set-Location ${workspaceFolder}; .\\.helpers\\update_help.ps1",
             "group": {
                 "kind": "test",
                 "isDefault": true
