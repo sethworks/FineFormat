@@ -41,7 +41,26 @@
                 "clear": true
             },
         },
-
+        {
+            "label": "UpdateHelp",
+            "type": "shell",
+            "command": "Set-Location ${workspaceFolder}; .\\helpers\\update_help.ps1",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$pester"
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+        }
     ],
     "inputs": [
         {
