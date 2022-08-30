@@ -2,7 +2,7 @@ $Units = @('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')
 $UnitsString = @('', ' K', ' M', ' G', ' T', ' P')
 $NumericTypesExpression = '^System\.(U)?Int(\d\d)?$|^System\.Single$|^System\.Double$|^System\.Decimal$|^(u)?short$|^(u)?int$|^(u)?long$'
 $SymbolicTypesExpression = '^System\.string$|^string$|^System\.Char$|^char$'
-$BooleanExpression = '^System.Boolean&|^bool$'
+$BooleanExpression = '^System.Boolean$|^bool$'
 $ComparisonOperatorTokens = @('Ige', 'Cge', 'Igt', 'Cgt', 'Ile', 'Cle', 'Ilt', 'Clt')
 function Format-Fine
 {
@@ -24,11 +24,11 @@ function Format-Fine
         [switch]$CompactNumbers,
 
         [Parameter(ParameterSetName='Default')]
-        [switch]$NumberGroupSeparator,
-
-        [Parameter(ParameterSetName='Default')]
         [ArgumentCompletions('Kilo', 'Mega', 'Giga', 'Tera', 'Peta')]
         [string]$NumbersAs,
+
+        [Parameter(ParameterSetName='Default')]
+        [switch]$NumberGroupSeparator,
 
         [Parameter(ParameterSetName='NoValue')]
         [Alias('NullOrEmpty')]
@@ -65,6 +65,11 @@ function Format-Fine
 
         else
         {
+            if ($NumericTypes -or $SymbolicTypes -or $Boolean)
+            {
+                $TypesMatch = $true
+            }
+
             if ($NumbersAs -and $NumbersAs -notin $Units)
             {
                 Write-Warning -Message "-NumbersAs parameter accepts only 'Kilo', 'Mega', 'Giga', 'Tera', or 'Peta' values."
@@ -122,11 +127,13 @@ function Format-Fine
 
                      ($NoValue -and -not [string]::IsNullOrEmpty($p.Value)) -or
 
-                     ($NumericTypes -and $p.TypeNameOfValue -notmatch $NumericTypesExpression) -or
+                     ( $TypesMatch -and -not
+                        ( ($NumericTypes -and $p.TypeNameOfValue -match $NumericTypesExpression) -or
 
-                     ($SymbolicTypes -and $p.TypeNameOfValue -notmatch $SymbolicTypesExpression) -or
+                          ($SymbolicTypes -and $p.TypeNameOfValue -match $SymbolicTypesExpression) -or
 
-                     ($Boolean -and $p.TypeNameOfValue -notmatch $BooleanExpression) -or
+                          ($Boolean -and $p.TypeNameOfValue -match $BooleanExpression) )
+                     ) -or
 
                      # $PSBoundParameters.Keys -contains 'Value' is used because $Value can be $false
                      ($PSBoundParameters.Keys -contains 'Value' -and ( inTestValue -pvl $p.Value -vls $Value ) ) -or 
