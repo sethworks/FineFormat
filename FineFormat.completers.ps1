@@ -3,7 +3,6 @@ using namespace System.Management.Automation.Language
 using namespace System.Collections
 using namespace System.Collections.Generic
 
-
 class PossibleValues
 {
     [string]$Original
@@ -37,13 +36,8 @@ class TypeNameCompleter : IArgumentCompleter
         $result = New-Object -TypeName 'List[CompletionResult]'
         $valuesToExclude = New-Object -TypeName 'List[String]'
         $possibleValues = New-Object -TypeName 'List[PossibleValues]'
-        # [PossibleValues[]]$possibleValues = $null
-        # $possibleValues = New-Object -TypeName 'PossibleValues[]'
-        # $valuesToExclude = New-Object -TypeName 'List[Values]'
-        # [List[String]]$valuesToExclude = $null
         $TypeNameOfValue = @()
         $valuesAst = @()
-        # [Values[]]$Values = $null
 
         # Format-Fine -InputObject $ObjectArray -TypeName ...
         if ($fakeBoundParameters.InputObject)
@@ -56,7 +50,6 @@ class TypeNameCompleter : IArgumentCompleter
         {
             $endOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.EndOffset
             $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset)
-            # $objects = [scriptblock]::Create($command).Invoke()
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
         }
 
@@ -70,10 +63,6 @@ class TypeNameCompleter : IArgumentCompleter
             if ($commandParameterValueAst.GetType().Name -eq 'ArrayLiteralAst')
             {
                 $valuesAst = $commandParameterValueAst.Elements[0..($commandParameterValueAst.Elements.Count - 2)]
-                # for ($j = 0; $j -lt $commandParameterValueAst.Elements.Count - 1; $j++)
-                # {
-                #     $valuesAst = $commandParameterValueAst.Elements[$j]
-                # }
             }
             # Format-Fine -TypeName one, <Tab>
             elseif ($commandParameterValueAst.GetType().Name -eq 'ErrorExpressionAst')
@@ -82,11 +71,6 @@ class TypeNameCompleter : IArgumentCompleter
             }
             # Format-Fine -TypeName one<Tab> case doesn't need to be processed, because there is nothing to exclude
 
-            # elseif ($commandParameterValueAst.GetType().Name -eq 'StringConstantExpressionAst')
-            # {
-            #     $valuesAst = $commandParameterValueAst
-            # }
-    
             if ($valuesAst)
             {
                 foreach ($va in $valuesAst)
@@ -100,9 +84,6 @@ class TypeNameCompleter : IArgumentCompleter
                         $valuesToExclude.Add("'$($va.SafeGetValue())'")
                     }
                 }
-                # $valuesToExclude = $valuesAst | ForEach-Object {$_.SafeGetValue()}
-
-                # $valuesToExclude = $valuesAst | ForEach-Object { [Values]::new($_.SafeGetValue()) }
     
                 if ($wordToComplete)
                 {
@@ -111,28 +92,13 @@ class TypeNameCompleter : IArgumentCompleter
             }
         }
 
-        # foreach ($t in $TypeNameOfValue)
         foreach ($pv in $possibleValues)
         {
             if ( ($pv.Escaped -like "$wordToComplete*" -or $pv.Escaped -like "'$wordToComplete*") -and $pv.Escaped -notin $valuesToExclude )
             {
-                <#
-                if ($t -match '[`\[\]]')
-                {
-                    $escape = $t -replace '[`\[\]]', '`$0'
-                    $escape = $escape.Insert($escape.Length, "'").Insert(0, "'")
-                    $result.Add([CompletionResult]::new($escape, $t, [CompletionResultType]::ParameterValue, $t))
-                }
-                else
-                {
-                    $result.Add([CompletionResult]::new($t, $t, [CompletionResultType]::ParameterValue, $t))
-                }
-                #>
                 $result.Add([CompletionResult]::new($pv.Escaped, $pv.Original, [CompletionResultType]::ParameterValue, $pv.Original))
             }
         }
-
-        # $result.Add([CompletionResult]::new('completionText', 'listItemText', [CompletionResultType]::ParameterValue, 'tooltip'))
 
         return $result
     }
