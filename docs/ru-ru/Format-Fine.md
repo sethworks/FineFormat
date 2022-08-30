@@ -92,6 +92,10 @@ Accept wildcard characters: False
 
 Поддерживает символы подстановки.
 
+Поддерживает завершение ввода по клавише Tab. Например:
+
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName <Tab>
+
 ```yaml
 Type: String[]
 Parameter Sets: (All)

@@ -945,4 +945,145 @@ Describe "FineFormat" {
             }
         }
     }
+
+    Context "-TypeName completion" {
+
+        BeforeAll {
+            $ObjectDefinition = '[PSCustomObject]@{IntegerZero = [int]0; Integer = [int]15; EmptyString = [string]""; String = [string]"It''s a string"; True = $true; False = $false; Null = $null; ArrayInteger = @(1, 2, 3); ArrayString = @("One", "Two", "Three"); ArrayEmptyString = @(""); EmptyArray = @() }'
+        }
+
+        Context "Pipeline" {
+
+            It "ff -TypeName " {
+                $line = "$ObjectDefinition | ff -TypeName <Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName Sys" {
+                $line = "$ObjectDefinition | ff -TypeName Sys<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System." {
+                $line = "$ObjectDefinition | ff -TypeName System.<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System.Obj" {
+                $line = "$ObjectDefinition | ff -TypeName System.Obj<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 2
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
+            }
+
+            It "ff -TypeName System.Object" {
+                $line = "$ObjectDefinition | ff -TypeName System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 2
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
+            }
+
+            It "ff -TypeName System.Object, " {
+                $line = "$ObjectDefinition | ff -TypeName System.Object, <Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 4
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System.Object, System.Object" {
+                $line = "$ObjectDefinition | ff -TypeName System.Object, System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 1
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('''System.Object`[`]''')
+            }
+
+            It "ff -TypeName 'System.Object``[``]', System.Object" {
+                $line = "$ObjectDefinition | ff -TypeName 'System.Object``[``]', System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 1
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object')
+            }
+        }
+
+        Context "-InputObject parameter" {
+
+            It "ff -TypeName " {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName <Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName Sys" {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName Sys<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System." {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 5
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System.Obj" {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Obj<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 2
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
+            }
+
+            It "ff -TypeName System.Object" {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 2
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
+            }
+
+            It "ff -TypeName System.Object, " {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object, <Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 4
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', '''System.Object`[`]''', 'System.String')
+            }
+
+            It "ff -TypeName System.Object, System.Object" {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object, System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 1
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('''System.Object`[`]''')
+            }
+
+            It "ff -TypeName 'System.Object``[``]', System.Object" {
+                $line = "ff -InputObject ($ObjectDefinition) -TypeName 'System.Object``[``]', System.Object<Tab>"
+                $cursorColumn = $line.IndexOf('<Tab>')
+                $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
+                $commandCompletion.CompletionMatches | Should -HaveCount 1
+                $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object')
+            }
+        }
+    }
 }

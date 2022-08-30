@@ -18,6 +18,7 @@ function Format-Fine
         [Parameter(ParameterSetName='Default')]
         [psobject[]]$Value,
 
+        [ArgumentCompleter([TypeNameCompleter])]
         [string[]]$TypeName,
 
         [Parameter(ParameterSetName='Default')]

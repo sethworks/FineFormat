@@ -61,6 +61,8 @@
           <maml:description>
             <maml:para>Specifies the type names of properties to filter on.</maml:para>
             <maml:para>Supports wildcards.</maml:para>
+            <maml:para>Supports tab completion. For example:</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -200,6 +202,8 @@
           <maml:description>
             <maml:para>Specifies the type names of properties to filter on.</maml:para>
             <maml:para>Supports wildcards.</maml:para>
+            <maml:para>Supports tab completion. For example:</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -323,6 +327,8 @@
         <maml:description>
           <maml:para>Specifies the type names of properties to filter on.</maml:para>
           <maml:para>Supports wildcards.</maml:para>
+          <maml:para>Supports tab completion. For example:</maml:para>
+          <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
