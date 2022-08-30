@@ -42,31 +42,47 @@ class TypeNameCompleter : IArgumentCompleter
         $valuesAst = @()
         [Values[]]$Values = $null
 
-        if ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
+        # Format-Fine -InputObject $ObjectArray -TypeName ...
+        if ($fakeBoundParameters.InputObject)
+        {
+            $TypeNameOfValue = $fakeBoundParameters.InputObject | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+        }
+
+        # Get-SomeObjects | Format-Fine -TypeName ...
+        elseif ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
         {
             $endOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.EndOffset
             $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset)
             # $objects = [scriptblock]::Create($command).Invoke()
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
-            $Values = $TypeNameOfValue | ForEach-Object { [Values]::new($_) }
         }
+
+        $Values = $TypeNameOfValue | ForEach-Object { [Values]::new($_) }
         
         $commandParameterAst = $commandAst.Find({$args[0].GetType().Name -eq 'CommandParameterAst' -and $args[0].ParameterName -eq $parameterName}, $false)
         
         if ($commandParameterValueAst = $commandAst.CommandElements[$commandAst.CommandElements.IndexOf($commandParameterAst)+1])
         {
+            # Format-Fine -TypeName one, two<Tab>
             if ($commandParameterValueAst.GetType().Name -eq 'ArrayLiteralAst')
             {
-                $valuesAst = $commandParameterValueAst.Elements
+                $valuesAst = $commandParameterValueAst.Elements[0..($commandParameterValueAst.Elements.Count - 2)]
+                # for ($j = 0; $j -lt $commandParameterValueAst.Elements.Count - 1; $j++)
+                # {
+                #     $valuesAst = $commandParameterValueAst.Elements[$j]
+                # }
             }
+            # Format-Fine -TypeName one, <Tab>
             elseif ($commandParameterValueAst.GetType().Name -eq 'ErrorExpressionAst')
             {
                 $valuesAst = $commandParameterValueAst.NestedAst
             }
-            elseif ($commandParameterValueAst.GetType().Name -eq 'StringConstantExpressionAst')
-            {
-                $valuesAst = $commandParameterValueAst
-            }
+            # Format-Fine -TypeName one<Tab> case doesn't need to be processed, because there is nothing to exclude
+
+            # elseif ($commandParameterValueAst.GetType().Name -eq 'StringConstantExpressionAst')
+            # {
+            #     $valuesAst = $commandParameterValueAst
+            # }
     
             if ($valuesAst)
             {
@@ -85,10 +101,10 @@ class TypeNameCompleter : IArgumentCompleter
 
                 # $valuesToExclude = $valuesAst | ForEach-Object { [Values]::new($_.SafeGetValue()) }
     
-                # if ($wordToComplete)
-                # {
-                #     $valuesToExclude.Remove($wordToComplete)
-                # }
+                if ($wordToComplete)
+                {
+                    $valuesToExclude.Remove($wordToComplete) | Out-Null
+                }
             }
         }
 
