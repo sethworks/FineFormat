@@ -15,5 +15,5 @@ jobs:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
         shell: pwsh
         run: |
-          ./helpers/deploy_linux_user.ps1
+          ./.helpers/deploy_linux_user.ps1
           Publish-Module -Path ~/.local/share/powershell/Modules/FineFormat -NuGetApiKey $env:NUGET_KEY -Verbose
