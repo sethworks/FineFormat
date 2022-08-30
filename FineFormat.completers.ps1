@@ -49,7 +49,17 @@ class TypeNameCompleter : IArgumentCompleter
         elseif ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
         {
             $endOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.EndOffset
-            $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset)
+
+            # $ast = $commandAst.Parent
+            # while ($ast.Extent.StartOffset)
+            # {
+            #     $ast = $ast.Parent
+            # }
+            $startOffset = $commandAst.Parent.PipelineElements[$i-1].Extent.StartOffset
+            $command = $commandAst.Parent.Extent.Text.Substring(0, $endOffset-$startOffset)
+
+            # $command = $ast.Extent.Text.Substring(0, $endOffset-$startOffset)
+            # $command = $ast.Extent.Text.Substring(0, $endOffset)
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
         }
 
@@ -59,36 +69,38 @@ class TypeNameCompleter : IArgumentCompleter
         
         if ($commandParameterValueAst = $commandAst.CommandElements[$commandAst.CommandElements.IndexOf($commandParameterAst)+1])
         {
-            # Format-Fine -TypeName one, two<Tab>
+            # -TypeName one, two<Tab>
             if ($commandParameterValueAst.GetType().Name -eq 'ArrayLiteralAst')
             {
                 $valuesAst = $commandParameterValueAst.Elements[0..($commandParameterValueAst.Elements.Count - 2)]
             }
-            # Format-Fine -TypeName one, <Tab>
+            # -TypeName one, <Tab>
             elseif ($commandParameterValueAst.GetType().Name -eq 'ErrorExpressionAst')
             {
                 $valuesAst = $commandParameterValueAst.NestedAst
             }
-            # Format-Fine -TypeName one<Tab> case doesn't need to be processed, because there is nothing to exclude
+            # -TypeName one<Tab> case doesn't need to be processed, because there is nothing to exclude
 
             if ($valuesAst)
             {
                 foreach ($va in $valuesAst)
                 {
+                    # -TypeName one, 
                     if ($va.StringConstantType -eq 'BareWord')
                     {
                         $valuesToExclude.Add($va.SafeGetValue())
                     }
+                    # -TypeName 'one', 
                     elseif ($va.StringConstantType -eq 'SingleQuoted')
                     {
                         $valuesToExclude.Add("'$($va.SafeGetValue())'")
                     }
                 }
     
-                if ($wordToComplete)
-                {
-                    $valuesToExclude.Remove($wordToComplete) | Out-Null
-                }
+                # if ($wordToComplete)
+                # {
+                #     $valuesToExclude.Remove($wordToComplete) | Out-Null
+                # }
             }
         }
 
