@@ -4,12 +4,12 @@ using namespace System.Collections
 using namespace System.Collections.Generic
 
 
-class Values
+class PossibleValues
 {
     [string]$Original
     [string]$Escaped
 
-    Values($in)
+    PossibleValues($in)
     {
         $this.Original = $in
         if ($in -match '[`\[\]]')
@@ -36,11 +36,14 @@ class TypeNameCompleter : IArgumentCompleter
     {
         $result = New-Object -TypeName 'List[CompletionResult]'
         $valuesToExclude = New-Object -TypeName 'List[String]'
+        $possibleValues = New-Object -TypeName 'List[PossibleValues]'
+        # [PossibleValues[]]$possibleValues = $null
+        # $possibleValues = New-Object -TypeName 'PossibleValues[]'
         # $valuesToExclude = New-Object -TypeName 'List[Values]'
         # [List[String]]$valuesToExclude = $null
         $TypeNameOfValue = @()
         $valuesAst = @()
-        [Values[]]$Values = $null
+        # [Values[]]$Values = $null
 
         # Format-Fine -InputObject $ObjectArray -TypeName ...
         if ($fakeBoundParameters.InputObject)
@@ -57,7 +60,7 @@ class TypeNameCompleter : IArgumentCompleter
             $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
         }
 
-        $Values = $TypeNameOfValue | ForEach-Object { [Values]::new($_) }
+        $possibleValues = $TypeNameOfValue | ForEach-Object { [PossibleValues]::new($_) }
         
         $commandParameterAst = $commandAst.Find({$args[0].GetType().Name -eq 'CommandParameterAst' -and $args[0].ParameterName -eq $parameterName}, $false)
         
@@ -109,9 +112,9 @@ class TypeNameCompleter : IArgumentCompleter
         }
 
         # foreach ($t in $TypeNameOfValue)
-        foreach ($t in $Values)
+        foreach ($pv in $possibleValues)
         {
-            if ( ($t.Escaped -like "$wordToComplete*" -or $t.Escaped -like "'$wordToComplete*") -and $t.Escaped -notin $valuesToExclude )
+            if ( ($pv.Escaped -like "$wordToComplete*" -or $pv.Escaped -like "'$wordToComplete*") -and $pv.Escaped -notin $valuesToExclude )
             {
                 <#
                 if ($t -match '[`\[\]]')
@@ -125,7 +128,7 @@ class TypeNameCompleter : IArgumentCompleter
                     $result.Add([CompletionResult]::new($t, $t, [CompletionResultType]::ParameterValue, $t))
                 }
                 #>
-                $result.Add([CompletionResult]::new($t.Escaped, $t.Original, [CompletionResultType]::ParameterValue, $t.Original))
+                $result.Add([CompletionResult]::new($pv.Escaped, $pv.Original, [CompletionResultType]::ParameterValue, $pv.Original))
             }
         }
 
