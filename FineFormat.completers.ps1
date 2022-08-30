@@ -40,10 +40,20 @@ class TypeNameCompleter : IArgumentCompleter
         $valuesAst = @()
 
         # Format-Fine -InputObject $ObjectArray -TypeName ...
-        if ($fakeBoundParameters.InputObject)
+        if ($inputObjectParameterAst = $commandAst.Find({$args[0].GetType().Name -eq 'CommandParameterAst' -and $args[0].ParameterName -eq 'InputObject'}, $false))
         {
-            $TypeNameOfValue = $fakeBoundParameters.InputObject | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+            $inputObjectParameterValueAst = $commandAst.CommandElements[$commandAst.CommandElements.IndexOf($inputObjectParameterAst) + 1]
+
+            if ($inputObjectParameterValueAst.GetType().Name -ne 'CommandParameterAst')
+            {
+                $command = $inputObjectParameterValueAst.Extent.Text
+                $TypeNameOfValue = [scriptblock]::Create($command).Invoke() | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+            }
         }
+        # if ($fakeBoundParameters.InputObject)
+        # {
+        #     $TypeNameOfValue = $fakeBoundParameters.InputObject | ForEach-Object {$_.psobject.Properties.TypeNameOfValue} | Sort-Object | Get-Unique
+        # }
 
         # Get-SomeObjects | Format-Fine -TypeName ...
         elseif ($i = $commandAst.Parent.PipelineElements.IndexOf($commandAst))
