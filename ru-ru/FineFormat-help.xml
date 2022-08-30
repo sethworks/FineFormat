@@ -61,6 +61,8 @@
           <maml:description>
             <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
             <maml:para>Поддерживает символы подстановки.</maml:para>
+            <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -200,6 +202,8 @@
           <maml:description>
             <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
             <maml:para>Поддерживает символы подстановки.</maml:para>
+            <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -323,6 +327,8 @@
         <maml:description>
           <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
           <maml:para>Поддерживает символы подстановки.</maml:para>
+          <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
+          <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>

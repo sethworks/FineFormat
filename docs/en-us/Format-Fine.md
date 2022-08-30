@@ -92,6 +92,10 @@ Specifies the type names of properties to filter on.
 
 Supports wildcards.
 
+Supports tab completion. For example:
+
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName <Tab>
+
 ```yaml
 Type: String[]
 Parameter Sets: (All)
