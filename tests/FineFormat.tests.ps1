@@ -348,402 +348,601 @@ Describe "FineFormat" {
         }
     }
 
-    Context "-NumericTypes" {
+    Context "Type groups" {
 
-        BeforeAll {
-            $result = $Object1 | Format-Fine -NumericTypes
+        Context "-NumericTypes" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -NumericTypes
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
+            }
         }
 
-        It "Has 2 properties" {
-            $result.PSObject.Properties | Should -HaveCount 2
+        Context "-NumericTypes cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes
+            }
+
+            It "Has 16 properties" {
+                $result.PSObject.Properties | Should -HaveCount 16
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('FormFactor', 'Capacity', 'DataWidth', 'InterleavePosition', 'MemoryType', 'PositionInRow', 'Speed', 'TotalWidth', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'InterleaveDataDepth', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType', 'TypeDetail')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(8, 8589934592, 64, 1, 24, $null, 1333, 64, 2, $null, $null, 1, $null, $null, 24, 128)
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+        Context "-SymbolicTypes" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -SymbolicTypes
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'String')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("", "It's a string")
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
-        }
-    }
+        Context "-SymbolicTypes cim" -Skip:($IsLinux -or $IsMacOS) {
 
-    Context "-NumericTypes cim" -Skip:($IsLinux -or $IsMacOS) {
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -SymbolicTypes
+            }
 
-        BeforeAll {
-            $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes
-        }
+            It "Has 16 properties" {
+                $result.PSObject.Properties | Should -HaveCount 16
+            }
 
-        It "Has 16 properties" {
-            $result.PSObject.Properties | Should -HaveCount 16
-        }
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Caption', 'Description', 'Name', 'Status', 'CreationClassName', 'Manufacturer', 'Model', 'OtherIdentifyingInfo', 'PartNumber', 'SerialNumber', 'SKU', 'Tag', 'Version', 'BankLabel', 'DeviceLocator', 'PSComputerName')
+            }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('FormFactor', 'Capacity', 'DataWidth', 'InterleavePosition', 'MemoryType', 'PositionInRow', 'Speed', 'TotalWidth', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'InterleaveDataDepth', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType', 'TypeDetail')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @(8, 8589934592, 64, 1, 24, $null, 1333, 64, 2, $null, $null, 1, $null, $null, 24, 128)
-        }
-    }
-
-    Context "-SymbolicTypes" {
-
-        BeforeAll {
-            $result = $Object1 | Format-Fine -SymbolicTypes
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, "Physical Memory 0", $null, "BANK 0", "ChannelA-DIMM0", $null)
+            }
         }
 
-        It "Has 2 properties" {
-            $result.PSObject.Properties | Should -HaveCount 2
+        Context "-Boolean" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -Boolean
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('True', 'False')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @($true, $false)
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'String')
+        Context "-Boolean cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -Boolean
+            }
+
+            It "Has 4 properties" {
+                $result.PSObject.Properties | Should -HaveCount 4
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('PoweredOn', 'HotSwappable', 'Removable', 'Replaceable')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @($null, $null, $null, $null)
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @("", "It's a string")
-        }
-    }
+        Context "-NumericTypes -SymbolicTypes" {
 
-    Context "-SymbolicTypes cim" -Skip:($IsLinux -or $IsMacOS) {
+            BeforeAll {
+                $result = $Object1 | Format-Fine -NumericTypes -SymbolicTypes
+            }
 
-        BeforeAll {
-            $result = $CimInstancePhysicalMemory | Format-Fine -SymbolicTypes
-        }
+            It "Has 4 properties" {
+                $result.PSObject.Properties | Should -HaveCount 4
+            }
 
-        It "Has 16 properties" {
-            $result.PSObject.Properties | Should -HaveCount 16
-        }
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'EmptyString', 'String')
+            }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('Caption', 'Description', 'Name', 'Status', 'CreationClassName', 'Manufacturer', 'Model', 'OtherIdentifyingInfo', 'PartNumber', 'SerialNumber', 'SKU', 'Tag', 'Version', 'BankLabel', 'DeviceLocator', 'PSComputerName')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, "Physical Memory 0", $null, "BANK 0", "ChannelA-DIMM0", $null)
-        }
-    }
-
-    Context "-ValueFilter" {
-
-        BeforeAll {
-            $result = $Object1 | ff -ValueFilter {$PSItem -like "*ing"}
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "", "It's a string")
+            }
         }
 
-        It "Has 1 property" {
-            $result.PSObject.Properties | Should -HaveCount 1
+        Context "-NumericTypes -SymbolicTypes cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes -SymbolicTypes
+            }
+
+            It "Has 32 properties" {
+                $result.PSObject.Properties | Should -HaveCount 32
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Caption', 'Description', 'Name', 'Status', 'CreationClassName', 'Manufacturer', 'Model', 'OtherIdentifyingInfo', 'PartNumber', 'SerialNumber', 'SKU', 'Tag', 'Version','FormFactor', 'BankLabel', 'Capacity', 'DataWidth', 'InterleavePosition', 'MemoryType', 'PositionInRow', 'Speed', 'TotalWidth', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'DeviceLocator', 'InterleaveDataDepth', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType', 'TypeDetail', 'PSComputerName')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, "Physical Memory 0", $null, 8, "BANK 0", 8589934592, 64, 1, 24, $null, 1333, 64, 2, $null, $null, "ChannelA-DIMM0", 1, $null, $null, 24, 128, $null)
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('String')
+        Context "-NumericTypes -Boolean" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -NumericTypes -Boolean
+            }
+
+            It "Has 4 properties" {
+                $result.PSObject.Properties | Should -HaveCount 4
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'True', 'False')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, $true, $false)
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @("It's a string")
-        }
-    }
+        Context "-NumericTypes -Boolean cim" -Skip:($IsLinux -or $IsMacOS) {
 
-    Context "-ValueFilter cim" -Skip:($IsLinux -or $IsMacOS) {
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes -Boolean
+            }
 
-        BeforeAll {
-            $result = $CimInstancePhysicalMemory | ff -ValueFilter {$PSItem -le 128}
-        }
+            It "Has 20 properties" {
+                $result.PSObject.Properties | Should -HaveCount 20
+            }
 
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('PoweredOn', 'HotSwappable', 'Removable', 'Replaceable', 'FormFactor', 'Capacity', 'DataWidth', 'InterleavePosition', 'MemoryType', 'PositionInRow', 'Speed', 'TotalWidth', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'InterleaveDataDepth', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType', 'TypeDetail')
+            }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('FormFactor', 'DataWidth', 'InterleavePosition', 'MemoryType', 'TotalWidth', 'Attributes', 'InterleaveDataDepth', 'SMBIOSMemoryType', 'TypeDetail')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @(8, 64, 1, 24, 64, 2, 1, 24, 128)
-        }
-    }
-
-    Context "-TypeNameFilter" {
-
-        BeforeAll {
-            $result = $Object1 | ff -TypeNameFilter {$PSItem -like "*Int32"}
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @($null, $null, $null, $null, 8, 8589934592, 64, 1, 24, $null, 1333, 64, 2, $null, $null, 1, $null, $null, 24, 128)
+            }
         }
 
-        It "Has 2 properties" {
-            $result.PSObject.Properties | Should -HaveCount 2
+        Context "-SymbolicTypes -Boolean" {
+
+            BeforeAll {
+                $result = $Object1 | Format-Fine -SymbolicTypes -Boolean
+            }
+
+            It "Has 4 properties" {
+                $result.PSObject.Properties | Should -HaveCount 4
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('EmptyString', 'String', 'True', 'False')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("", "It's a string", $true, $false)
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+        Context "-SymbolicTypes -Boolean cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -SymbolicTypes -Boolean
+            }
+
+            It "Has 20 properties" {
+                $result.PSObject.Properties | Should -HaveCount 20
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Caption', 'Description', 'Name', 'Status', 'CreationClassName', 'Manufacturer', 'Model', 'OtherIdentifyingInfo', 'PartNumber', 'PoweredOn', 'SerialNumber', 'SKU', 'Tag', 'Version', 'HotSwappable', 'Removable', 'Replaceable', 'BankLabel', 'DeviceLocator', 'PSComputerName')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, $null, "Physical Memory 0", $null, $null, $null, $null, "BANK 0", "ChannelA-DIMM0", $null)
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
-        }
-    }
+        Context "-NumericTypes -SymbolicTypes -Boolean" {
 
-    Context "-TypeNameFilter cim" -Skip:($IsLinux -or $IsMacOS) {
+            BeforeAll {
+                $result = $Object1 | Format-Fine -NumericTypes -SymbolicTypes -Boolean
+            }
 
-        BeforeAll {
-            $result = $CimInstancePhysicalMemory | ff -TypeNameFilter {$PSItem -like "uint"}
-        }
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
 
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer', 'EmptyString', 'String', 'True', 'False')
+            }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('InterleavePosition', 'PositionInRow', 'Speed', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @(1, $null, 1333, 2, $null, $null, $null, $null, 24)
-        }
-    }
-
-    Context "-CompactNumbers" {
-
-        BeforeAll {
-            $result = $Object2 | ff -CompactNumbers
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15, "", "It's a string", $true, $false)
+            }
         }
 
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
+        Context "-NumericTypes -SymbolicTypes -Boolean cim" -Skip:($IsLinux -or $IsMacOS) {
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | Format-Fine -NumericTypes -SymbolicTypes -Boolean
+            }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5329${ds}07 P")
-        }
-    }
+            It "Has 36 properties" {
+                $result.PSObject.Properties | Should -HaveCount 36
+            }
 
-    Context "-NumberGroupSeparator" {
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Caption', 'Description', 'Name', 'Status', 'CreationClassName', 'Manufacturer', 'Model', 'OtherIdentifyingInfo', 'PartNumber', 'PoweredOn', 'SerialNumber', 'SKU', 'Tag', 'Version', 'HotSwappable', 'Removable', 'Replaceable',  'FormFactor', 'BankLabel', 'Capacity', 'DataWidth', 'InterleavePosition', 'MemoryType', 'PositionInRow', 'Speed', 'TotalWidth', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'DeviceLocator', 'InterleaveDataDepth', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType', 'TypeDetail', 'PSComputerName')
+            }
 
-        BeforeAll {
-            $result = $Object2 | ff -NumberGroupSeparator
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", "1${gs}024", "2${gs}000${gs}000", "3${gs}000${gs}000${gs}000", "4${gs}000${gs}000${gs}000${gs}000", "5${gs}000${gs}000${gs}000${gs}000${gs}000", "6${gs}000${gs}000${gs}000${gs}000${gs}000${gs}000")
-        }
-    }
-
-    Context "-NumberGroupSeparator cim" -Skip:($IsLinux -or $IsMacOS) {
-
-        BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumberGroupSeparator
-        }
-
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', "57${gs}682${gs}386${gs}944", "214${gs}223${gs}253${gs}504", '3', '255', '12')
-        }
-    }
-
-    Context "-CompactNumbers -NumberGroupSeparator" {
-
-        BeforeAll {
-            $result = $Object2 | ff -CompactNumbers -NumberGroupSeparator
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5${gs}329${ds}07 P")
-        }
-    }
-
-    Context "-NumbersAs Kilo" {
-
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs Kilo
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1953${ds}13 K", "2929687${ds}5 K", "3906250000 K", "4882812500000 K", "5859375000000000 K")
-        }
-    }
-
-    Context "-NumbersAs Kilo cim" -Skip:($IsLinux -or $IsMacOS) {
-
-        BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Kilo
-        }
-
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', '56330456 K', '209202396 K', '3', '255', '12')
-        }
-    }
-
-    Context "-NumbersAs Mega" {
-
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs Mega
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "1${ds}91 M", "2861${ds}02 M", "3814697${ds}27 M", "4768371582${ds}03 M", "5722045898437${ds}5 M")
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("Physical Memory", "Physical Memory", "Physical Memory", $null, $null, "Kingston", $null, $null, $null, $null, $null, $null, "Physical Memory 0", $null, $null, $null, $null, 8, "BANK 0", 8589934592, 64, 1, 24, $null, 1333, 64, 2, $null, $null, "ChannelA-DIMM0", 1, $null, $null, 24, 128, $null)
+            }
         }
     }
 
-    Context "-NumbersAs Mega cim" -Skip:($IsLinux -or $IsMacOS) {
+    Context "Filters" {
 
-        BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Mega
+        Context "-ValueFilter" {
+
+            BeforeAll {
+                $result = $Object1 | ff -ValueFilter {$PSItem -like "*ing"}
+            }
+
+            It "Has 1 property" {
+                $result.PSObject.Properties | Should -HaveCount 1
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('String')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @("It's a string")
+            }
         }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
+        Context "-ValueFilter cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | ff -ValueFilter {$PSItem -le 128}
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('FormFactor', 'DataWidth', 'InterleavePosition', 'MemoryType', 'TotalWidth', 'Attributes', 'InterleaveDataDepth', 'SMBIOSMemoryType', 'TypeDetail')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(8, 64, 1, 24, 64, 2, 1, 24, 128)
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+        Context "-TypeNameFilter" {
+
+            BeforeAll {
+                $result = $Object1 | ff -TypeNameFilter {$PSItem -like "*Int32"}
+            }
+
+            It "Has 2 properties" {
+                $result.PSObject.Properties | Should -HaveCount 2
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('IntegerZero', 'Integer')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(0, 15)
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', "55010${ds}21 M", "204299${ds}21 M", '3', '255', '12')
-        }
-    }
+        Context "-TypeNameFilter cim" -Skip:($IsLinux -or $IsMacOS) {
 
-    Context "-NumbersAs Giga" {
+            BeforeAll {
+                $result = $CimInstancePhysicalMemory | ff -TypeNameFilter {$PSItem -like "uint"}
+            }
 
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs Giga
-        }
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
 
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('InterleavePosition', 'PositionInRow', 'Speed', 'Attributes', 'ConfiguredClockSpeed', 'ConfiguredVoltage', 'MaxVoltage', 'MinVoltage', 'SMBIOSMemoryType')
+            }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "2000000", "2${ds}79 G", "3725${ds}29 G", "4656612${ds}87 G", "5587935447${ds}69 G")
-        }
-    }
-
-    Context "-NumbersAs Giga cim" -Skip:($IsLinux -or $IsMacOS) {
-
-        BeforeAll {
-            $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Giga
-        }
-
-        It "Has 6 properties" {
-            $result.PSObject.Properties | Should -HaveCount 6
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('0', "53${ds}72 G", "199${ds}51 G", '3', '255', '12')
-        }
-    }
-
-    Context "-NumbersAs Tera" {
-
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs Tera
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 T", "4547${ds}47 T", "5456968${ds}21 T")
-        }
-    }
-
-    Context "-NumbersAs Peta" {
-
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs Peta
-        }
-
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
-        }
-
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
-        }
-
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 P", "5329${ds}07 P")
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @(1, $null, 1333, 2, $null, $null, $null, $null, 24)
+            }
         }
     }
 
-    Context "-NumbersAs wrong value" {
+    Context "Numbers transformation" {
 
-        BeforeAll {
-            $result = $Object2 | ff -NumbersAs wrongvalue 3> $null
+        Context "-CompactNumbers" {
+
+            BeforeAll {
+                $result = $Object2 | ff -CompactNumbers
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5329${ds}07 P")
+            }
         }
 
-        It "Has 9 properties" {
-            $result.PSObject.Properties | Should -HaveCount 9
+        Context "-NumberGroupSeparator" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumberGroupSeparator
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", "1${gs}024", "2${gs}000${gs}000", "3${gs}000${gs}000${gs}000", "4${gs}000${gs}000${gs}000${gs}000", "5${gs}000${gs}000${gs}000${gs}000${gs}000", "6${gs}000${gs}000${gs}000${gs}000${gs}000${gs}000")
+            }
         }
 
-        It "Has correct properties" {
-            $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+        Context "-NumberGroupSeparator cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumberGroupSeparator
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('0', "57${gs}682${gs}386${gs}944", "214${gs}223${gs}253${gs}504", '3', '255', '12')
+            }
         }
 
-        It "Has correct values" {
-            $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}256", '1024', '2000000', '3000000000', '4000000000000', '5000000000000000', '6000000000000000000')
+        Context "-CompactNumbers -NumberGroupSeparator" {
+
+            BeforeAll {
+                $result = $Object2 | ff -CompactNumbers -NumberGroupSeparator
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1${ds}91 M", "2${ds}79 G", "3${ds}64 T", "4${ds}44 P", "5${gs}329${ds}07 P")
+            }
+        }
+
+        Context "-NumbersAs Kilo" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs Kilo
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1 K', "1953${ds}13 K", "2929687${ds}5 K", "3906250000 K", "4882812500000 K", "5859375000000000 K")
+            }
+        }
+
+        Context "-NumbersAs Kilo cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Kilo
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('0', '56330456 K', '209202396 K', '3', '255', '12')
+            }
+        }
+
+        Context "-NumbersAs Mega" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs Mega
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "1${ds}91 M", "2861${ds}02 M", "3814697${ds}27 M", "4768371582${ds}03 M", "5722045898437${ds}5 M")
+            }
+        }
+
+        Context "-NumbersAs Mega cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Mega
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('0', "55010${ds}21 M", "204299${ds}21 M", '3', '255', '12')
+            }
+        }
+
+        Context "-NumbersAs Giga" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs Giga
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', "2000000", "2${ds}79 G", "3725${ds}29 G", "4656612${ds}87 G", "5587935447${ds}69 G")
+            }
+        }
+
+        Context "-NumbersAs Giga cim" -Skip:($IsLinux -or $IsMacOS) {
+
+            BeforeAll {
+                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Giga
+            }
+
+            It "Has 6 properties" {
+                $result.PSObject.Properties | Should -HaveCount 6
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('Access', 'FreeSpace', 'Size', 'DriveType', 'MaximumComponentLength', 'MediaType')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('0', "53${ds}72 G", "199${ds}51 G", '3', '255', '12')
+            }
+        }
+
+        Context "-NumbersAs Tera" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs Tera
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', "3${ds}64 T", "4547${ds}47 T", "5456968${ds}21 T")
+            }
+        }
+
+        Context "-NumbersAs Peta" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs Peta
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}26", '1024', '2000000', '3000000000', '4000000000000', "4${ds}44 P", "5329${ds}07 P")
+            }
+        }
+
+        Context "-NumbersAs wrong value" {
+
+            BeforeAll {
+                $result = $Object2 | ff -NumbersAs wrongvalue 3> $null
+            }
+
+            It "Has 9 properties" {
+                $result.PSObject.Properties | Should -HaveCount 9
+            }
+
+            It "Has correct properties" {
+                $result.PSObject.Properties.Name | Should -BeExactly @('st', 'pl', 'fl', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb')
+            }
+
+            It "Has correct values" {
+                $result.PSObject.Properties.Value | Should -BeExactly @('String', '512', "512${ds}256", '1024', '2000000', '3000000000', '4000000000000', '5000000000000000', '6000000000000000000')
+            }
         }
     }
 }
