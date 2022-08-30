@@ -15,14 +15,14 @@ schema: 2.0.0
 ### Default (Default)
 ```
 Format-Fine [-InputObject] <Object> [-HasValue] [-Value <PSObject[]>] [-TypeName <String[]>] [-CompactNumbers]
- [-NumberGroupSeparator] [-NumbersAs <String>] [-NumericTypes] [-SymbolicTypes] [-ValueFilter <ScriptBlock>]
- [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+ [-NumbersAs <String>] [-NumberGroupSeparator] [-NumericTypes] [-SymbolicTypes] [-Boolean]
+ [-ValueFilter <ScriptBlock>] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ### NoValue
 ```
 Format-Fine [-InputObject] <Object> [-TypeName <String[]>] [-NoValue] [-NumericTypes] [-SymbolicTypes]
- [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
+ [-Boolean] [-TypeNameFilter <ScriptBlock>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -125,6 +125,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NumbersAs
+Отображает числа в виде Kilo, Mega, Giga, Tera или Peta.
+
+Если число меньше, чем указанная единица измерения, то оно отображается без изменений.
+
+Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
+
+Параметр -CompactNumbers имеет приоритет перед этим параметром.
+
+```yaml
+Type: String
+Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -NumberGroupSeparator
 Отображает числа с разделителями групп цифр.
 
@@ -159,29 +180,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -NumbersAs
-Отображает числа в виде Kilo, Mega, Giga, Tera или Peta.
-
-Если число меньше, чем указанная единица измерения, то оно отображается без изменений.
-
-Параметр отличается от параметра -CompactNumbers в том, что параметр -NumbersAs использует указанные единицы измерения (Kilo, Mega и т. д.), а параметр -CompactNumbers определяет подходящий вариант на основе величины числа.
-
-Параметр -CompactNumbers имеет приоритет перед этим параметром.
-
-```yaml
-Type: String
-Parameter Sets: Default
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -NumericTypes
-Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).
+Параметр указывает, что результат должен включать в себя свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).
+
+Параметры -NumericTypes, -SymbolicTypes и -Boolean обладают кумулятивным эффектом.
+
+Если указан только этот параметр - отобразятся только те свойства объектов, значения которых являются числовым типом (Int, Double и т. д.).
+
+Если параметр указан вместе с параметрами -SymbolicTypes и -Boolean - результат будет включать в себя свойства с числовыми, символьными значениями и значениями типа Boolean.
 
 ```yaml
 Type: SwitchParameter
@@ -196,7 +202,34 @@ Accept wildcard characters: False
 ```
 
 ### -SymbolicTypes
-Параметр указывает, что отображаться должны только те свойства объектов, значения которых являются символьным типом (String, Char).
+Параметр указывает, что результат должен включать в себя свойства объектов, значения которых являются символьным типом (String, Char).
+
+Параметры -NumericTypes, -SymbolicTypes и -Boolean обладают кумулятивным эффектом.
+
+Если указан только этот параметр - отобразятся только те свойства объектов, значения которых являются символьным типом (String, Char).
+
+Если параметр указан вместе с параметрами -NumericTypes и -Boolean - результат будет включать в себя свойства с числовыми, символьными значениями и значениями типа Boolean.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Boolean
+Параметр указывает, что результат должен включать в себя свойства объектов, значения которых являются типом Boolean.
+
+Параметры -NumericTypes, -SymbolicTypes и -Boolean обладают кумулятивным эффектом.
+
+Если указан только этот параметр - отобразятся только те свойства объектов, значения которых являются типом Boolean.
+
+Если параметр указан вместе с параметрами -NumericTypes и -SymbolicTypes - результат будет включать в себя свойства с числовыми, символьными значениями и значениями типа Boolean.
 
 ```yaml
 Type: SwitchParameter
@@ -382,37 +415,63 @@ PSComputerName      :
 
 Получение только тех свойств объектов, значения которых являются символьным типом (String, Char).
 
-### Example 7: Отображение чисел с разделителями групп
+### Example 7: Свойства, значения которых являются типом Boolean
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Boolean
 ```
 
 ```
-Access                 : 0
-FreeSpace              : 57,692,909,568
-Size                   : 214,223,253,504
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DeadGWDetectEnabled          :
+DHCPEnabled                  : False
+DNSEnabledForWINSResolution  :
+DomainDNSRegistrationEnabled :
+FullDNSRegistrationEnabled   :
+IPEnabled                    : False
+IPFilterSecurityEnabled      :
+IPPortSecurityEnabled        :
+IPUseZeroBroadcast           :
+IPXEnabled                   :
+PMTUBHDetectEnabled          :
+PMTUDiscoveryEnabled         :
+TcpUseRFC1122UrgentPointer   :
+WINSEnableLMHostsLookup      :
 ```
 
-Использование параметра -NumberGroupSeparator для отображения чисел с разделителями групп.
+Получение только тех свойств объектов, значения которых являются типом Boolean.
 
-### Example 8: Отображение чисел в виде Mega
+### Example 8: Свойства, значения которых являются числовым, символьным типом или типом Boolean
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumberGroupSeparator -NumbersAs Mega
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes -SymbolicTypes -Boolean
 ```
 
 ```
-Access                 : 0
-FreeSpace              : 55,018.6 M
-Size                   : 204,299.21 M
-DriveType              : 3
-MaximumComponentLength : 255
-MediaType              : 12
+Caption                      : [00000010] Hyper-V Virtual Switch Extension Adapter
+Description                  : Hyper-V Virtual Switch Extension Adapter
+SettingID                    : {9DB15731-C0BE-421E-B21E-F3BDA6B18D6B}
+ArpAlwaysSourceRoute         :
+ArpUseEtherSNAP              :
+DatabasePath                 :
+DeadGWDetectEnabled          :
+DHCPEnabled                  : False
+DHCPServer                   :
+DNSDomain                    :
+DNSEnabledForWINSResolution  :
+DNSHostName                  :
+DomainDNSRegistrationEnabled :
+ForwardBufferMemory          :
+FullDNSRegistrationEnabled   :
+Index                        : 10
+InterfaceIndex               : 3
+IPConnectionMetric           :
+IPEnabled                    : False
+IPFilterSecurityEnabled      :
+IPPortSecurityEnabled        :
+...
 ```
 
-Использование параметра -NumbersAs для отображения чисел в виде Mega.
+Получение только тех свойств объектов, значения которых являются числовым, символьным типом или типом Boolean.
 
 ### Example 9: Отображение чисел в наиболее компактной форме
 ```powershell
@@ -430,7 +489,39 @@ MediaType              : 12
 
 Отображение чисел в их наиболее компактной форме с использованием таких величин, как Kilo, Mega, Giga, Tera и Peta.
 
-### Example 10: Свойства с заданными значениями
+### Example 10: Отображение чисел в виде Mega
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega
+```
+
+```
+Access                 : 0
+FreeSpace              : 32128.93 M
+Size                   : 204299.21 M
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Использование параметра -NumbersAs для отображения чисел в виде Mega.
+
+### Example 11: Отображение чисел в виде Mega с разделителями групп
+```powershell
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
+```
+
+```
+Access                 : 0
+FreeSpace              : 32,128.83 M
+Size                   : 204,299.21 M
+DriveType              : 3
+MaximumComponentLength : 255
+MediaType              : 12
+```
+
+Использование параметров -NumbersAs и -NumberGroupSeparator для отображения чисел в виде Mega с разделителями групп.
+
+### Example 12: Свойства с заданными значениями
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
 ```
@@ -443,7 +534,7 @@ Caption                                             Description
 
 Получение только тех свойств, чьи значения соответствуют условию.
 
-### Example 11: Свойства заданного типа
+### Example 13: Свойства заданного типа
 ```powershell
 Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
 ```
