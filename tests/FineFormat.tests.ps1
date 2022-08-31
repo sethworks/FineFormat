@@ -622,7 +622,7 @@ Describe "FineFormat" {
         Context "-ValueFilter" {
 
             BeforeAll {
-                $result = $Object1 | ff -ValueFilter {$PSItem -like "*ing"}
+                $result = $Object1 | Format-Fine -ValueFilter {$PSItem -like "*ing"}
             }
 
             It "Has 1 property" {
@@ -641,7 +641,7 @@ Describe "FineFormat" {
         Context "-ValueFilter cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstancePhysicalMemory | ff -ValueFilter {$PSItem -le 128}
+                $result = $CimInstancePhysicalMemory | Format-Fine -ValueFilter {$PSItem -le 128}
             }
 
             It "Has 9 properties" {
@@ -660,7 +660,7 @@ Describe "FineFormat" {
         Context "-TypeNameFilter" {
 
             BeforeAll {
-                $result = $Object1 | ff -TypeNameFilter {$PSItem -like "*Int32"}
+                $result = $Object1 | Format-Fine -TypeNameFilter {$PSItem -like "*Int32"}
             }
 
             It "Has 2 properties" {
@@ -679,7 +679,7 @@ Describe "FineFormat" {
         Context "-TypeNameFilter cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstancePhysicalMemory | ff -TypeNameFilter {$PSItem -like "uint"}
+                $result = $CimInstancePhysicalMemory | Format-Fine -TypeNameFilter {$PSItem -like "uint"}
             }
 
             It "Has 9 properties" {
@@ -701,7 +701,7 @@ Describe "FineFormat" {
         Context "-CompactNumbers" {
 
             BeforeAll {
-                $result = $Object2 | ff -CompactNumbers
+                $result = $Object2 | Format-Fine -CompactNumbers
             }
 
             It "Has 9 properties" {
@@ -720,7 +720,7 @@ Describe "FineFormat" {
         Context "-NumberGroupSeparator" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumberGroupSeparator
+                $result = $Object2 | Format-Fine -NumberGroupSeparator
             }
 
             It "Has 9 properties" {
@@ -739,7 +739,7 @@ Describe "FineFormat" {
         Context "-NumberGroupSeparator cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumberGroupSeparator
+                $result = $CimInstanceLogicalDisk | Format-Fine -NumericTypes -HasValue -NumberGroupSeparator
             }
 
             It "Has 6 properties" {
@@ -758,7 +758,7 @@ Describe "FineFormat" {
         Context "-CompactNumbers -NumberGroupSeparator" {
 
             BeforeAll {
-                $result = $Object2 | ff -CompactNumbers -NumberGroupSeparator
+                $result = $Object2 | Format-Fine -CompactNumbers -NumberGroupSeparator
             }
 
             It "Has 9 properties" {
@@ -777,7 +777,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Kilo" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs Kilo
+                $result = $Object2 | Format-Fine -NumbersAs Kilo
             }
 
             It "Has 9 properties" {
@@ -796,7 +796,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Kilo cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Kilo
+                $result = $CimInstanceLogicalDisk | Format-Fine -NumericTypes -HasValue -NumbersAs Kilo
             }
 
             It "Has 6 properties" {
@@ -815,7 +815,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Mega" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs Mega
+                $result = $Object2 | Format-Fine -NumbersAs Mega
             }
 
             It "Has 9 properties" {
@@ -834,7 +834,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Mega cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Mega
+                $result = $CimInstanceLogicalDisk | Format-Fine -NumericTypes -HasValue -NumbersAs Mega
             }
 
             It "Has 6 properties" {
@@ -853,7 +853,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Giga" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs Giga
+                $result = $Object2 | Format-Fine -NumbersAs Giga
             }
 
             It "Has 6 properties" {
@@ -872,7 +872,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Giga cim" -Skip:($IsLinux -or $IsMacOS) {
 
             BeforeAll {
-                $result = $CimInstanceLogicalDisk | ff -NumericTypes -HasValue -NumbersAs Giga
+                $result = $CimInstanceLogicalDisk | Format-Fine -NumericTypes -HasValue -NumbersAs Giga
             }
 
             It "Has 6 properties" {
@@ -891,7 +891,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Tera" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs Tera
+                $result = $Object2 | Format-Fine -NumbersAs Tera
             }
 
             It "Has 9 properties" {
@@ -910,7 +910,7 @@ Describe "FineFormat" {
         Context "-NumbersAs Peta" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs Peta
+                $result = $Object2 | Format-Fine -NumbersAs Peta
             }
 
             It "Has 9 properties" {
@@ -929,7 +929,7 @@ Describe "FineFormat" {
         Context "-NumbersAs wrong value" {
 
             BeforeAll {
-                $result = $Object2 | ff -NumbersAs wrongvalue 3> $null
+                $result = $Object2 | Format-Fine -NumbersAs wrongvalue 3> $null
             }
 
             It "Has 9 properties" {
@@ -954,64 +954,64 @@ Describe "FineFormat" {
 
         Context "Pipeline" {
 
-            It "ff -TypeName " {
-                $line = "$ObjectDefinition | ff -TypeName <Tab>"
+            It "-TypeName " {
+                $line = "$ObjectDefinition | Format-Fine -TypeName <Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName Sys" {
-                $line = "$ObjectDefinition | ff -TypeName Sys<Tab>"
+            It "-TypeName Sys" {
+                $line = "$ObjectDefinition | Format-Fine -TypeName Sys<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System." {
-                $line = "$ObjectDefinition | ff -TypeName System.<Tab>"
+            It "-TypeName System." {
+                $line = "$ObjectDefinition | Format-Fine -TypeName System.<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System.Obj" {
-                $line = "$ObjectDefinition | ff -TypeName System.Obj<Tab>"
+            It "-TypeName System.Obj" {
+                $line = "$ObjectDefinition | Format-Fine -TypeName System.Obj<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 2
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
             }
 
-            It "ff -TypeName System.Object" {
-                $line = "$ObjectDefinition | ff -TypeName System.Object<Tab>"
+            It "-TypeName System.Object" {
+                $line = "$ObjectDefinition | Format-Fine -TypeName System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 2
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
             }
 
-            It "ff -TypeName System.Object, " {
-                $line = "$ObjectDefinition | ff -TypeName System.Object, <Tab>"
+            It "-TypeName System.Object, " {
+                $line = "$ObjectDefinition | Format-Fine -TypeName System.Object, <Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 4
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System.Object, System.Object" {
-                $line = "$ObjectDefinition | ff -TypeName System.Object, System.Object<Tab>"
+            It "-TypeName System.Object, System.Object" {
+                $line = "$ObjectDefinition | Format-Fine -TypeName System.Object, System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 1
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('''System.Object`[`]''')
             }
 
-            It "ff -TypeName 'System.Object``[``]', System.Object" {
-                $line = "$ObjectDefinition | ff -TypeName 'System.Object``[``]', System.Object<Tab>"
+            It "-TypeName 'System.Object``[``]', System.Object" {
+                $line = "$ObjectDefinition | Format-Fine -TypeName 'System.Object``[``]', System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 1
@@ -1021,64 +1021,64 @@ Describe "FineFormat" {
 
         Context "-InputObject parameter" {
 
-            It "ff -TypeName " {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName <Tab>"
+            It "-TypeName " {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName <Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName Sys" {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName Sys<Tab>"
+            It "-TypeName Sys" {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName Sys<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System." {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.<Tab>"
+            It "-TypeName System." {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName System.<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 5
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', 'System.Object', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System.Obj" {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Obj<Tab>"
+            It "-TypeName System.Obj" {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName System.Obj<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 2
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
             }
 
-            It "ff -TypeName System.Object" {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object<Tab>"
+            It "-TypeName System.Object" {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 2
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Object', '''System.Object`[`]''')
             }
 
-            It "ff -TypeName System.Object, " {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object, <Tab>"
+            It "-TypeName System.Object, " {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName System.Object, <Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 4
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('System.Boolean', 'System.Int32', '''System.Object`[`]''', 'System.String')
             }
 
-            It "ff -TypeName System.Object, System.Object" {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName System.Object, System.Object<Tab>"
+            It "-TypeName System.Object, System.Object" {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName System.Object, System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 1
                 $commandCompletion.CompletionMatches.CompletionText | Should -BeExactly @('''System.Object`[`]''')
             }
 
-            It "ff -TypeName 'System.Object``[``]', System.Object" {
-                $line = "ff -InputObject ($ObjectDefinition) -TypeName 'System.Object``[``]', System.Object<Tab>"
+            It "-TypeName 'System.Object``[``]', System.Object" {
+                $line = "Format-Fine -InputObject ($ObjectDefinition) -TypeName 'System.Object``[``]', System.Object<Tab>"
                 $cursorColumn = $line.IndexOf('<Tab>')
                 $commandCompletion = TabExpansion2 -inputScript $line.Remove($cursorColumn, 5) -cursorColumn $cursorColumn
                 $commandCompletion.CompletionMatches | Should -HaveCount 1

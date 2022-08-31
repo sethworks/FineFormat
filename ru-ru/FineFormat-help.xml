@@ -62,7 +62,7 @@
             <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
             <maml:para>Поддерживает символы подстановки.</maml:para>
             <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
-            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Format-Fine -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -203,7 +203,7 @@
             <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
             <maml:para>Поддерживает символы подстановки.</maml:para>
             <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
-            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
+            <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Format-Fine -TypeName &lt;Tab&gt;</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
@@ -328,7 +328,7 @@
           <maml:para>Параметр задает типы данных свойств объектов для использования в качестве фильтра.</maml:para>
           <maml:para>Поддерживает символы подстановки.</maml:para>
           <maml:para>Поддерживает завершение ввода по клавише Tab. Например:</maml:para>
-          <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName &lt;Tab&gt;</maml:para>
+          <maml:para>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Format-Fine -TypeName &lt;Tab&gt;</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
@@ -497,7 +497,7 @@
     <command:examples>
       <command:example>
         <maml:title>Example 1: Свойства со значениями, отличными от пустых или $null</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue
 
 Caption               : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description           : Hyper-V Virtual Switch Extension Adapter
@@ -518,7 +518,7 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties<
       </command:example>
       <command:example>
         <maml:title>---- Example 2: Свойства, обладающие указанными значениями ----</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Value *adapter, 3, $false
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Value *adapter, 3, $false
 
 Caption        : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description    : Hyper-V Virtual Switch Extension Adapter
@@ -533,7 +533,7 @@ IPEnabled      : False</dev:code>
       </command:example>
       <command:example>
         <maml:title>-------------- Example 3: Свойства заданного типа --------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -TypeName string, *int, 'ushort`[`]'
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -TypeName string, *int, 'ushort`[`]'
 
 Caption                      : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description                  : Hyper-V Virtual Switch Extension Adapter
@@ -555,7 +555,7 @@ InterfaceIndex               : 3
       </command:example>
       <command:example>
         <maml:title>- Example 4: Свойства, значения которых пусты или равны $null -</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NoValue
 
 ArpAlwaysSourceRoute         :
 ArpUseEtherSNAP              :
@@ -578,7 +578,7 @@ DNSDomainSuffixSearchOrder   :
       </command:example>
       <command:example>
         <maml:title> Example 5: Свойства, значения которых являются числовым типом </maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes
 
 ForwardBufferMemory          :
 Index                        : 10
@@ -602,7 +602,7 @@ TcpWindowSize                :</dev:code>
       </command:example>
       <command:example>
         <maml:title>Example 6: Свойства, значения которых являются символьным типом</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -SymbolicTypes
 
 Caption             : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description         : Hyper-V Virtual Switch Extension Adapter
@@ -628,7 +628,7 @@ PSComputerName      :</dev:code>
       </command:example>
       <command:example>
         <maml:title>- Example 7: Свойства, значения которых являются типом Boolean -</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Boolean
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Boolean
 
 ArpAlwaysSourceRoute         :
 ArpUseEtherSNAP              :
@@ -654,7 +654,7 @@ WINSEnableLMHostsLookup      :</dev:code>
       </command:example>
       <command:example>
         <maml:title>Example 8: Свойства, значения которых являются числовым, символьным типом или типом Boolean</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes -SymbolicTypes -Boolean
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes -SymbolicTypes -Boolean
 
 Caption                      : [00000010] Hyper-V Virtual Switch Extension Adapter
 Description                  : Hyper-V Virtual Switch Extension Adapter
@@ -686,7 +686,7 @@ IPPortSecurityEnabled        :
       </command:example>
       <command:example>
         <maml:title>--- Example 9: Отображение чисел в наиболее компактной форме ---</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -CompactNumbers
 
 Access                 : 0
 FreeSpace              : 53.73 G
@@ -702,7 +702,7 @@ MediaType              : 12</dev:code>
       </command:example>
       <command:example>
         <maml:title>---------- Example 10: Отображение чисел в виде Mega ----------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega
 
 Access                 : 0
 FreeSpace              : 32128.93 M
@@ -718,7 +718,7 @@ MediaType              : 12</dev:code>
       </command:example>
       <command:example>
         <maml:title>Example 11: Отображение чисел в виде Mega с разделителями групп</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
+        <dev:code>Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
 
 Access                 : 0
 FreeSpace              : 32,128.83 M
@@ -734,7 +734,7 @@ MediaType              : 12</dev:code>
       </command:example>
       <command:example>
         <maml:title>--------- Example 12: Свойства с заданными значениями ---------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -ValueFilter {$PSItem -like "*adapter"}
 
 Caption                                             Description
 -------                                             -----------
@@ -747,7 +747,7 @@ Caption                                             Description
       </command:example>
       <command:example>
         <maml:title>------------- Example 13: Свойства заданного типа -------------</maml:title>
-        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
+        <dev:code>Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue -TypeNameFilter {$PSItem -like "*int"}
 
 Index InterfaceIndex
 ----- --------------

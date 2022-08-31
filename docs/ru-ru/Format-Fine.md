@@ -94,7 +94,7 @@ Accept wildcard characters: False
 
 Поддерживает завершение ввода по клавише Tab. Например:
 
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName <Tab>
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Format-Fine -TypeName <Tab>
 
 ```yaml
 Type: String[]
@@ -290,7 +290,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Свойства со значениями, отличными от пустых или $null
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue
 ```
 
 ```
@@ -311,7 +311,7 @@ CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
 
 ### Example 2: Свойства, обладающие указанными значениями
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Value *adapter, 3, $false
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Value *adapter, 3, $false
 ```
 
 ```
@@ -326,7 +326,7 @@ IPEnabled      : False
 
 ### Example 3: Свойства заданного типа
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -TypeName string, *int, 'ushort`[`]'
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -TypeName string, *int, 'ushort`[`]'
 ```
 
 ```
@@ -348,7 +348,7 @@ InterfaceIndex               : 3
 
 ### Example 4: Свойства, значения которых пусты или равны $null
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NoValue
 ```
 
 ```
@@ -371,7 +371,7 @@ DNSDomainSuffixSearchOrder   :
 
 ### Example 5: Свойства, значения которых являются числовым типом
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes
 ```
 
 ```
@@ -395,7 +395,7 @@ TcpWindowSize                :
 
 ### Example 6: Свойства, значения которых являются символьным типом
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -SymbolicTypes
 ```
 
 ```
@@ -421,7 +421,7 @@ PSComputerName      :
 
 ### Example 7: Свойства, значения которых являются типом Boolean
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Boolean
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Boolean
 ```
 
 ```
@@ -447,7 +447,7 @@ WINSEnableLMHostsLookup      :
 
 ### Example 8: Свойства, значения которых являются числовым, символьным типом или типом Boolean
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes -SymbolicTypes -Boolean
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes -SymbolicTypes -Boolean
 ```
 
 ```
@@ -479,7 +479,7 @@ IPPortSecurityEnabled        :
 
 ### Example 9: Отображение чисел в наиболее компактной форме
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -CompactNumbers
 ```
 
 ```
@@ -495,7 +495,7 @@ MediaType              : 12
 
 ### Example 10: Отображение чисел в виде Mega
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega
 ```
 
 ```
@@ -511,7 +511,7 @@ MediaType              : 12
 
 ### Example 11: Отображение чисел в виде Mega с разделителями групп
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
 ```
 
 ```
@@ -527,7 +527,7 @@ MediaType              : 12
 
 ### Example 12: Свойства с заданными значениями
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -ValueFilter {$PSItem -like "*adapter"}
 ```
 
 ```
@@ -540,7 +540,7 @@ Caption                                             Description
 
 ### Example 13: Свойства заданного типа
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```
