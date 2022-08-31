@@ -12,7 +12,7 @@
 RootModule = 'FineFormat.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.1'
+ModuleVersion = '1.2.0'
 
 # Supported PSEditions
 CompatiblePSEditions = @('Core', 'Desktop')
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) Sergey Vasin. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Format and filter objects properties by types and values'
+Description = 'Select properties by their types and values. Present numbers as K, M, G, etc. with group separators.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
@@ -108,6 +108,11 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = '
+v1.2.0:
+    Add Format-Fine -Boolean parameter
+    Format-Fine -NumericTypes, -SymbolicTypes, and -Boolean parameters are now cumulative
+    Format-Fine -TypeName parameter supports tab completion
+
 v1.1.1:
     Change Format-Fine -NumbersAs parameter values
     Change Format-Fine -CompactNumbers and -NumbersAs parameters output
