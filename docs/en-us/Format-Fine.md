@@ -94,7 +94,7 @@ Supports wildcards.
 
 Supports tab completion. For example:
 
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | ff -TypeName <Tab>
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Format-Fine -TypeName <Tab>
 
 ```yaml
 Type: String[]
@@ -290,7 +290,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Example 1: Properties that have values other than $null or empty
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue
 ```
 
 ```
@@ -311,7 +311,7 @@ Get only the properties that have values other than $null or empty.
 
 ### Example 2: Properties that have specified values
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Value *adapter, 3, $false
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Value *adapter, 3, $false
 ```
 
 ```
@@ -326,7 +326,7 @@ Get only the properties that have specified values.
 
 ### Example 3: Properties of specified types
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -TypeName string, *int, 'ushort`[`]'
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -TypeName string, *int, 'ushort`[`]'
 ```
 
 ```
@@ -348,7 +348,7 @@ Get only the properties of specific data types.
 
 ### Example 4: Properties that have $null or empty values
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NoValue
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NoValue
 ```
 
 ```
@@ -371,7 +371,7 @@ Get only the properties that have $null or empty values.
 
 ### Example 5: Properties that have values of numeric types
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes
 ```
 
 ```
@@ -395,7 +395,7 @@ Get only the properties that have values of numeric types (Int, Double, etc.).
 
 ### Example 6: Properties that have values of symbolic types
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -SymbolicTypes
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -SymbolicTypes
 ```
 
 ```
@@ -421,7 +421,7 @@ Get only the properties that have values of symbolic types (String, Char).
 
 ### Example 7: Properties that have values of Boolean types
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -Boolean
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -Boolean
 ```
 
 ```
@@ -447,7 +447,7 @@ Get only the properties that have values of Boolean type.
 
 ### Example 8: Properties that have values of numeric, symbolic, or Boolean types
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -NumericTypes -SymbolicTypes -Boolean
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -NumericTypes -SymbolicTypes -Boolean
 ```
 
 ```
@@ -479,7 +479,7 @@ Get only the properties that have values of numeric, symbolic, or Boolean type.
 
 ### Example 9: Compact numbers
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -CompactNumbers
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -CompactNumbers
 ```
 
 ```
@@ -495,7 +495,7 @@ Display numbers in their most compact form using Kilo, Mega, Giga, Tera, and Pet
 
 ### Example 10: Display numbers as Mega
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega
 ```
 
 ```
@@ -511,7 +511,7 @@ Use the -NumbersAs parameter to display numbers as Mega.
 
 ### Example 11: Display numbers as Mega with group separator
 ```powershell
-Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | ff -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'" | Format-Fine -HasValue -NumericTypes -NumbersAs Mega -NumberGroupSeparator
 ```
 
 ```
@@ -527,7 +527,7 @@ Use the -NumbersAs and -NumberGroupSeparator parameters to display numbers as Me
 
 ### Example 12: Properties that have specific values
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -ValueFilter {$PSItem -like "*adapter"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -ValueFilter {$PSItem -like "*adapter"}
 ```
 
 ```
@@ -540,7 +540,7 @@ Get only the properties that have specific values.
 
 ### Example 13: Properties of specified data type
 ```powershell
-Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | ff -HasValue -TypeNameFilter {$PSItem -like "*int"}
+Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration -Filter "Index=10" | Format-Fine -HasValue -TypeNameFilter {$PSItem -like "*int"}
 ```
 
 ```
