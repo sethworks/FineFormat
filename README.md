@@ -2,7 +2,13 @@
 
 # `FineFormat` PowerShell module
 
-Format and filter objects properties by types and values
+`Where-Object` cmdlet is used to select **objects** by their properties.
+
+`Select-Object` cmdlet is used to select **properties** by their names.
+
+`Format-Fine` can be used to select **properties** by their types and values.
+
+Also `Format-Fine` can present numbers as K, M, G, etc. and add group separators.
 
 ## Functions
 
